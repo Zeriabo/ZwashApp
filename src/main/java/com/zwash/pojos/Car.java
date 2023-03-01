@@ -1,11 +1,7 @@
-package com.zwash.app.pojos;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+package com.zwash.pojos;
 
 
 import java.util.Date;
-import java.util.List;
 
 
 public class Car {

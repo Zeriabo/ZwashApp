@@ -1,8 +1,9 @@
-package com.zwash.app.service;
+package com.zwash.service;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.zwash.app.exceptions.PatternFormatException;
+
+import com.zwash.exceptions.PatternFormatException;
 
 public class RegisterationPlateChecker
 {

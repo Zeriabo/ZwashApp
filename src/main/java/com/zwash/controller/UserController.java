@@ -1,4 +1,4 @@
-package com.zwash.app.controller;
+package com.zwash.controller;
 import java.util.ServiceLoader;
 
 import javax.ws.rs.Consumes;
@@ -10,18 +10,32 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zwash.app.pojos.SignInfo;
-import com.zwash.app.pojos.User;
-import com.zwash.app.service.UserService;
+import com.zwash.pojos.SignInfo;
+import com.zwash.pojos.User;
+import com.zwash.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
+
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/")
+	@POST
+	public Response getUsers() throws Exception {
+        
+	
+		System.out.println("Hello from users");
+	
+		return null;
+	
+	}
 	
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

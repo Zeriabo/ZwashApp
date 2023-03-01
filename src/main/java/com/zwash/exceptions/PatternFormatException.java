@@ -1,4 +1,4 @@
-package com.zwash.app.exceptions;
+package com.zwash.exceptions;
 
 
 public class PatternFormatException extends Exception {

@@ -1,4 +1,4 @@
-package com.zwash.app.pojos;
+package com.zwash.pojos;
 
 import java.util.Date;
 

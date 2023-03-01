@@ -1,4 +1,4 @@
-package com.zwash.app.pojos;
+package com.zwash.pojos;
 
 public class User {
 	

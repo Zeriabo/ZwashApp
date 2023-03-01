@@ -1,6 +1,6 @@
-package com.zwash.app.service;
+package com.zwash.service;
 
-import com.zwash.app.pojos.User;
+import com.zwash.pojos.User;
 
 public class UserService {
 	public UserService()
