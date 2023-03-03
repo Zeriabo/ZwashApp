@@ -1,5 +1,14 @@
 package com.zwash.pojos;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "zwashuser")
 public class User {
 	
 	public User()
@@ -66,12 +75,25 @@ public class User {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+	
+	 @Id
+	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
+     @Column(name = "id", unique = true, nullable = false)
+	private int id;
+	 @Column(name = "firstName")
 	private String firstName;
+	 @Column(name = "lastName")
 	private String lastName;
+	 @Column(name = "username")
 	private String username;
+	 @Column(name = "password")
 	private String password;
+	 @Column(name = "dateOfBirth")
 	private String dateOfBirth;
+	 @Column(name = "secretQuestion")
 	private String secretQuestion;
+	 @Column(name = "secretAnswer")
 	private String secretAnswer;
+	 @Column(name = "active")
 	private Boolean active;
 }
