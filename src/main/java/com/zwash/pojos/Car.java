@@ -3,9 +3,20 @@ package com.zwash.pojos;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "car")
 public class Car {
 
+	 @Id
+	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cars_seq_gen")
+     @Column(name = "id", unique = true, nullable = false)
 	public int getId() {
 		return id;
 	}
@@ -23,6 +34,7 @@ public class Car {
 	/**
 	 * @return the registerationPlate
 	 */
+	@Column(name = "registerationPlate")
 	public String getRegisterationPlate() {
 		return registerationPlate;
 	}
@@ -39,6 +51,8 @@ public class Car {
 	/**
 	 * @return the ownerId
 	 */
+//	@OneToOne(mappedBy = "user")
+//	@OrderBy("id")
 	public int getOwnerId() {
 		return ownerId;
 	}
@@ -53,6 +67,7 @@ public class Car {
 	/**
 	 * @return the mark
 	 */
+	@Column(name = "mark")
 	public String getMark() {
 		return mark;
 	}
@@ -67,6 +82,7 @@ public class Car {
 	/**
 	 * @return the datetime
 	 */
+	@Column(name = "datetime")
 	public Date getDatetime() {
 		return datetime;
 	}
@@ -78,7 +94,7 @@ public class Car {
 		this.datetime = datetime;
 	}
 
-	private int id;
+	private int id;	
 	private int ownerId;
 	private String registerationPlate;
 	private String mark;
