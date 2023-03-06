@@ -1,6 +1,6 @@
 package com.zwash.controller;
+import java.util.Iterator;
 import java.util.ServiceLoader;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -10,23 +10,29 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zwash.pojos.SignInfo;
 import com.zwash.pojos.User;
 import com.zwash.service.UserService;
 
 
-@RestController
+@Controller
 @RequestMapping(value = "/users")
 public class UserController {
 	
 
+	@Autowired
+    private UserService userService;
+    
     @PostMapping("/signin")
 	public Response signIn(String userInfo ) throws Exception {
         
@@ -35,7 +41,7 @@ public class UserController {
 		SignInfo user = mapper.readValue(userInfo, SignInfo.class);
 		
 		Response response = null;
-		UserService userService = getUserService();
+	//	UserService userService = getUserService();
 		
 		User signedUser;
 		try {
@@ -72,33 +78,24 @@ public class UserController {
 	
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/register")
-	@POST
-	public Response register(String registerDetails) throws Exception {
+	@PostMapping("/register")
+	public ResponseEntity<String> register(@RequestBody String registerDetails) throws Exception {
 
 		ObjectMapper mapper = new ObjectMapper();
 		User user = mapper.readValue(registerDetails, User.class);
-		Response response = null;
-		UserService userService = getUserService();
-		
+
 		User userCreated;
-		try {
+	
 			userCreated = userService.register(user);
 
 			if(userCreated instanceof User)
 			{
-				return Response.ok(userCreated).build();
+				 return new ResponseEntity<>(
+						 userCreated.getString(), HttpStatus.OK);
+			}else {
+				 return new ResponseEntity<>(
+						 "not created", HttpStatus.NOT_ACCEPTABLE);
 			}
-			
-		} catch (Exception e) {
-			
-			return Response.status(500).entity(e.getMessage()).build();
-		}
-	
-		
-	
-		return response;
-	
 	}
 	
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -110,7 +107,7 @@ public class UserController {
 		ObjectMapper mapper = new ObjectMapper();
 		User userToEdit = mapper.readValue(body, User.class);
 
-		UserService userService = getUserService();
+	//	UserService userService = getUserService();
 		
 		boolean changed;
 		try {
@@ -137,7 +134,7 @@ public class UserController {
 	@GET
     public Response validateIfSigned(@QueryParam("token")  String  token) throws Exception {
   
-      UserService userService = getUserService();
+    //  UserService userService = getUserService();
       
       boolean valid=false;
       try {
@@ -170,7 +167,7 @@ public class UserController {
 		ObjectMapper mapper = new ObjectMapper();
 		User userToEdit = mapper.readValue(user, User.class);
 		Response response = null;
-		UserService userService = getUserService();
+	//	UserService userService = getUserService();
 
 		try {
 			userToEdit = userService.getSecretQuestionAnswer(userToEdit.getUsername());
@@ -189,13 +186,17 @@ public class UserController {
 	
 	}
 	
-	public static UserService getUserService() {
-	
-      ServiceLoader<UserService> serviceLoader =ServiceLoader.load(UserService.class);
-      for (UserService provider : serviceLoader) {
-          return provider;
-      }
-      throw new NoClassDefFoundError("Unable to load a driver "+UserService.class.getName());
-	}
+	public static UserService getUserService()throws Exception {
+	try {
+		  ServiceLoader<UserService> serviceLoader =ServiceLoader.load(UserService.class);
+		  UserService userService = serviceLoader.iterator().next();
 
+			return userService;
+	}catch (Exception e) {
+	     	
+  	  throw e;
+    }
+
+  
+	}
 }

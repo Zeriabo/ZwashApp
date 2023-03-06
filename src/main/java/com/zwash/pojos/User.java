@@ -1,5 +1,10 @@
 package com.zwash.pojos;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -76,6 +81,11 @@ public class User {
 		this.active = active;
 	}
 	
+	public String getString(){
+		
+       return this.getFirstName()+" "+this.getLastName()+ " Active: "+this.isActive();
+	}
+	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
      @Column(name = "id", unique = true, nullable = false)
@@ -96,4 +106,12 @@ public class User {
 	private String secretAnswer;
 	 @Column(name = "active")
 	private Boolean active;
+	 
+     @CreationTimestamp
+     @Column(name = "createdAt")
+     private LocalDateTime createDateTime;
+	 
+     @UpdateTimestamp
+     @Column(name = "updatedAt")
+     private LocalDateTime updateDateTime;
 }
