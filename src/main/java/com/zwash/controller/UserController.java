@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -85,17 +86,30 @@ public class UserController {
 		User user = mapper.readValue(registerDetails, User.class);
 
 		User userCreated;
-	
-			userCreated = userService.register(user);
+	try {
+		userCreated = userService.register(user);
 
-			if(userCreated instanceof User)
-			{
-				 return new ResponseEntity<>(
-						 userCreated.getString(), HttpStatus.OK);
-			}else {
-				 return new ResponseEntity<>(
-						 "not created", HttpStatus.NOT_ACCEPTABLE);
-			}
+		if(userCreated instanceof User)
+		{
+			 return new ResponseEntity<>(
+					 userCreated.getString(), HttpStatus.OK);
+		}else {
+			 return new ResponseEntity<>(
+					 "not created", HttpStatus.NOT_ACCEPTABLE);
+		}
+	}catch(DataIntegrityViolationException dx)
+	{
+
+		return new ResponseEntity<>(
+				
+				 "User already exists", HttpStatus.NOT_ACCEPTABLE);
+	}
+	
+	catch(Exception e)
+	{
+		throw e;
+	}
+			
 	}
 	
 	@Consumes(MediaType.APPLICATION_JSON)
