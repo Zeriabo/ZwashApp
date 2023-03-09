@@ -5,25 +5,32 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "car")
 public class Car {
 
-	public int getId() {
-		return id;
+	public int getCarId() {
+		return carId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setCarId(int id) {
+		this.carId = id;
 	}
 
 
@@ -52,15 +59,15 @@ public class Car {
 	 * @return the ownerId
 	 */
 
-	public int getOwnerId() {
-		return ownerId;
+	public User getUser() {
+		return user;
 	}
 
 	/**
 	 * @param ownerId the ownerId to set
 	 */
-	public void setOwnerId(int ownerId) {
-		this.ownerId = ownerId;
+	public void setOwnerId(User user) {
+		this.user = user;
 	}
 
 	/**
@@ -92,12 +99,15 @@ public class Car {
 	}
 
 	 @Id
-	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
-     @Column(name = "id", unique = true, nullable = false)
-	private int id;	
+	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq_gen")
+     @Column(name = "car_id", unique = true, nullable = false)
+	private int carId;	
 	 
-	 @Column(name = "ownerId")
-	private int ownerId;
+	 @ManyToOne(fetch = FetchType.LAZY, optional = false)
+	  @JoinColumn(name = "user_id", nullable = false)
+	  @OnDelete(action = OnDeleteAction.CASCADE)
+	  @JsonIgnore
+	  private User user;
 	 
 	 @Column(name = "registerationPlate")
 	private String registerationPlate;
