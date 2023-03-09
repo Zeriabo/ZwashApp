@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zwash.exceptions.UserIsNotActiveException;
 import com.zwash.pojos.SignInfo;
 import com.zwash.pojos.User;
 import com.zwash.service.UserService;
@@ -35,15 +36,12 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/signin")
-	public Response signIn(String userInfo ) throws Exception {
+	public ResponseEntity<User> signIn(@RequestBody  String userInfo ) throws Exception {
         
 	      ObjectMapper mapper = new ObjectMapper();
 		
 		SignInfo user = mapper.readValue(userInfo, SignInfo.class);
-		
-		Response response = null;
-	//	UserService userService = getUserService();
-		
+	
 		User signedUser;
 		try {
 			
@@ -53,24 +51,25 @@ public class UserController {
 			{
 				if(signedUser.isActive()) {
 					
-					 response = Response.ok(signedUser).build();
+					 return new ResponseEntity<User>(
+							 signedUser, HttpStatus.OK);
+			
 					 
 				}else {
+					throw new UserIsNotActiveException(user.getUserName());
 					
-					 response = Response.status(204).entity("user is not active").build();
 				}
 			
 			}else {
-		     response = Response.status(404).build();
+				 return new ResponseEntity<User>(
+						  HttpStatus.NOT_ACCEPTABLE);
 			}
 			
 		} catch (Exception e) {
 			throw e;
 		}
 	
-		
-	
-		return response;
+
 	
 	}
 	

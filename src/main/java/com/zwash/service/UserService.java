@@ -6,14 +6,14 @@
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.zwash.repository.UserRepository;
-	
-	import com.zwash.pojos.User;
+import com.zwash.exceptions.UserIsNotFoundException;
+import com.zwash.pojos.User;
 	
 	
 	@Configurable
 	public interface UserService extends Serializable  {
 		
-		 User signIn(String username, String password);
+		 User signIn(String username, String password) throws UserIsNotFoundException;
 		 User register(User user) throws Exception;
 		 boolean changePassword(String username, String password);
 		 boolean validateSignIn(String token);

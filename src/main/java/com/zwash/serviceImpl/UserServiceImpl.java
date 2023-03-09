@@ -1,6 +1,9 @@
 package com.zwash.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.User;
 import com.zwash.repository.UserRepository;
 import com.zwash.service.UserService;
@@ -13,8 +16,16 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public User signIn(String username, String password) {
-		return null;
+	public User signIn(String username, String password) throws UserIsNotFoundException {
+		
+		
+		User user =	userRepository.findByUsername(username);
+		if(user instanceof User) {
+			return user;	
+		}else {
+			throw new UserIsNotFoundException(username);
+		}
+		
 	}
 
 	public User register(User user) throws Exception {
@@ -22,7 +33,12 @@ public class UserServiceImpl implements UserService {
 		user.setActive(true);
 		try {
 		user =	userRepository.save(user);
-		} catch (Exception e) {
+		}catch(DataIntegrityViolationException de)
+		{
+			throw de;
+		}
+		
+		catch (Exception e) {
 			throw e;
 		}
 
