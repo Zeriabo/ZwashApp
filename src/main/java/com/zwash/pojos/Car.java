@@ -87,14 +87,14 @@ public class Car {
 	/**
 	 * @return the datetime
 	 */
-	public Date getDatetime() {
+	public Date getDateOfManufacture() {
 		return dateOfManufacture;
 	}
 
 	/**
 	 * @param datetime the datetime to set
 	 */
-	public void setDatetime(Date dateOfManufacture) {
+	public void setDateOfManufacture(Date dateOfManufacture) {
 		this.dateOfManufacture = dateOfManufacture;
 	}
 

@@ -7,13 +7,10 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @EnableAutoConfiguration
 @EnableSpringConfigured
-@SpringBootApplication(scanBasePackages={"com.zwash","com.zwash.controller","com.zwash.service","com.zwash.serviceImpl","com.zwash.controller"})
-@ComponentScan("com.zwash")
+@SpringBootApplication(scanBasePackages={"com.zwash.controller","com.zwash.pojos","com.zwash.service","com.zwash.serviceImpl","com.zwash.exceptions"})
 @EnableJpaRepositories("com.zwash.repository")
 public class ZwashApplication {
 

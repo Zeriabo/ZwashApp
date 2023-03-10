@@ -1,5 +1,5 @@
 package com.zwash.controller;
-import java.util.Iterator;
+
 import java.util.ServiceLoader;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -9,9 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +17,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zwash.exceptions.UserIsNotActiveException;
+import com.zwash.pojos.LoggedUser;
 import com.zwash.pojos.SignInfo;
 import com.zwash.pojos.User;
+import com.zwash.security.JwtUtils;
 import com.zwash.service.UserService;
 
 
@@ -36,22 +35,22 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/signin")
-	public ResponseEntity<User> signIn(@RequestBody  String userInfo ) throws Exception {
+	public ResponseEntity<LoggedUser> signIn(@RequestBody  String userInfo ) throws Exception {
         
 	      ObjectMapper mapper = new ObjectMapper();
 		
 		SignInfo user = mapper.readValue(userInfo, SignInfo.class);
 	
-		User signedUser;
+		LoggedUser signedUser;
 		try {
 			
 			signedUser = userService.signIn(user.getUserName(),user.getPassword());
 
-			if(signedUser instanceof User)
+			if(signedUser instanceof LoggedUser)
 			{
 				if(signedUser.isActive()) {
 					
-					 return new ResponseEntity<User>(
+					 return new ResponseEntity<LoggedUser>(
 							 signedUser, HttpStatus.OK);
 			
 					 
@@ -61,7 +60,7 @@ public class UserController {
 				}
 			
 			}else {
-				 return new ResponseEntity<User>(
+				 return new ResponseEntity<LoggedUser>(
 						  HttpStatus.NOT_ACCEPTABLE);
 			}
 			
@@ -118,9 +117,18 @@ public class UserController {
 	public Response changePassword(String body) throws Exception {
 		
 		ObjectMapper mapper = new ObjectMapper();
-		User userToEdit = mapper.readValue(body, User.class);
+		LoggedUser userToEdit = mapper.readValue(body, LoggedUser.class);
 
 	//	UserService userService = getUserService();
+		JwtUtils jwtUtils = new JwtUtils();
+		
+		try {
+			jwtUtils.verifyJWT(userToEdit.getToken());	
+		}catch(Exception ex)
+		{
+			System.out.print(ex);
+		}
+		
 		
 		boolean changed;
 		try {

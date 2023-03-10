@@ -3,7 +3,6 @@ package com.zwash.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-
 import com.zwash.pojos.User;
 
 

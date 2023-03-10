@@ -1,31 +1,79 @@
 package com.zwash.serviceImpl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ServiceLoader;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-
-import com.zwash.exceptions.UserIsNotFoundException;
-import com.zwash.pojos.User;
-import com.zwash.repository.UserRepository;
-import com.zwash.service.UserService;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
-@SuppressWarnings("serial")
+import com.zwash.DatabaseConnection;
+import com.zwash.exceptions.IncorrectCredentialsException;
+import com.zwash.pojos.LoggedUser;
+import com.zwash.pojos.User;
+import com.zwash.repository.UserRepository;
+import com.zwash.security.JwtUtils;
+import com.zwash.service.TokenService;
+import com.zwash.service.UserService;
+
+import io.jsonwebtoken.Claims;
+
+
 @Service
 public class UserServiceImpl implements UserService {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Autowired
 	private UserRepository userRepository;
 
-	public User signIn(String username, String password) throws UserIsNotFoundException {
+	TokenService tokenService = getTokenService();
+	JwtUtils jwtUtils= new JwtUtils();
+	public LoggedUser signIn(String username, String password) throws  Exception {
 		
 		
-		User user =	userRepository.findByUsername(username);
-		if(user instanceof User) {
-			return user;	
-		}else {
-			throw new UserIsNotFoundException(username);
+		LoggedUser user = new LoggedUser();
+		String bearerToken = "";
+	
+		try (Connection c = DatabaseConnection.getConnection()) {
+			PreparedStatement s = c.prepareStatement("SELECT * FROM zwashuser where username=? and password=?");
+			s.setString(1, username);
+			s.setString(2, password);
+			ResultSet result = s.executeQuery();
+			
+		
+
+			if (result.next()) {
+				user.setId(result.getInt(1));
+				user.setUsername(result.getString("username"));
+				user.setActive(result.getBoolean("active"));
+				user.setDateOfBirth(result.getString("date_of_birth"));
+				user.setFirstName(result.getString("first_name"));
+				user.setLastName(result.getString("last_name"));
+	
+				
+		
+				//Create a JWTToken
+				try {
+					String jwt =tokenService.createJWT(user.getUsername(), "Java", "Jwt", 1232134356);
+			//(String id, String issuer, String subject, long ttlMillis)(String id, String issuer, String subject, long ttlMillis)
+					 user.setToken(jwt);
+					
+				} catch (Exception exp) {
+					throw exp;
+				}
+				
+				
+				return user;
+			}else {
+			   throw  new IncorrectCredentialsException("Incorrect input !");
+			}
+
 		}
-		
+	
 	}
 
 	public User register(User user) throws Exception {
@@ -67,5 +115,13 @@ public class UserServiceImpl implements UserService {
 		System.out.println("Hello from userservice Implementation");
 
 	}
+	public static TokenService getTokenService() {
+		   
+		 ServiceLoader<TokenService> serviceLoader =ServiceLoader.load(TokenService.class);
+		 for (TokenService provider : serviceLoader) {
+		     return provider;
+		 }
+		 throw new NoClassDefFoundError("Unable to load a driver "+TokenService.class.getName());
+		}
 
 }
