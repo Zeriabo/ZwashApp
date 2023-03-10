@@ -94,9 +94,24 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	public boolean changePassword(String username, String password) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean changePassword(String username, String password) throws Exception {
+		try (Connection c = DatabaseConnection.getConnection()) {
+			PreparedStatement s = c.prepareStatement("UPDATE zwashuser SET password =? WHERE username=? ");
+			s.setString(2, username);
+			s.setString(1, password);
+			int resultCount = s.executeUpdate();
+		
+		     s.close();
+
+			if (resultCount>0) {
+				return true;
+	
+			
+			}else {
+				return false;
+			}
+
+		}
 	}
 
 	public boolean validateSignIn(String token) {

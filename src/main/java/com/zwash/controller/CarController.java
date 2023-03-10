@@ -29,8 +29,8 @@ public class CarController {
 	      UserCar car = mapper.readValue(carInfo, UserCar.class);
 	      
 	    
-		boolean bool = 	carService.register(car);
-	   if(bool)
+		Car newcar = 	carService.register(car);
+	   if(newcar instanceof Car)
 	   {
 			 return new ResponseEntity<Car>(
 					  HttpStatus.ACCEPTED);  

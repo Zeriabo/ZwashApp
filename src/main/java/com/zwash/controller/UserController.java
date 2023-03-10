@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zwash.exceptions.IncorrectTokenException;
 import com.zwash.exceptions.UserIsNotActiveException;
 import com.zwash.pojos.LoggedUser;
 import com.zwash.pojos.SignInfo;
 import com.zwash.pojos.User;
 import com.zwash.security.JwtUtils;
 import com.zwash.service.UserService;
+
+import io.jsonwebtoken.Claims;
 
 
 @Controller
@@ -112,21 +115,21 @@ public class UserController {
 	
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/change_password")
+	@PostMapping("/changepassword")
 	@POST
-	public Response changePassword(String body) throws Exception {
+	public ResponseEntity<String> changePassword(@RequestBody String body) throws Exception {
 		
 		ObjectMapper mapper = new ObjectMapper();
-		LoggedUser userToEdit = mapper.readValue(body, LoggedUser.class);
+		User userToEdit = mapper.readValue(body, User.class);
 
-	//	UserService userService = getUserService();
 		JwtUtils jwtUtils = new JwtUtils();
 		
 		try {
-			jwtUtils.verifyJWT(userToEdit.getToken());	
+			Claims cl =jwtUtils.verifyJWT(userToEdit.getToken());	
+			userToEdit.setUsername(cl.getId());
 		}catch(Exception ex)
 		{
-			System.out.print(ex);
+			throw new IncorrectTokenException("The token is not valid!");
 		}
 		
 		
@@ -136,14 +139,17 @@ public class UserController {
 
 			if(changed)
 			{
-				return Response.ok().build();
+				 return new ResponseEntity<String>("Password changed",
+						HttpStatus.OK);
 			}else {
-				return Response.status(500).build();
+				return new ResponseEntity<String>("Password not changed",
+						HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
 			
 		} catch (Exception e) {
-			return Response.status(500).entity(e.getMessage()).build();
+			return new ResponseEntity<String>(e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	
 	

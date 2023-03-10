@@ -66,7 +66,7 @@ public class Car {
 	/**
 	 * @param ownerId the ownerId to set
 	 */
-	public void setOwnerId(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

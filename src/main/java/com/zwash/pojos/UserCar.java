@@ -30,20 +30,7 @@ public class UserCar {
 		
 	}
 
-	/**
-	 * @return the ownerId
-	 */
 
-	public User getUser() {
-		return user;
-	}
-
-	/**
-	 * @param ownerId the ownerId to set
-	 */
-	public void setIdUser(User user) {
-		this.user = user;
-	}
 
 	/**
 	 * @return the mark
@@ -74,7 +61,16 @@ public class UserCar {
 	}
 
 
-    private User user;
+    public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+
+	private String token;
 	 
 
 	private String registerationPlate;
