@@ -30,8 +30,7 @@ public class CarServiceImpl implements CarService {
 
 	@Override
 	public List<Car> getCarsOfUser(User user) throws UserIsNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		   return carRepository.findByUser(user);
 	}
 
 	@Override
@@ -73,26 +72,30 @@ public class CarServiceImpl implements CarService {
 
 	}
 
-	public Car finCar(Car car) throws Exception {
-
-		try {
-			car = carRepository.save(car);
-		} catch (Exception e) {
-			throw e;
-		}
-
-		return car;
-	}
 
 	@Override
 	public Car getCar(String registerationPlate) {
-		// TODO Auto-generated method stub
-		return null;
+	    return carRepository.findByRegisterationPlate(registerationPlate);
 	}
 
 	@Override
-	public boolean setCar(User user) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean setCar(User user, Car car) throws Exception {
+	    try {
+	        List<Car> existingCars = carRepository.findByUser(user);
+	        if (!existingCars.isEmpty()) {
+	            for (Car existingCar : existingCars) {
+	                if (existingCar.getCarId() == car.getCarId()) {
+	                    throw new CarExistsException("Car already exists!");
+	                }
+	            }
+	        }
+	        
+	        car.setUser(user);
+	        carRepository.save(car);
+	        return true;
+	    } catch (Exception e) {
+	        // log the error or handle it as appropriate for your application
+	    	   throw e;
+	    }
 	}
 }

@@ -125,6 +125,8 @@ public class User {
 	private Boolean active;
 	 
 	 private String token;
+	 
+	 
      @CreationTimestamp
      @Column(name = "createdAt")
      private LocalDateTime createDateTime;

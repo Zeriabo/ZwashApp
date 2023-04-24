@@ -16,7 +16,6 @@ import com.zwash.pojos.User;
 		 boolean changePassword(String username, String password) throws  Exception;
 		 boolean validateSignIn(String token);
 		 User getSecretQuestionAnswer(String username);
-		 void sayHello();
 	
 		
 	}

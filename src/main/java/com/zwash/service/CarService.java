@@ -14,7 +14,7 @@ public interface CarService  extends Serializable {
 	
 	
      Car getCar(String registerationPlate);
-     boolean setCar(User user);
+     boolean setCar(User user, Car car) throws Exception;
 	 List<Car> getCarsOfUser(User user) throws UserIsNotFoundException;
 	 Car register(UserCar car) throws Exception;
 

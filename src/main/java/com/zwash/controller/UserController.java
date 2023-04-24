@@ -38,16 +38,14 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/signin")
-	public ResponseEntity<LoggedUser> signIn(@RequestBody  String userInfo ) throws Exception {
+	public ResponseEntity<LoggedUser> signIn(@RequestBody  SignInfo userInfo ) throws Exception {
         
-	      ObjectMapper mapper = new ObjectMapper();
-		
-		SignInfo user = mapper.readValue(userInfo, SignInfo.class);
+
 	
 		LoggedUser signedUser;
 		try {
 			
-			signedUser = userService.signIn(user.getUserName(),user.getPassword());
+			signedUser = userService.signIn(userInfo.getUsername(),userInfo.getPassword());
 
 			if(signedUser instanceof LoggedUser)
 			{
@@ -58,7 +56,7 @@ public class UserController {
 			
 					 
 				}else {
-					throw new UserIsNotActiveException(user.getUserName());
+					throw new UserIsNotActiveException(userInfo.getUsername());
 					
 				}
 			

@@ -8,17 +8,12 @@ public class SignInfo {
 		
 	}
 	
-	public SignInfo(String userName,String password)
+	public SignInfo(String username,String password)
 	{
 		this.password=password;
-		this.userName=userName;
+		this.setUsername(username);
 	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+
 
 	public String getPassword() {
 		return password;
@@ -28,7 +23,15 @@ public class SignInfo {
 		this.password = password;
 	}
 
-	private String userName;
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	private String username;
 	private String password;
 	
 }
