@@ -3,6 +3,7 @@ package com.zwash.serviceImpl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Optional;
 import java.util.ServiceLoader;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.zwash.DatabaseConnection;
 import com.zwash.exceptions.IncorrectCredentialsException;
+import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.LoggedUser;
 import com.zwash.pojos.User;
 import com.zwash.repository.UserRepository;
@@ -58,8 +60,8 @@ public class UserServiceImpl implements UserService {
 		
 				//Create a JWTToken
 				try {
-					String jwt =tokenService.createJWT(user.getUsername(), "Java", "Jwt", 1232134356);
-			//(String id, String issuer, String subject, long ttlMillis)(String id, String issuer, String subject, long ttlMillis)
+					String jwt =tokenService.createJWT(Integer.toString(user.getId()), "Java", user.getUsername(), 1232134356);
+
 					 user.setToken(jwt);
 					
 				} catch (Exception exp) {
@@ -132,5 +134,16 @@ public class UserServiceImpl implements UserService {
 		 }
 		 throw new NoClassDefFoundError("Unable to load a driver "+TokenService.class.getName());
 		}
+
+	@Override
+	public User getUser(long id) throws UserIsNotFoundException {
+		Optional<User> user = userRepository.findById(id);
+		 if (user.isPresent()) {
+		        return user.get();
+		    }
+		 
+		   // Handle the case where the user is not found
+		    throw new UserIsNotFoundException("User with id " + id + " not found");
+	}
 
 }

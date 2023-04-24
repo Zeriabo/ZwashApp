@@ -22,6 +22,7 @@ import com.zwash.security.JwtUtils;
 import com.zwash.service.CarService;
 import com.zwash.service.UserService;
 
+
 import io.jsonwebtoken.Claims;
 
 @Controller
@@ -71,7 +72,7 @@ public class CarController {
 				Claims cl =jwtUtils.verifyJWT(userCar.getToken());
 		     
 				Car car =carService.getCar(registerationPlate);
-			
+		
 				System.out.print(cl);
 			
 			}catch(Exception ex)

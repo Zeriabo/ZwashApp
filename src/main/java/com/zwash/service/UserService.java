@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.stereotype.Service;
 
+import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.LoggedUser;
 import com.zwash.pojos.User;
 	
@@ -16,6 +17,7 @@ import com.zwash.pojos.User;
 		 boolean changePassword(String username, String password) throws  Exception;
 		 boolean validateSignIn(String token);
 		 User getSecretQuestionAnswer(String username);
+		 User getUser(long id) throws UserIsNotFoundException;
 	
 		
 	}
