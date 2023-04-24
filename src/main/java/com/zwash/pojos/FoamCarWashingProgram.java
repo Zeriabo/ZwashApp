@@ -1,16 +1,34 @@
 package com.zwash.pojos;
 
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class FoamCarWashingProgram extends CarWashingProgram {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     
     private int waterPressure;
     private int soapAmount;
     private String brushType;
+    
+    public FoamCarWashingProgram() {
+        // Empty constructor required for JPA
+    }
     
     public FoamCarWashingProgram(int waterPressure, int soapAmount, String brushType) {
         this.waterPressure = waterPressure;
         this.soapAmount = soapAmount;
         this.brushType = brushType;
     }
+    
+    // Getters and setters
     
     @Override
     public void setWaterPressure(int pressure) {
@@ -34,4 +52,3 @@ public class FoamCarWashingProgram extends CarWashingProgram {
     }
     
 }
-

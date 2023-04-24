@@ -1,5 +1,8 @@
 package com.zwash.pojos;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class TouchlessCarWashingProgram extends CarWashingProgram {
     
     private int waterPressure;
