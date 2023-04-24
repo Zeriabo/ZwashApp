@@ -33,7 +33,8 @@ public class TouchlessCarWashingProgram extends CarWashingProgram {
 	public void startWashing() {
 		// TODO Auto-generated method stub
 		
-		
+		 System.out.println("Starting touchless car washing program with " + waterPressure + " water pressure and " + soapAmount + " soap amount.");
+		    
 	}
 	
 }
