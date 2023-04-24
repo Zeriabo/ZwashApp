@@ -22,6 +22,13 @@ Database design:
 please feel free to see the app on the master branch.
 
 Updates:
+
+
+Usage:
+
+
+TODO:
+
 Payment processing: You may want to implement a payment processing system that allows customers to pay for the car wash service. This could involve integrating a payment gateway or payment API to your system, and creating payment-related models and controllers.
 
 Booking and scheduling: You may want to allow customers to book a specific time slot for their car wash service, and track the scheduled services using a calendar or scheduling system. This could involve implementing booking-related models and controllers, as well as creating a user interface for customers to select and book a service.
@@ -32,6 +39,3 @@ Reporting and analytics: To understand how your car wash business is performing,
 
 Staff management: If you have employees working at your car wash business, you may need to manage their schedules, track their performance, and handle their payroll. This could involve implementing staff-related models and controllers, as well as creating a user interface for managing your employees.
 
-
-
-Usage:
