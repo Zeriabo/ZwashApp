@@ -64,7 +64,7 @@ public class CarController {
 	}
 	
 	@PostMapping("/setcar")
-	public Car setCar(@RequestBody UserCar userCar) throws Exception {
+	public ResponseEntity<Car> setCar(@RequestBody UserCar userCar) throws Exception {
 	
 		 JwtUtils jwtUtils = new JwtUtils();
 			try {
@@ -72,15 +72,22 @@ public class CarController {
 				Claims cl =jwtUtils.verifyJWT(userCar.getToken());
 		     
 				Car car =carService.getCar(registerationPlate);
-		
+				User user =userService.getUser(Long.parseLong(cl.getId()));
 				System.out.print(cl);
-			
+			    car.setUser(user);
+			    
+			   if( carService.updateCar(car))
+			   {
+				   return new ResponseEntity<Car>(HttpStatus.ACCEPTED);
+			   }else {
+				   return new ResponseEntity<Car>(HttpStatus.NOT_ACCEPTABLE);
+			   }
 			}catch(Exception ex)
 			{
 				throw new IncorrectTokenException("The token is not valid!");
 			}
 		
-		return null;
+
 
 }
 }

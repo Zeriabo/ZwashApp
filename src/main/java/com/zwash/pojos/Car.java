@@ -25,7 +25,7 @@ import jakarta.persistence.Table;
 @Table(name = "car")
 public class Car {
 
-	public int getCarId() {
+	public long getCarId() {
 		return carId;
 	}
 
@@ -101,7 +101,7 @@ public class Car {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq_gen")
      @Column(name = "car_id", unique = true, nullable = false)
-	private int carId;	
+	private long carId;	
 	 
 	 @ManyToOne(fetch = FetchType.LAZY, optional = false)
 	  @JoinColumn(name = "user_id", nullable = false)

@@ -1,6 +1,7 @@
 package com.zwash.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -97,5 +98,21 @@ public class CarServiceImpl implements CarService {
 	        // log the error or handle it as appropriate for your application
 	    	   throw e;
 	    }
+	}
+
+	@Override
+	public boolean updateCar(Car car) throws Exception {
+		 Optional<Car> carOptional = carRepository.findById((car.getCarId()));
+		  if (carOptional.isPresent()) {
+		        Car existingCar = carOptional.get();
+		        existingCar.setManufacture(car.getManufacture());
+		        existingCar.setDateOfManufacture(car.getDateOfManufacture());
+		        existingCar.setRegisterationPlate(car.getRegisterationPlate());
+		        existingCar.setUser(car.getUser());
+		        carRepository.save(existingCar);
+		        return true;
+		    }
+		    return false;
+		 
 	}
 }
