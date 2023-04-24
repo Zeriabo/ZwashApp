@@ -32,13 +32,16 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	TokenService tokenService = getTokenService();
-	JwtUtils jwtUtils= new JwtUtils();
+	@Autowired
+	TokenService tokenService;
+
+	@Autowired
+	JwtUtils jwtUtils;
+
 	public LoggedUser signIn(String username, String password) throws  Exception {
 		
 		
 		LoggedUser user = new LoggedUser();
-		String bearerToken = "";
 	
 		try (Connection c = DatabaseConnection.getConnection()) {
 			PreparedStatement s = c.prepareStatement("SELECT * FROM zwashuser where username=? and password=?");
@@ -58,15 +61,9 @@ public class UserServiceImpl implements UserService {
 	
 				
 		
-				//Create a JWTToken
-				try {
-					String jwt =tokenService.createJWT(Integer.toString(user.getId()), "Java", user.getUsername(), 1232134356);
-
-					 user.setToken(jwt);
-					
-				} catch (Exception exp) {
-					throw exp;
-				}
+				// Create a JWTToken
+				String jwt = tokenService.createJWT(Integer.toString(user.getId()), "Java", user.getUsername(), 1232134356);
+				user.setToken(jwt);
 				
 				
 				return user;
@@ -96,33 +93,44 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
 	public boolean changePassword(String username, String password) throws Exception {
 		try (Connection c = DatabaseConnection.getConnection()) {
 			PreparedStatement s = c.prepareStatement("UPDATE zwashuser SET password =? WHERE username=? ");
 			s.setString(2, username);
 			s.setString(1, password);
 			int resultCount = s.executeUpdate();
-		
-		     s.close();
+			s.close();
 
-			if (resultCount>0) {
+			if (resultCount > 0) {
 				return true;
-	
-			
-			}else {
+			} else {
 				return false;
 			}
-
 		}
 	}
 
+
+	@Override
 	public boolean validateSignIn(String token) {
-		// TODO Auto-generated method stub
+		try {
+			Claims claims = jwtUtils.verifyJWT(token);
+			if (claims != null) {
+				return true;
+			}
+		} catch (Exception e) {
+		
+			throw e;
+		}
 		return false;
 	}
 
-	public User getSecretQuestionAnswer(String username) {
-		// TODO Auto-generated method stub
+	@Override
+	public String getSecretQuestionAnswer(String username) {
+		Optional<User> user = userRepository.findByUsername(username);
+		if (user.get().isActive()) {
+			return user.get().getSecretAnswer();
+		}
 		return null;
 	}
 
@@ -144,6 +152,25 @@ public class UserServiceImpl implements UserService {
 		 
 		   // Handle the case where the user is not found
 		    throw new UserIsNotFoundException("User with id " + id + " not found");
+	}
+	
+	@Override
+	public boolean resetPassword(String username, String secretAnswer, String newPassword) throws Exception {
+	    
+		Optional<User> user = userRepository.findByUsername(username);
+	                          
+       if(!user.isPresent())
+       {
+    	   throw new UserIsNotFoundException("User not found");
+       }
+	    if (!user.get().getSecretAnswer().equals(secretAnswer)) {
+	        throw new IncorrectCredentialsException("Incorrect secret answer");
+	    }
+
+	    user.get().setPassword(newPassword);
+	    userRepository.save(user.get());
+
+	    return true;
 	}
 
 }

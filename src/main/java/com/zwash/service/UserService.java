@@ -16,7 +16,9 @@ public interface UserService extends Serializable {
     
     boolean validateSignIn(String token);
     
-    User getSecretQuestionAnswer(String username);
+    String getSecretQuestionAnswer(String username);
     
     User getUser(long id) throws UserIsNotFoundException;
+    
+    boolean resetPassword(String username, String secretAnswer, String newPassword) throws Exception;
 }

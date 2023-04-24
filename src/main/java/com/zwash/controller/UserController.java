@@ -159,8 +159,6 @@ public class UserController {
 	@GET
     public Response validateIfSigned(@QueryParam("token")  String  token) throws Exception {
   
-    //  UserService userService = getUserService();
-      
       boolean valid=false;
       try {
     	  
@@ -183,33 +181,24 @@ public class UserController {
     	
     }
 	
+	@POST
+	@Path("/getsecrets")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/getsecrets")
-	@POST
-	public Response getSecretQuestionAnswer(String user) throws Exception {
-		
-		ObjectMapper mapper = new ObjectMapper();
-		User userToEdit = mapper.readValue(user, User.class);
-		Response response = null;
-	//	UserService userService = getUserService();
+	public Response getSecretQuestionAnswer(User userToEdit) throws Exception {
+	    try {
+	        userToEdit.setSecretAnswer(userService.getSecretQuestionAnswer(userToEdit.getUsername()));
 
-		try {
-			userToEdit = userService.getSecretQuestionAnswer(userToEdit.getUsername());
+	        if(userToEdit instanceof User) {
+	            return Response.ok(true).build();
+	        }
+	    } catch (Exception e) {
+	        return Response.status(500).entity(e.getMessage()).build();
+	    }
 
-			if(userToEdit instanceof User)
-			{
-				return Response.ok(userToEdit).build();
-			}
-			
-		} catch (Exception e) {
-		
-			return Response.status(500).entity(e.getMessage()).build();
-		}
-	
-		return response;
-	
+	    return Response.status(500).entity("User not found").build();
 	}
+
 	
 	public static UserService getUserService()throws Exception {
 	try {

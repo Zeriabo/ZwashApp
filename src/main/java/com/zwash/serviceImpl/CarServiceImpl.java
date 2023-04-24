@@ -51,9 +51,9 @@ public class CarServiceImpl implements CarService {
 
 			Claims claim =	jwtUtils.verifyJWT(userToken);
 			
-			User user=userRepository.findByUsername(claim.getId());
+			Optional<User> user=userRepository.findByUsername(claim.getId());
 			
-			 newCar.setUser(user);
+			 newCar.setUser(user.get());
 			 
 			} catch (Exception ex) {
 				throw new IncorrectTokenException("The token is not valid!");
