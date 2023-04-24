@@ -124,12 +124,6 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-	@Override
-	public void sayHello() {
-
-		System.out.println("Hello from userservice Implementation");
-
-	}
 	public static TokenService getTokenService() {
 		   
 		 ServiceLoader<TokenService> serviceLoader =ServiceLoader.load(TokenService.class);
