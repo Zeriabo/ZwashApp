@@ -1,8 +1,9 @@
 package com.zwash.pojos;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,12 +15,17 @@ import jakarta.persistence.InheritanceType;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 @Entity
 @Table(name = "bookings")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Booking {
+
+public class Booking {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +35,10 @@ public abstract class Booking {
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 	    
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "washing_program_id", nullable = false)
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "washingProgramType")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonSubTypes({
             @JsonSubTypes.Type(value = FoamCarWashingProgram.class, name = "foam"),
             @JsonSubTypes.Type(value = HighPressureCarWashingProgram.class, name = "high_pressure"),
@@ -81,4 +88,5 @@ public abstract class Booking {
     public void setScheduledTime(LocalDateTime scheduledTime) {
         this.scheduledTime = scheduledTime;
     }
+
 }

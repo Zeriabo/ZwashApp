@@ -29,7 +29,7 @@ public class Car {
 		return carId;
 	}
 
-	public void setCarId(int id) {
+	public void setCarId(long id) {
 		this.carId = id;
 	}
 
