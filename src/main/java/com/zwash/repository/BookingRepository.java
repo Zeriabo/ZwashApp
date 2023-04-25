@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 	
-	@Query("SELECT b FROM Booking b WHERE b.user.id = :userId")
-	 List<Booking> findByUserId(Long userId);
+//	@Query("SELECT b FROM Booking b WHERE b.user.id = :userId")
+//	 List<Booking> findByUserId(Long userId);
 	 @Query("SELECT b FROM Booking b WHERE b.car.id = :carId")
 	 List<Booking> findByCarId(Long carId);
 

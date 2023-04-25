@@ -2,12 +2,14 @@ package com.zwash.pojos;
 
 
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
+@DiscriminatorValue("foam")
 public class FoamCarWashingProgram extends CarWashingProgram {
     
     @Id

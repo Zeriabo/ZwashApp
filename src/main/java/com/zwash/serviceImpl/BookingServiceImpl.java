@@ -28,13 +28,19 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findById(id);
     }
 
-    @Override
-    public List<Booking> getBookingsByUserId(Long userId) {
-        return bookingRepository.findByUserId(userId);
-    }
+//    @Override
+//    public List<Booking> getBookingsByUserId(Long userId) {
+//        return bookingRepository.findByUserId(userId);
+//    }
 
     @Override
     public List<Booking> getBookingsByCarId(Long carId) {
         return bookingRepository.findByCarId(carId);
     }
+
+	@Override
+	public List<Booking> getBookingsByUserId(Long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -1,17 +1,12 @@
 package com.zwash.serviceImpl;
 
 import java.security.Key;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
-
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.stereotype.Service;
 
 import com.zwash.service.TokenService;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtBuilder;
@@ -22,6 +17,7 @@ import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.xml.bind.DatatypeConverter;
 
+@Service
 public class TokenServiceImpl implements TokenService {
 	public String createJWT(String id, String issuer, String subject, long ttlMillis) throws Exception {
 		 

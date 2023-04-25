@@ -8,9 +8,7 @@ import java.util.ServiceLoader;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
-
 import com.zwash.DatabaseConnection;
 import com.zwash.exceptions.IncorrectCredentialsException;
 import com.zwash.exceptions.UserIsNotFoundException;

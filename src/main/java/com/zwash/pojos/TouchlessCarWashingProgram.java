@@ -1,10 +1,19 @@
 package com.zwash.pojos;
 
+
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
+@DiscriminatorValue("touch_less")
 public class TouchlessCarWashingProgram extends CarWashingProgram {
-    
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
     private int waterPressure;
     private int soapAmount;
     
@@ -13,6 +22,7 @@ public class TouchlessCarWashingProgram extends CarWashingProgram {
         this.soapAmount = soapAmount;
     }
     
+ 
     @Override
     public void setWaterPressure(int pressure) {
         this.waterPressure = pressure;
@@ -23,20 +33,13 @@ public class TouchlessCarWashingProgram extends CarWashingProgram {
         this.soapAmount = amount;
     }
 
-	@Override
-	public void setBrushType(String brushType) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void setBrushType(String brushType) {
+        throw new UnsupportedOperationException("Touchless car washing program does not use brushes");
+    }
 
-	@Override
-	public void startWashing() {
-		// TODO Auto-generated method stub
-		
-		 System.out.println("Starting touchless car washing program with " + waterPressure + " water pressure and " + soapAmount + " soap amount.");
-		    
-	}
-	
+    @Override
+    public void startWashing() {
+        System.out.println("Starting touchless car washing program with " + waterPressure + " water pressure and " + soapAmount + " soap amount.");
+    }
 }
-    
-   
