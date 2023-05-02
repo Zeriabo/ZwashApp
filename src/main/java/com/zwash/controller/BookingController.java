@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
 import com.zwash.repository.CarRepository;
+import com.zwash.service.UserService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -21,6 +22,8 @@ public class BookingController {
 	
 	@Autowired
 	private CarRepository carRepository;
+	@Autowired
+    private UserService userService;
     @PersistenceContext
     private EntityManager entityManager;
     
@@ -42,11 +45,16 @@ public class BookingController {
     @PostMapping
     @Transactional
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
+    	  if (booking == null) {
+              throw new IllegalArgumentException("Booking  cannot be null");
+          }
     	  
-    	
-        if (booking == null) {
-            throw new IllegalArgumentException("Booking object cannot be null");
+        boolean signed =	userService.validateSignIn(booking.getToken());
+    	if(!signed)
+    	{
+            throw new IllegalArgumentException("User is not signed in");
         }
+      
         if (booking.getCar() == null) {
             throw new IllegalArgumentException("Car object cannot be null");
         }

@@ -46,7 +46,10 @@ public class Booking {
     })
     private CarWashingProgram washingProgram;
     
-    @Column(name = "scheduled_time", nullable = false)
+    @Column(name = "token", nullable = false)
+    private String token;
+
+	@Column(name = "scheduled_time", nullable = false)
     private LocalDateTime scheduledTime;
     
     public Booking() {}
@@ -88,5 +91,13 @@ public class Booking {
     public void setScheduledTime(LocalDateTime scheduledTime) {
         this.scheduledTime = scheduledTime;
     }
+    
+    public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 }
