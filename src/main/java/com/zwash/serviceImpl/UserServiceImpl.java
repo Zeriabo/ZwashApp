@@ -93,8 +93,8 @@ public class UserServiceImpl implements UserService {
 	public User getUserFromToken(String token) throws UserIsNotFoundException {
 	    Claims claims = jwtUtils.verifyJWT(token);
 	    if (claims != null) {
-	        Long userId = Long.parseLong(claims.getSubject());
-	        Optional<User> optionalUser = userRepository.findById(userId);
+	        String username = claims.getSubject();
+	        Optional<User> optionalUser = userRepository.findByUsername(username);
 	        if (optionalUser.isPresent()) {
 	            return optionalUser.get();
 	        }

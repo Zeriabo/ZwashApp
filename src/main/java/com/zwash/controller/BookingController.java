@@ -51,7 +51,8 @@ public class BookingController {
               throw new IllegalArgumentException("Booking  cannot be null");
           }
     	 try { 
-    	 userService.getUserFromToken(booking.getToken());
+    	User user= userService.getUserFromToken(booking.getToken());
+    	booking.setUser(user);
     	 }catch(UserIsNotFoundException userIsNotFoundException)
     	 {
     		 throw  new UserIsNotFoundException();
