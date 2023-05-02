@@ -11,4 +11,5 @@ public interface BookingService {
     Optional<Booking> getBookingById(Long id);
     List<Booking> getBookingsByUserId(Long userId);
     List<Booking> getBookingsByCarId(Long carId);
+	boolean isBookingExistsForCar(String registrationPlate);
 }

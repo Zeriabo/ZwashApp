@@ -15,7 +15,7 @@ public interface CarRepository extends CrudRepository<Car, Long> {
 	 @Query("select c from Car c where c.registerationPlate = ?1")
 	  Car findByRegisterationPlate(String registerationPlate);
 	 
-	 @Query("SELECT c FROM Car c WHERE c.user = :user")
+	 @Query("SELECT c FROM Car c WHERE c.user = ?1")
 	  List<Car> findByUser(User user);
 	
 }
