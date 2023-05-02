@@ -46,11 +46,15 @@ public class Booking {
     })
     private CarWashingProgram washingProgram;
     
-    @Column(name = "token", nullable = false)
-    private String token;
-
-	@Column(name = "scheduled_time", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
+    
+    @Column(name = "scheduled_time", nullable = false)
     private LocalDateTime scheduledTime;
+    
+    private String token;
     
     public Booking() {}
     
@@ -91,13 +95,22 @@ public class Booking {
     public void setScheduledTime(LocalDateTime scheduledTime) {
         this.scheduledTime = scheduledTime;
     }
-    
-    public String getToken() {
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getToken() {
 		return token;
 	}
 
 	public void setToken(String token) {
 		this.token = token;
 	}
+    
 
 }

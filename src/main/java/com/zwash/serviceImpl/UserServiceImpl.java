@@ -90,7 +90,17 @@ public class UserServiceImpl implements UserService {
 		return user;
 
 	}
-
+	public User getUserFromToken(String token) throws UserIsNotFoundException {
+	    Claims claims = jwtUtils.verifyJWT(token);
+	    if (claims != null) {
+	        Long userId = Long.parseLong(claims.getSubject());
+	        Optional<User> optionalUser = userRepository.findById(userId);
+	        if (optionalUser.isPresent()) {
+	            return optionalUser.get();
+	        }
+	    }
+	    throw new UserIsNotFoundException();
+	}
 	@Override
 	public boolean changePassword(String username, String password) throws Exception {
 		try (Connection c = DatabaseConnection.getConnection()) {

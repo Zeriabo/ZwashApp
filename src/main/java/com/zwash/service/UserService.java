@@ -20,5 +20,7 @@ public interface UserService extends Serializable {
     
     User getUser(long id) throws UserIsNotFoundException;
     
+    User getUserFromToken(String token) throws UserIsNotFoundException;
+    
     boolean resetPassword(String username, String secretAnswer, String newPassword) throws Exception;
 }

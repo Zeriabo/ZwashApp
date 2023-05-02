@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
+import com.zwash.pojos.User;
 import com.zwash.repository.CarRepository;
 import com.zwash.service.UserService;
 
@@ -44,17 +46,16 @@ public class BookingController {
     
     @PostMapping
     @Transactional
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
+    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws UserIsNotFoundException {
     	  if (booking == null) {
               throw new IllegalArgumentException("Booking  cannot be null");
           }
-    	  
-        boolean signed =	userService.validateSignIn(booking.getToken());
-    	if(!signed)
-    	{
-            throw new IllegalArgumentException("User is not signed in");
-        }
-      
+    	 try { 
+    	 userService.getUserFromToken(booking.getToken());
+    	 }catch(UserIsNotFoundException userIsNotFoundException)
+    	 {
+    		 throw  new UserIsNotFoundException();
+    	 }
         if (booking.getCar() == null) {
             throw new IllegalArgumentException("Car object cannot be null");
         }
