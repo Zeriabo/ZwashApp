@@ -18,7 +18,8 @@ import com.zwash.repository.BookingRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/bookings")
 public class BookingController {
