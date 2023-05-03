@@ -8,11 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.zwash.service.TokenService;
 import io.jsonwebtoken.Claims;
-<<<<<<< HEAD
-
-=======
 import io.jsonwebtoken.ExpiredJwtException;
->>>>>>> a2afc0be40c6155e33ba4979de7d8d2e1954be41
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -53,12 +49,8 @@ public class TokenServiceImpl implements TokenService {
 	    //Builds the JWT and serializes it to a compact, URL-safe string
 	    return builder.compact();
 	}
-	
-<<<<<<< HEAD
-	public  Claims verifyJWT(String jwt) throws  Exception, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException  {
-=======
+
 	public  Claims verifyJWT(String jwt) throws  ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException  {
->>>>>>> a2afc0be40c6155e33ba4979de7d8d2e1954be41
 	    //This line will throw an exception if it is not a signed JWS (as expected)
 	    Claims claims = Jwts.parser()
 	            .setSigningKey("TOKEN")
