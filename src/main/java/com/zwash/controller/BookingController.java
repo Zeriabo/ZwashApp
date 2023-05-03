@@ -7,13 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+<<<<<<< HEAD
+=======
+
+>>>>>>> a2afc0be40c6155e33ba4979de7d8d2e1954be41
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
+<<<<<<< HEAD
 import com.zwash.repository.CarRepository;
 import com.zwash.service.BookingService;
 import com.zwash.service.UserService;
+=======
+import com.zwash.repository.BookingRepository;
+import com.zwash.repository.CarRepository;
+import com.zwash.service.BookingService;
+import com.zwash.service.UserService;
+
+>>>>>>> a2afc0be40c6155e33ba4979de7d8d2e1954be41
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;

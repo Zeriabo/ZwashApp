@@ -9,7 +9,11 @@ import com.zwash.pojos.User;
 import com.zwash.pojos.UserCar;
 
 
+<<<<<<< HEAD
 @Service
+=======
+
+>>>>>>> a2afc0be40c6155e33ba4979de7d8d2e1954be41
 public interface CarService  extends Serializable {
 	
 	

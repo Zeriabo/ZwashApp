@@ -11,7 +11,11 @@ import org.springframework.web.util.WebUtils;
 import com.zwash.pojos.User;
 
 import io.jsonwebtoken.Claims;
+<<<<<<< HEAD
 
+=======
+import io.jsonwebtoken.ExpiredJwtException;
+>>>>>>> a2afc0be40c6155e33ba4979de7d8d2e1954be41
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -23,7 +27,11 @@ import java.security.Key;
 import java.util.Date;
 
 import javax.crypto.spec.SecretKeySpec;
+<<<<<<< HEAD
 
+=======
+import javax.servlet.http.Cookie;
+>>>>>>> a2afc0be40c6155e33ba4979de7d8d2e1954be41
 import javax.xml.bind.DatatypeConverter;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -74,7 +82,11 @@ public class JwtUtils {
 	    return builder.compact();
 	}
 	
+<<<<<<< HEAD
 	public  Claims verifyJWT(String jwt) throws   UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException  {
+=======
+	public  Claims verifyJWT(String jwt) throws  ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException  {
+>>>>>>> a2afc0be40c6155e33ba4979de7d8d2e1954be41
 	    //This line will throw an exception if it is not a signed JWS (as expected)
 	    Claims claims = Jwts.parser()
 	            .setSigningKey("TOKEN")

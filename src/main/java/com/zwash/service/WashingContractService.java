@@ -2,9 +2,7 @@ package com.zwash.service;
 
 import java.io.Serializable;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.zwash.pojos.WashingContract;
 
 @Service
