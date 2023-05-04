@@ -1,0 +1,13 @@
+package com.zwash.app;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ZwashApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
