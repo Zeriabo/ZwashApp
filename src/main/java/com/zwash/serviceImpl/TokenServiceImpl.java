@@ -49,11 +49,6 @@ public class TokenServiceImpl implements TokenService {
 	    //Builds the JWT and serializes it to a compact, URL-safe string
 	    return builder.compact();
 	}
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> e11520111fcd663b55fb6071772482e77369f442
 	public  Claims verifyJWT(String jwt) throws  ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException  {
 	    //This line will throw an exception if it is not a signed JWS (as expected)
 	    Claims claims = Jwts.parser()

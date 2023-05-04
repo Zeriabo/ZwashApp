@@ -1,22 +1,13 @@
 package com.zwash.service;
 
 import java.io.Serializable;
-
-<<<<<<< HEAD
-=======
-
 import org.springframework.stereotype.Service;
-
->>>>>>> e11520111fcd663b55fb6071772482e77369f442
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.LoggedUser;
 import com.zwash.pojos.User;
 
-<<<<<<< HEAD
-=======
 
 @Service
->>>>>>> e11520111fcd663b55fb6071772482e77369f442
 public interface UserService extends Serializable {
     
     LoggedUser signIn(String username, String password) throws Exception;

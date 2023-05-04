@@ -18,20 +18,11 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-<<<<<<< HEAD
-
 import java.security.Key;
 import java.util.Date;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.Cookie;
-=======
-import java.security.Key;
-import java.util.Date;
-import javax.crypto.spec.SecretKeySpec;
->>>>>>> e11520111fcd663b55fb6071772482e77369f442
-import javax.xml.bind.DatatypeConverter;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
@@ -80,13 +71,10 @@ public class JwtUtils {
 	    return builder.compact();
 	}
 	
-<<<<<<< HEAD
-	public  Claims verifyJWT(String jwt) throws  ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException  {
-=======
+
 
 	public  Claims verifyJWT(String jwt) throws  ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException  {
 
->>>>>>> e11520111fcd663b55fb6071772482e77369f442
 	    //This line will throw an exception if it is not a signed JWS (as expected)
 	    Claims claims = Jwts.parser()
 	            .setSigningKey("TOKEN")
