@@ -9,6 +9,10 @@ import java.util.ServiceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+<<<<<<< HEAD
+=======
+
+>>>>>>> e11520111fcd663b55fb6071772482e77369f442
 import com.zwash.config.DatabaseConnection;
 import com.zwash.exceptions.IncorrectCredentialsException;
 import com.zwash.exceptions.UserIsNotFoundException;

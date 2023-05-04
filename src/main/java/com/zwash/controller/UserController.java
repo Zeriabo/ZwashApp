@@ -14,9 +14,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zwash.exceptions.IncorrectTokenException;
 import com.zwash.exceptions.UserIsNotActiveException;
@@ -37,6 +39,12 @@ public class UserController {
 	@Autowired
     private UserService userService;
     
+
+	  @GetMapping("/")
+	    public ModelAndView home() {
+		  return new ModelAndView("users"); 
+	    }
+
     @PostMapping("/signin")
 	public ResponseEntity<LoggedUser> signIn(@RequestBody  SignInfo userInfo ) throws Exception {
         

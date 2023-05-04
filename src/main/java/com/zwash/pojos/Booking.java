@@ -55,7 +55,10 @@ public class Booking {
     private LocalDateTime scheduledTime;
     
     private String token;
+   
+    private boolean executed;
     
+
     public Booking() {}
     
     public Booking(Car car, CarWashingProgram washingProgram, LocalDateTime scheduledTime) {
@@ -111,6 +114,15 @@ public class Booking {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+	public boolean isExecuted() {
+		return executed;
+	}
+
+	public void setExecuted(boolean executed) {
+		this.executed = executed;
+	}
+
     
 
 }
