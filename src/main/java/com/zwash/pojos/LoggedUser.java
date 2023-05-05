@@ -26,12 +26,12 @@ public class LoggedUser {
 		this.dateOfBirth=dateOfBirth;
 	}
 
-	public int getId()
+	public long getId()
 	{
 		return id;
 	}
 	
-	public void setId(int id)
+	public void setId(long id)
 	{
 		this.id=id;
 	}
@@ -97,7 +97,7 @@ public class LoggedUser {
 	}
 
 
-	private int id;
+	private long id;
 
 	private String firstName;
 

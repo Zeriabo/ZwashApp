@@ -44,7 +44,9 @@ public class UserController {
 	    public ModelAndView home() {
 		  return new ModelAndView("users"); 
 	    }
-
+	  
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
     @PostMapping("/signin")
 	public ResponseEntity<LoggedUser> signIn(@RequestBody  SignInfo userInfo ) throws Exception {
         

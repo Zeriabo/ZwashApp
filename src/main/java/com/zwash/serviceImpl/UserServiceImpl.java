@@ -9,7 +9,6 @@ import java.util.ServiceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import com.zwash.config.DatabaseConnection;
 import com.zwash.exceptions.IncorrectCredentialsException;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.LoggedUser;
@@ -36,42 +35,28 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	JwtUtils jwtUtils;
 
-	public LoggedUser signIn(String username, String password) throws  Exception {
-		
-		
-		LoggedUser user = new LoggedUser();
-	
-		try (Connection c = DatabaseConnection.getConnection()) {
-			PreparedStatement s = c.prepareStatement("SELECT * FROM zwashuser where username=? and password=?");
-			s.setString(1, username);
-			s.setString(2, password);
-			ResultSet result = s.executeQuery();
-			
-		
+	public LoggedUser signIn(String username, String password) throws Exception {
 
-			if (result.next()) {
-				user.setId(result.getInt(1));
-				user.setUsername(result.getString("username"));
-				user.setActive(result.getBoolean("active"));
-				user.setDateOfBirth(result.getString("date_of_birth"));
-				user.setFirstName(result.getString("first_name"));
-				user.setLastName(result.getString("last_name"));
-	
-				
-		
-				// Create a JWTToken
-				String jwt = tokenService.createJWT(Integer.toString(user.getId()), "Java", user.getUsername(), 1232134356);
-				user.setToken(jwt);
-				
-				
-				return user;
-			}else {
-			   throw  new IncorrectCredentialsException("Incorrect input !");
-			}
+	    User user = userRepository.findByUsernameAndPassword(username, password);
+	    if (user == null) {
+	        throw new IncorrectCredentialsException("Incorrect input!");
+	    }
+	    LoggedUser loggedUser = new LoggedUser();
+	    loggedUser.setId(user.getId());
+	    loggedUser.setUsername(user.getUsername());
+	    loggedUser.setActive(user.isActive());
+	    loggedUser.setDateOfBirth(user.getDateOfBirth());
+	    loggedUser.setFirstName(user.getFirstName());
+	    loggedUser.setLastName(user.getLastName());
 
-		}
-	
+	    // Create a JWTToken
+	  Long id=  loggedUser.getId();
+	    String jwt = tokenService.createJWT(id.toString(), "Java", loggedUser.getUsername(), 1232134356);
+	    loggedUser.setToken(jwt);
+	    
+	    return loggedUser;
 	}
+
 
 	public User register(User user) throws Exception {
 
@@ -103,20 +88,10 @@ public class UserServiceImpl implements UserService {
 	}
 	@Override
 	public boolean changePassword(String username, String password) throws Exception {
-		try (Connection c = DatabaseConnection.getConnection()) {
-			PreparedStatement s = c.prepareStatement("UPDATE zwashuser SET password =? WHERE username=? ");
-			s.setString(2, username);
-			s.setString(1, password);
-			int resultCount = s.executeUpdate();
-			s.close();
-
-			if (resultCount > 0) {
-				return true;
-			} else {
-				return false;
-			}
-		}
+	    int resultCount = userRepository.updatePassword(username, password);
+	    return resultCount > 0;
 	}
+
 
 
 	@Override
