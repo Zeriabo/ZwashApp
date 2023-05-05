@@ -42,7 +42,7 @@ public class CarServiceImpl implements CarService {
 			Car foundcar = carRepository.findByRegisterationPlate(car.getRegisterationPlate());
 			
 			if (foundcar != null) {
-				throw new CarExistsException();
+				throw new CarExistsException(foundcar.getRegisterationPlate());
 			}
 			String userToken = car.getToken();
 			JwtUtils jwtUtils = new JwtUtils();

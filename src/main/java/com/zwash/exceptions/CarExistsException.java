@@ -11,6 +11,6 @@ public class CarExistsException extends Exception {
     }
 	public CarExistsException(String car)
 	{
-		super(car+ "is already in the System");
+		super(car+ " is already in the System");
 	}
 }
