@@ -3,7 +3,7 @@ package com.zwash.pojos;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
+import java.time.LocalDate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -87,14 +87,14 @@ public class Car {
 	/**
 	 * @return the datetime
 	 */
-	public Date getDateOfManufacture() {
+	public LocalDate getDateOfManufacture() {
 		return dateOfManufacture;
 	}
 
 	/**
 	 * @param datetime the datetime to set
 	 */
-	public void setDateOfManufacture(Date dateOfManufacture) {
+	public void setDateOfManufacture(LocalDate dateOfManufacture) {
 		this.dateOfManufacture = dateOfManufacture;
 	}
 
@@ -116,7 +116,7 @@ public class Car {
 	private String manufacture;
 	 
 	 @Column(name = "dateOfManufacture")
-	private Date dateOfManufacture;
+	private LocalDate dateOfManufacture;
 	 
 	 @CreationTimestamp
      @Column(name = "createdAt")

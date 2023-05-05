@@ -51,7 +51,7 @@ public class CarServiceImpl implements CarService {
 
 			Claims claim =	jwtUtils.verifyJWT(userToken);
 			
-			Optional<User> user=userRepository.findByUsername(claim.getId());
+			Optional<User> user=userRepository.findByUsername(claim.getSubject());
 			
 			 newCar.setUser(user.get());
 			 
