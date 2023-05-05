@@ -19,6 +19,7 @@ dependencies {
 	implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0.1'
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	implementation group: 'com.fujieid.jap.http', name: 'jap-http', version: '1.0.0'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
 	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
