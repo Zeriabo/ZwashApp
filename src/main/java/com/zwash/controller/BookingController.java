@@ -3,6 +3,8 @@ package com.zwash.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +19,15 @@ import com.zwash.service.UserService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/bookings")
+@Api(value = "Booking Management System", description = "Operations pertaining to booking in Booking Management System")
 public class BookingController {
-
 	@Autowired
 	private CarRepository carRepository;
 	@Autowired
@@ -31,7 +36,15 @@ public class BookingController {
 	private BookingService bookingService;
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+    Logger logger = LoggerFactory.getLogger(BookingController.class);
 
+
+	@ApiOperation(value = "Get a booking by ID", response = Booking.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Booking found"),
+			@ApiResponse(code = 404, message = "Booking not found")
+	})
 	@GetMapping("/{id}")
 	public ResponseEntity<Booking> getBooking(@PathVariable Long id) {
 		Booking booking = entityManager.find(Booking.class, id);
@@ -42,11 +55,17 @@ public class BookingController {
 		}
 	}
 
+	@ApiOperation(value = "Get all bookings", response = List.class)
 	@GetMapping
 	public List<Booking> getAllBookings() {
 		return entityManager.createQuery("SELECT b FROM Booking b", Booking.class).getResultList();
 	}
 
+	@ApiOperation(value = "Create a new booking", response = Booking.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Booking created"),
+			@ApiResponse(code = 400, message = "Invalid request parameters")
+	})
 	@PostMapping
 	@Transactional
 	public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws UserIsNotFoundException {
@@ -82,7 +101,12 @@ public class BookingController {
 		entityManager.persist(booking);
 		return new ResponseEntity<>(booking, HttpStatus.CREATED);
 	}
-
+	 @ApiOperation(value = "Update an existing booking")
+	    @ApiResponses(value = {
+	        @ApiResponse(code = 200, message = "Successfully updated booking"),
+	        @ApiResponse(code = 404, message = "The booking you were trying to update is not found"),
+	        @ApiResponse(code = 400, message = "Invalid input")
+	    })
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking newBooking) {
@@ -113,7 +137,12 @@ public class BookingController {
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
-
+	
+	@ApiOperation(value = "Delete a booking by ID")
+	@ApiResponses(value = {
+			@ApiResponse(code = 204, message = "Booking deleted"),
+			@ApiResponse(code = 404, message = "Booking not found")
+	})
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
@@ -125,7 +154,8 @@ public class BookingController {
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
-
+	
+	@ApiOperation(value = "Check if a booking exists for a given car")
 	@GetMapping("validate/{registrationPlate}")
 	public ResponseEntity<Boolean> isBookingExistsForCar(@PathVariable String registrationPlate) {
 		Car car = carRepository.findByRegisterationPlate(registrationPlate);

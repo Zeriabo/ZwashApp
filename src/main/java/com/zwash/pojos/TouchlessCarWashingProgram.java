@@ -17,6 +17,9 @@ public class TouchlessCarWashingProgram extends CarWashingProgram {
     private int waterPressure;
     private int soapAmount;
     
+    public TouchlessCarWashingProgram(){
+    	
+    }
     public TouchlessCarWashingProgram(int waterPressure, int soapAmount) {
         this.waterPressure = waterPressure;
         this.soapAmount = soapAmount;
