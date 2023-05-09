@@ -13,7 +13,7 @@ import com.zwash.pojos.UserCar;
 @Service
 public interface CarService  extends Serializable {
 
-
+	 Car getCar(long id);
      Car getCar(String registerationPlate);
      boolean setCar(User user, Car car) throws Exception;
 	 List<Car> getCarsOfUser(User user) throws UserIsNotFoundException;

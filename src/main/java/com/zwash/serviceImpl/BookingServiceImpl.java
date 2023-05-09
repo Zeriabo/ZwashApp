@@ -1,10 +1,16 @@
 package com.zwash.serviceImpl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.zwash.dtos.BookingDTO;
+import com.zwash.mapper.BookingMapper;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
 import com.zwash.repository.BookingRepository;
@@ -30,9 +36,22 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> getAllBookings() {
-		return bookingRepository.findAll();
+	public List<BookingDTO> getAllBookings() throws  Exception {
+	    try {
+	         List<Booking> bookings =bookingRepository.findAll();
+	        return bookings.stream()
+	        		.map(BookingMapper.INSTANCE::toBookingDto)//toBookingDtoList
+	                .collect(Collectors.toList());
+	    } catch (Exception ex) {
+	        if (ex instanceof InvocationTargetException) {
+	            Throwable targetException = ((InvocationTargetException) ex).getCause();
+	            System.out.println(targetException);
+	        }
+	        throw new Exception("Error occurred while getting all bookings", ex);
+	    }
+	    
 	}
+
 	public BookingServiceImpl(BookingRepository bookingRepository, CarRepository carRepository) {
 		this.bookingRepository = bookingRepository;
 		this.carRepository = carRepository;

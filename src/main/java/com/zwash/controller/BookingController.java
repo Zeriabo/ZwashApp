@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zwash.dtos.BookingDTO;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
@@ -74,8 +75,14 @@ public class BookingController {
     @Operation(summary = "Get all booking")
 	@ApiOperation(value = "Get all bookings", response = List.class)
 	@GetMapping
-	public List<Booking> getAllBookings() {
-		return bookingService.getAllBookings();
+	public  ResponseEntity<List<BookingDTO>>getAllBookings() throws Exception {
+    	try {
+    		List<BookingDTO> list= bookingService.getAllBookings();
+		return new ResponseEntity<List<BookingDTO>>(list, HttpStatus.OK);
+    	}catch(Exception ex)
+    	{
+    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	}
 	}
 
 	@Operation(summary = "Create a new booking")

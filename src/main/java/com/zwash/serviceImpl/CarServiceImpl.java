@@ -27,7 +27,11 @@ public class CarServiceImpl implements CarService {
 	private CarRepository carRepository;
 	@Autowired
 	private UserRepository userRepository;
-
+	
+	@Override
+	public Car getCar(long id) {
+		return carRepository.findById(id).get();
+	}
 	@Override
 	public List<Car> getCarsOfUser(User user) throws UserIsNotFoundException {
 		   return carRepository.findByUser(user);
@@ -114,4 +118,6 @@ public class CarServiceImpl implements CarService {
 		    return false;
 
 	}
+
+	
 }
