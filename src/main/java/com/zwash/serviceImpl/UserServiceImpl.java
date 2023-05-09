@@ -2,9 +2,11 @@ package com.zwash.serviceImpl;
 
 import java.util.Optional;
 import java.util.ServiceLoader;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
 import com.zwash.exceptions.IncorrectCredentialsException;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.LoggedUser;
@@ -21,7 +23,7 @@ import io.jsonwebtoken.Claims;
 public class UserServiceImpl implements UserService {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	JwtUtils jwtUtils;
 
+	@Override
 	public LoggedUser signIn(String username, String password) throws Exception {
 
 	    User user = userRepository.findByUsernameAndPassword(username, password);
@@ -49,11 +52,12 @@ public class UserServiceImpl implements UserService {
 	  Long id=  loggedUser.getId();
 	    String jwt = tokenService.createJWT(id.toString(), "Java", loggedUser.getUsername(), 1232134356);
 	    loggedUser.setToken(jwt);
-	    
+
 	    return loggedUser;
 	}
 
 
+	@Override
 	public User register(User user) throws Exception {
 
 		user.setActive(true);
@@ -63,7 +67,7 @@ public class UserServiceImpl implements UserService {
 		{
 			throw de;
 		}
-		
+
 		catch (Exception e) {
 			throw e;
 		}
@@ -71,6 +75,7 @@ public class UserServiceImpl implements UserService {
 		return user;
 
 	}
+	@Override
 	public User getUserFromToken(String token) throws UserIsNotFoundException {
 	    Claims claims = jwtUtils.verifyJWT(token);
 	    if (claims != null) {
@@ -98,7 +103,7 @@ public class UserServiceImpl implements UserService {
 				return true;
 			}
 		} catch (Exception e) {
-		
+
 			throw e;
 		}
 		return false;
@@ -114,7 +119,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public static TokenService getTokenService() {
-		   
+
 		 ServiceLoader<TokenService> serviceLoader =ServiceLoader.load(TokenService.class);
 		 for (TokenService provider : serviceLoader) {
 		     return provider;
@@ -128,16 +133,16 @@ public class UserServiceImpl implements UserService {
 		 if (user.isPresent()) {
 		        return user.get();
 		    }
-		 
+
 		   // Handle the case where the user is not found
 		    throw new UserIsNotFoundException("User with id " + id + " not found");
 	}
-	
+
 	@Override
 	public boolean resetPassword(String username, String secretAnswer, String newPassword) throws Exception {
-	    
+
 		Optional<User> user = userRepository.findByUsername(username);
-	                          
+
        if(!user.isPresent())
        {
     	   throw new UserIsNotFoundException("User not found");

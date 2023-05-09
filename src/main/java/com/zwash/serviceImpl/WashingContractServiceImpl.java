@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.zwash.pojos.WashingContract;
 import com.zwash.repository.WashingContractRepository;
 import com.zwash.service.WashingContractService;

@@ -8,25 +8,42 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
+import com.zwash.repository.BookingRepository;
 import com.zwash.repository.CarRepository;
 import com.zwash.service.BookingService;
 import com.zwash.service.UserService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
-import io.swagger.annotations.Api;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.servers.Server;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
+
+@OpenAPIDefinition(servers = { @Server(url = "http://localhost:7001") }, info = @Info(title = "Sample Spring Boot API", version = "v1", description = "A car washing project using Spring Boot with Swagger-UI enabled", license = @License(name = "MIT License", url = "https://github.com/bchen04/springboot-swagger-rest-api/blob/master/LICENSE"), contact = @Contact(url = "https://www.linkedin.com/in/bchen04/", name = "Ben Chen")))
 @RestController
-@RequestMapping("/bookings")
-@Api(value = "Booking Management System", description = "Operations pertaining to booking in Booking Management System")
+@RequestMapping("v1/bookings")
 public class BookingController {
 	@Autowired
 	private CarRepository carRepository;
@@ -34,20 +51,19 @@ public class BookingController {
 	private UserService userService;
 	@Autowired
 	private BookingService bookingService;
-	@PersistenceContext
-	private EntityManager entityManager;
-	
+
+
     Logger logger = LoggerFactory.getLogger(BookingController.class);
 
 
-	@ApiOperation(value = "Get a booking by ID", response = Booking.class)
+    @Operation(summary = "Get a booking by ID")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Booking found"),
 			@ApiResponse(code = 404, message = "Booking not found")
 	})
 	@GetMapping("/{id}")
 	public ResponseEntity<Booking> getBooking(@PathVariable Long id) {
-		Booking booking = entityManager.find(Booking.class, id);
+    	Booking booking = bookingService.getBookingById(id);
 		if (booking != null) {
 			return new ResponseEntity<>(booking, HttpStatus.OK);
 		} else {
@@ -55,13 +71,14 @@ public class BookingController {
 		}
 	}
 
+    @Operation(summary = "Get all booking")
 	@ApiOperation(value = "Get all bookings", response = List.class)
 	@GetMapping
 	public List<Booking> getAllBookings() {
-		return entityManager.createQuery("SELECT b FROM Booking b", Booking.class).getResultList();
+		return bookingService.getAllBookings();
 	}
 
-	@ApiOperation(value = "Create a new booking", response = Booking.class)
+	@Operation(summary = "Create a new booking")
 	@ApiResponses(value = {
 			@ApiResponse(code = 201, message = "Booking created"),
 			@ApiResponse(code = 400, message = "Invalid request parameters")
@@ -95,13 +112,13 @@ public class BookingController {
 		// Save the car entity if it is not already persisted
 		Long carId = booking.getCar() != null ? booking.getCar().getCarId() : null;
 		if (carId == null) {
-			entityManager.persist(booking.getCar());
+			throw new IllegalArgumentException("There is no car in the system with registeration number "+booking.getCar().getRegisterationPlate());
 		}
 
-		entityManager.persist(booking);
+		bookingService.saveBooking(booking);
 		return new ResponseEntity<>(booking, HttpStatus.CREATED);
 	}
-	 @ApiOperation(value = "Update an existing booking")
+	 @Operation(summary = "Update an existing booking")
 	    @ApiResponses(value = {
 	        @ApiResponse(code = 200, message = "Successfully updated booking"),
 	        @ApiResponse(code = 404, message = "The booking you were trying to update is not found"),
@@ -126,19 +143,19 @@ public class BookingController {
 			throw new IllegalArgumentException("Scheduled time cannot be in the past");
 		}
 
-		Booking booking = entityManager.find(Booking.class, id);
+		Booking booking = bookingService.getBookingById(id);
 		if (booking != null) {
 			booking.setCar(newBooking.getCar());
 			booking.setWashingProgram(newBooking.getWashingProgram());
 			booking.setScheduledTime(newBooking.getScheduledTime());
-			entityManager.merge(booking);
+			 bookingService.saveBooking(booking);
 			return new ResponseEntity<>(booking, HttpStatus.OK);
 		} else {
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
-	
-	@ApiOperation(value = "Delete a booking by ID")
+
+	@Operation(summary = "Delete a booking by ID")
 	@ApiResponses(value = {
 			@ApiResponse(code = 204, message = "Booking deleted"),
 			@ApiResponse(code = 404, message = "Booking not found")
@@ -146,16 +163,16 @@ public class BookingController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
-		Booking booking = entityManager.find(Booking.class, id);
+		Booking booking = bookingService.getBookingById(id);
 		if (booking != null) {
-			entityManager.remove(booking);
+			bookingService.deleteBooking(booking);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
-	
-	@ApiOperation(value = "Check if a booking exists for a given car")
+
+	@Operation(summary = "Check if a booking exists for a given car")
 	@GetMapping("validate/{registrationPlate}")
 	public ResponseEntity<Boolean> isBookingExistsForCar(@PathVariable String registrationPlate) {
 		Car car = carRepository.findByRegisterationPlate(registrationPlate);

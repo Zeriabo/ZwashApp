@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 
 public class LoggedUser {
-	
+
 	public LoggedUser()
 	{
-		
+
 	}
 	public LoggedUser(String firstName, String lastName, String username,String dateOfBirth)
 	{
@@ -21,7 +21,7 @@ public class LoggedUser {
 	{
 		return id;
 	}
-	
+
 	public void setId(long id)
 	{
 		this.id=id;
@@ -58,12 +58,12 @@ public class LoggedUser {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
-	
+
 	public String getString(){
-		
+
        return this.getFirstName()+" "+this.getLastName()+ " Active: "+this.isActive();
 	}
-	
+
 	 public String getToken() {
 		return token;
 	}
@@ -98,14 +98,14 @@ public class LoggedUser {
 
 
 	private String dateOfBirth;
-	
-	
+
+
 	private Boolean active;
-	 
+
 	 private String token;
 
      private LocalDateTime createDateTime;
-	 
-   
+
+
      private LocalDateTime updateDateTime;
 }

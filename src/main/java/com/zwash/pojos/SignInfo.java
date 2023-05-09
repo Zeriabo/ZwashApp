@@ -5,9 +5,9 @@ public class SignInfo {
 
 	public SignInfo()
 	{
-		
+
 	}
-	
+
 	public SignInfo(String username,String password)
 	{
 		this.password=password;
@@ -33,5 +33,5 @@ public class SignInfo {
 
 	private String username;
 	private String password;
-	
+
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.zwash.exceptions.CarExistsException;
 import com.zwash.exceptions.IncorrectTokenException;
@@ -17,8 +18,6 @@ import com.zwash.security.JwtUtils;
 import com.zwash.service.CarService;
 
 import io.jsonwebtoken.Claims;
-
-import org.springframework.stereotype.Service;
 
 @SuppressWarnings("serial")
 @Service
@@ -40,7 +39,7 @@ public class CarServiceImpl implements CarService {
 		try {
 			Car newCar = new Car();
 			Car foundcar = carRepository.findByRegisterationPlate(car.getRegisterationPlate());
-			
+
 			if (foundcar != null) {
 				throw new CarExistsException(foundcar.getRegisterationPlate());
 			}
@@ -50,26 +49,26 @@ public class CarServiceImpl implements CarService {
 			try {
 
 			Claims claim =	jwtUtils.verifyJWT(userToken);
-			
+
 			Optional<User> user=userRepository.findByUsername(claim.getSubject());
-			
+
 			 newCar.setUser(user.get());
-			 
+
 			} catch (Exception ex) {
 				throw new IncorrectTokenException("The token is not valid!");
 			}
-				
+
 				newCar.setDateOfManufacture(car.getDateOfManufacture());
 				newCar.setManufacture(car.getManufacture());
 				newCar.setRegisterationPlate(car.getRegisterationPlate());
-				
+
 				 return carRepository.save(newCar);
-			
+
 
 		} catch (Exception e) {
 			throw e;
 		}
-		
+
 
 	}
 
@@ -90,7 +89,7 @@ public class CarServiceImpl implements CarService {
 	                }
 	            }
 	        }
-	        
+
 	        car.setUser(user);
 	        carRepository.save(car);
 	        return true;
@@ -113,6 +112,6 @@ public class CarServiceImpl implements CarService {
 		        return true;
 		    }
 		    return false;
-		 
+
 	}
 }

@@ -15,10 +15,10 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "zwashuser")
 public class User {
-	
+
 	public User()
 	{
-		
+
 	}
 	public User(String firstName, String lastName, String username, String password, String dateOfBirth,
 			String secretQuestion, String secretAnswer)
@@ -36,7 +36,7 @@ public class User {
 	{
 		return id;
 	}
-	
+
 	public void setId(Long id)
 	{
 		this.id=id;
@@ -90,12 +90,12 @@ public class User {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
-	
+
 	public String getString(){
-		
+
        return this.getFirstName()+" "+this.getLastName()+ " Active: "+this.isActive();
 	}
-	
+
 	 public String getToken() {
 		return token;
 	}
@@ -123,14 +123,14 @@ public class User {
 	private String secretAnswer;
 	 @Column(name = "active")
 	private Boolean active;
-	 
+
 	 private String token;
-	 
-	 
+
+
      @CreationTimestamp
      @Column(name = "createdAt")
      private LocalDateTime createDateTime;
-	 
+
      @UpdateTimestamp
      @Column(name = "updatedAt")
      private LocalDateTime updateDateTime;

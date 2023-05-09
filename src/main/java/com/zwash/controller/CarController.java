@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.zwash.exceptions.IncorrectTokenException;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Car;
@@ -20,10 +21,17 @@ import com.zwash.pojos.UserCar;
 import com.zwash.security.JwtUtils;
 import com.zwash.service.CarService;
 import com.zwash.service.UserService;
-import io.jsonwebtoken.Claims;
 
+import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.servers.Server;
+
+@OpenAPIDefinition(servers = { @Server(url = "http://localhost:7001") }, info = @Info(title = "Sample Spring Boot API", version = "v1", description = "A car washing project using Spring Boot with Swagger-UI enabled", license = @License(name = "MIT License", url = "https://github.com/bchen04/springboot-swagger-rest-api/blob/master/LICENSE"), contact = @Contact(url = "https://www.linkedin.com/in/bchen04/", name = "Zeriab")))
 @RestController
-@RequestMapping("/cars")
+@RequestMapping("v1/cars")
 public class CarController {
 
 	@Autowired

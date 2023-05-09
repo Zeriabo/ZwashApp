@@ -20,11 +20,11 @@ public class UserCar {
 
 	/**
 	 * @param registerationPlate the registerationPlate to set
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void setRegisterationPlate(String registerationPlate) throws Exception {
 	this.registerationPlate=registerationPlate;
-		
+
 	}
 
 
@@ -68,16 +68,16 @@ public class UserCar {
 
 
 	private String token;
-	 
+
 
 	private String registerationPlate;
-	 
- 
+
+
 	private String manufacture;
-	 
+
 
 	private LocalDate dateOfManufacture;
-	 
+
 
 
 }

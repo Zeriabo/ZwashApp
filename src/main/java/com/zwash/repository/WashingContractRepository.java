@@ -9,8 +9,8 @@ import com.zwash.pojos.Car;
 import com.zwash.pojos.WashingContract;
 
 public interface WashingContractRepository extends JpaRepository<WashingContract, Long> {
-    
+
     List<WashingContract> findByCar(Car car);
-    
+
     List<WashingContract> findByEndDateGreaterThanEqual(LocalDate date);
 }

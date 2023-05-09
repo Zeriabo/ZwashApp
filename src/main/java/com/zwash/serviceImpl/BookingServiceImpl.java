@@ -1,17 +1,17 @@
 package com.zwash.serviceImpl;
 
-import com.zwash.pojos.Booking;
-import com.zwash.repository.BookingRepository;
-import com.zwash.service.BookingService;
-
-import com.zwash.pojos.Car;
-
-import com.zwash.repository.CarRepository;
-
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.zwash.pojos.Booking;
+import com.zwash.pojos.Car;
+import com.zwash.repository.BookingRepository;
+import com.zwash.repository.CarRepository;
+import com.zwash.service.BookingService;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -25,10 +25,14 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public Optional<Booking> getBookingById(Long id) {
-		return bookingRepository.findById(id);
+	public Booking getBookingById(Long id) {
+		return bookingRepository.findById(id).get();
 	}
 
+	@Override
+	public List<Booking> getAllBookings() {
+		return bookingRepository.findAll();
+	}
 	public BookingServiceImpl(BookingRepository bookingRepository, CarRepository carRepository) {
 		this.bookingRepository = bookingRepository;
 		this.carRepository = carRepository;
@@ -55,5 +59,11 @@ public class BookingServiceImpl implements BookingService {
 		// Check if any booking exists for the car
 		List<Booking> bookings = bookingRepository.findByCarAndExecuted(car, false);
 		return !bookings.isEmpty();
+	}
+
+	@Override
+	public boolean deleteBooking(Booking booking) {
+		bookingRepository.delete(booking);
+		return true;
 	}
 }

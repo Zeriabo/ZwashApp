@@ -1,6 +1,7 @@
 package com.zwash.controller;
 
 import java.util.ServiceLoader;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zwash.exceptions.IncorrectTokenException;
 import com.zwash.exceptions.UserIsNotActiveException;
@@ -37,60 +39,60 @@ import io.jsonwebtoken.Claims;
 @Controller
 @RequestMapping(value = "/users")
 public class UserController {
-	
+
 
 	@Autowired
     private UserService userService;
-    
+
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
 	  @GetMapping("/")
 	    public ModelAndView home() {
-		  return new ModelAndView("users"); 
+		  return new ModelAndView("users");
 	    }
-	  
+
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
     @PostMapping("/signin")
 	public ResponseEntity<LoggedUser> signIn(@RequestBody  SignInfo userInfo ) throws Exception {
-        
 
-	
+
+
 		LoggedUser signedUser;
 		try {
-			
+
 			signedUser = userService.signIn(userInfo.getUsername(),userInfo.getPassword());
 
 			if(signedUser instanceof LoggedUser)
 			{
 				if(signedUser.isActive()) {
-					
-					 return new ResponseEntity<LoggedUser>(
+
+					 return new ResponseEntity<>(
 							 signedUser, HttpStatus.OK);
-			
-					 
+
+
 				}else {
 					throw new UserIsNotActiveException(userInfo.getUsername());
-					
+
 				}
-			
+
 			}else {
-				 return new ResponseEntity<LoggedUser>(
+				 return new ResponseEntity<>(
 						  HttpStatus.NOT_ACCEPTABLE);
 			}
-			
+
 		} catch (Exception e) {
 			throw e;
 		}
-	
 
-	
+
+
 	}
-	
-	
-	
-	
+
+
+
+
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PostMapping("/register")
@@ -115,87 +117,87 @@ public class UserController {
 	{
 
 		return new ResponseEntity<>(
-				
+
 				 "User already exists", HttpStatus.NOT_ACCEPTABLE);
 	}
-	
+
 	catch(Exception e)
 	{
 		throw e;
 	}
-			
+
 	}
-	
+
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PostMapping("/changepassword")
 	@POST
 	public ResponseEntity<String> changePassword(@RequestBody String body) throws Exception {
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		User userToEdit = mapper.readValue(body, User.class);
 
 		JwtUtils jwtUtils = new JwtUtils();
-		
+
 		try {
-			Claims cl =jwtUtils.verifyJWT(userToEdit.getToken());	
+			Claims cl =jwtUtils.verifyJWT(userToEdit.getToken());
 			userToEdit.setUsername(cl.getId());
 		}catch(Exception ex)
 		{
 			throw new IncorrectTokenException("The token is not valid!");
 		}
-		
-		
+
+
 		boolean changed;
 		try {
 			changed = userService.changePassword(userToEdit.getUsername(),userToEdit.getPassword());
 
 			if(changed)
 			{
-				 return new ResponseEntity<String>("Password changed",
+				 return new ResponseEntity<>("Password changed",
 						HttpStatus.OK);
 			}else {
-				return new ResponseEntity<String>("Password not changed",
+				return new ResponseEntity<>("Password not changed",
 						HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-			
-			
+
+
 		} catch (Exception e) {
-			return new ResponseEntity<String>(e.getMessage(),
+			return new ResponseEntity<>(e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	
-	
+
+
 	}
-	
+
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/validate")
 	@GET
     public Response validateIfSigned(@QueryParam("token")  String  token) throws Exception {
-  
+
       boolean valid=false;
       try {
-    	  
+
     	  valid =userService.validateSignIn(token);
       }
        catch(Exception exp)
       {
-    	 
+
     	   return Response.status(500).entity(exp.getMessage()).build();
       }
       if(valid)
       {
     	  return Response.ok(valid).build();
-    	  
+
       }else {
-    	  
-    	  return Response.ok(false).build(); 
+
+    	  return Response.ok(false).build();
       }
-      
-    	
+
+
     }
-	
+
 	@POST
 	@Path("/getsecrets")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -214,7 +216,7 @@ public class UserController {
 	    return Response.status(500).entity("User not found").build();
 	}
 
-	
+
 	public static UserService getUserService()throws Exception {
 	try {
 		  ServiceLoader<UserService> serviceLoader =ServiceLoader.load(UserService.class);
@@ -222,10 +224,10 @@ public class UserController {
 
 			return userService;
 	}catch (Exception e) {
-	     	
+
   	  throw e;
     }
 
-  
+
 	}
 }

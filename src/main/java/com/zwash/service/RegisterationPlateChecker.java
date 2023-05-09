@@ -9,7 +9,7 @@ public class RegisterationPlateChecker
 {
 	public RegisterationPlateChecker()
 	{
-		
+
 	}
 	public boolean check(String registerationPlate) throws PatternFormatException
 	{
@@ -21,7 +21,7 @@ public class RegisterationPlateChecker
 		}else {
 			throw new PatternFormatException("Wrong pattern");
 		}
-		
-	   
+
+
 	}
 }

@@ -1,13 +1,16 @@
 package com.zwash.pojos;
 
 
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,11 +48,11 @@ public class Car {
 
 	/**
 	 * @param registerationPlate the registerationPlate to set
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void setRegisterationPlate(String registerationPlate) throws Exception {
 	this.registerationPlate=registerationPlate;
-		
+
 	}
 
 	/**
@@ -98,27 +101,27 @@ public class Car {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq_gen")
      @Column(name = "car_id", unique = true, nullable = false)
-	private long carId;	
-	 
+	private long carId;
+
 	 @ManyToOne(fetch = FetchType.LAZY, optional = false)
 	  @JoinColumn(name = "user_id", nullable = false)
 	  @OnDelete(action = OnDeleteAction.CASCADE)
 	  @JsonIgnore
 	  private User user;
-	 
+
 	 @Column(name = "registerationPlate")
 	private String registerationPlate;
-	 
+
 	 @Column(name = "manufacture")
 	private String manufacture;
-	 
+
 	 @Column(name = "dateOfManufacture")
 	private LocalDate dateOfManufacture;
-	 
+
 	 @CreationTimestamp
      @Column(name = "createdAt")
     private LocalDateTime createDateTime;
-	 
+
     @UpdateTimestamp
     @Column(name = "updatedAt")
     private LocalDateTime updateDateTime;
