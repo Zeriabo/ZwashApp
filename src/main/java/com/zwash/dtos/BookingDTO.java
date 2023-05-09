@@ -66,13 +66,6 @@ public class BookingDTO {
         this.scheduledTime = scheduledTime;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public boolean isExecuted() {
         return executed;
