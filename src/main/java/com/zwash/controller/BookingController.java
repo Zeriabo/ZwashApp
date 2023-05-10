@@ -23,7 +23,6 @@ import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
-import com.zwash.repository.BookingRepository;
 import com.zwash.repository.CarRepository;
 import com.zwash.service.BookingService;
 import com.zwash.service.UserService;
@@ -33,16 +32,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.servers.Server;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 
-@OpenAPIDefinition(servers = { @Server(url = "http://localhost:7001") }, info = @Info(title = "Sample Spring Boot API", version = "v1", description = "A car washing app"))
+@OpenAPIDefinition(servers = { @Server(url = "http://localhost:7001") }, info = @Info(title = "Car washing API", version = "v1", description = "A car washing app"))
 @RestController
 @RequestMapping("v1/bookings")
 public class BookingController {
@@ -54,7 +49,7 @@ public class BookingController {
 	private BookingService bookingService;
 
 
-    Logger logger = LoggerFactory.getLogger(BookingController.class); 
+    Logger logger = LoggerFactory.getLogger(BookingController.class);
 
 
     @Operation(summary = "Get a booking by ID")
@@ -78,7 +73,7 @@ public class BookingController {
 	public  ResponseEntity<List<BookingDTO>>getAllBookings() throws Exception {
     	try {
     		List<BookingDTO> list= bookingService.getAllBookings();
-		return new ResponseEntity<List<BookingDTO>>(list, HttpStatus.OK);
+		return new ResponseEntity<>(list, HttpStatus.OK);
     	}catch(Exception ex)
     	{
     		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -96,12 +91,11 @@ public class BookingController {
 		if (booking == null) {
 			throw new IllegalArgumentException("Booking  cannot be null");
 		}
-		try {
-			User user = userService.getUserFromToken(booking.getToken());
-			booking.setUser(user);
-		} catch (UserIsNotFoundException userIsNotFoundException) {
-			throw new UserIsNotFoundException();
-		}
+		User user =userService.getUserFromToken(booking.getToken());
+		
+		booking.setUser(user);
+		booking.getToken();
+	
 		if (booking.getCar() == null) {
 			throw new IllegalArgumentException("Car object cannot be null");
 		}

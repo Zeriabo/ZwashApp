@@ -3,16 +3,13 @@ package com.zwash.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.zwash.dtos.BookingDTO;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.CarWashingProgram;
-import com.zwash.pojos.User;
 import com.zwash.service.CarService;
 import com.zwash.service.CarWashingProgramService;
 import com.zwash.service.UserService;
@@ -21,13 +18,13 @@ import com.zwash.service.UserService;
 public class BookingMapperImpl implements BookingMapper {
 	@Autowired
 	CarService carService;
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	CarWashingProgramService carWashingProgramService;
-	
+
     @Override
     public BookingDTO toBookingDto(Booking booking) {
         if (booking == null) {
@@ -36,10 +33,9 @@ public class BookingMapperImpl implements BookingMapper {
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(booking.getId());
         bookingDTO.setScheduledTime(booking.getScheduledTime());
-        bookingDTO.setScheduledTime(booking.getScheduledTime());
         bookingDTO.setCarId(booking.getCar().getCarId());
         bookingDTO.setWashingProgramId(booking.getWashingProgram().getId());
-        bookingDTO.setUserId(booking.getUser().getId());
+        bookingDTO.setToken(booking.getToken());
 
         return bookingDTO;
     }
@@ -57,12 +53,7 @@ public class BookingMapperImpl implements BookingMapper {
         CarWashingProgram carWashingProgram  = carWashingProgramService.getProgramById(bookingDTO.getWashingProgramId());
         booking.setWashingProgram(carWashingProgram);
         booking.getWashingProgram().setId(bookingDTO.getWashingProgramId());
-        User user =userService.getUser(bookingDTO.getUserId());
-        booking.setUser(user);
-        booking.getUser().setId(bookingDTO.getUserId());
-//        booking.setStatus(bookingDTO.getStatus());
-//        booking.setPrice(bookingDTO.getPrice());
-//        booking.setRating(bookingDTO.getRating());
+        booking.setToken(bookingDTO.getToken());
         return booking;
     }
 

@@ -6,21 +6,20 @@ public class BookingDTO {
 
     private Long id;
     private Long carId;
-    private Long washingProgramId;
     private Long userId;
+    private Long washingProgramId;
     private LocalDateTime scheduledTime;
     private String token;
     private boolean executed;
 
     public BookingDTO() {}
 
-    public BookingDTO(Long id, Long carId, Long washingProgramId, Long userId, LocalDateTime scheduledTime, String token, boolean executed) {
+    public BookingDTO(Long id, Long carId, Long washingProgramId, LocalDateTime scheduledTime, String token, boolean executed) {
         this.id = id;
         this.carId = carId;
         this.washingProgramId = washingProgramId;
-        this.userId = userId;
         this.scheduledTime = scheduledTime;
-        this.token = token;
+        this.setToken(token);
         this.executed = executed;
     }
 
@@ -50,13 +49,6 @@ public class BookingDTO {
         this.washingProgramId = washingProgramId;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public LocalDateTime getScheduledTime() {
         return scheduledTime;
@@ -74,4 +66,20 @@ public class BookingDTO {
     public void setExecuted(boolean executed) {
         this.executed = executed;
     }
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 }

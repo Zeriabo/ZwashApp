@@ -27,7 +27,7 @@ public class CarServiceImpl implements CarService {
 	private CarRepository carRepository;
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Override
 	public Car getCar(long id) {
 		return carRepository.findById(id).get();
@@ -119,5 +119,5 @@ public class CarServiceImpl implements CarService {
 
 	}
 
-	
+
 }

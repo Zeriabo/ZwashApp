@@ -3,7 +3,10 @@ package com.zwash;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
+
+//@Import(SwaggerConfig.class)
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.zwash"})
 public class ZwashApplication {
@@ -12,5 +15,6 @@ public class ZwashApplication {
 		SpringApplication.run(ZwashApplication.class, args);
 
 	}
+
 
 }

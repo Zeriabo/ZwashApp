@@ -11,5 +11,5 @@ public interface CarWashingProgramService {
     public void updateProgram(CarWashingProgram program);
 
     public void deleteProgram(Long id);
-    
+
 }

@@ -1,11 +1,11 @@
 package com.zwash.serviceImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.zwash.pojos.CarWashingProgram;
 import com.zwash.repository.CarWashingProgramRepository;
 import com.zwash.service.CarWashingProgramService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class CarWashingProgramServiceImpl implements CarWashingProgramService {
