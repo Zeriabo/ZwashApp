@@ -16,7 +16,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket zwashApi() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				 .apis( RequestHandlerSelectors.any())
+				 .apis(RequestHandlerSelectors.basePackage("com.zwash"))
 	                .paths( PathSelectors.any())
 	                .build()
 	                .apiInfo(getApiInfo());
