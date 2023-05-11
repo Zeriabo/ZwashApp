@@ -29,7 +29,7 @@ public abstract class CarWashingProgram {
 	  @JsonProperty("type")
 	    @Column(name = "program_type", insertable = false, updatable = false)
 	    private String programType;
-
+ 
     public abstract void setWaterPressure(int pressure);
 
     public abstract void setSoapAmount(int amount);
@@ -37,7 +37,7 @@ public abstract class CarWashingProgram {
     public abstract void setBrushType(String brushType);
 
     public abstract void startWashing();
-
+    
 
     public Long getId() {
         return id;

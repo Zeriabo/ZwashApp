@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot'  version '3.0.6'
+	id 'org.springframework.boot' version '3.0.6'
 	id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -9,7 +9,7 @@ version = '0.0.1'
 sourceCompatibility = '17'
 
 repositories {
-    jcenter()
+	mavenCentral()
 }
 
 dependencies {
@@ -19,15 +19,7 @@ dependencies {
 	implementation 'javax.servlet:javax.servlet-api:4.0.1'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'io.springfox:springfox-swagger2:3.0.0'
-	implementation 'org.modelmapper:modelmapper:2.4.4'
-	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-	
-	 implementation 'io.springfox:springfox-swagger2:3.0.0'
-    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
-    implementation 'org.webjars:swagger-ui:3.52.1'
-	implementation 'org.springframework.boot:spring-boot-starter-security'	
-	implementation group: 'org.springframework.security', name: 'spring-security-config', version: '6.0.3'
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 	implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0.1'
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'

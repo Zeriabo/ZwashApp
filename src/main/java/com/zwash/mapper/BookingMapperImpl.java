@@ -32,6 +32,7 @@ public class BookingMapperImpl implements BookingMapper {
         }
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(booking.getId());
+        bookingDTO.setUserId(booking.getUser().getId());
         bookingDTO.setScheduledTime(booking.getScheduledTime());
         bookingDTO.setCarId(booking.getCar().getCarId());
         bookingDTO.setWashingProgramId(booking.getWashingProgram().getId());

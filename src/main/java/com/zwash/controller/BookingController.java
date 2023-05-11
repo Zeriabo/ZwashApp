@@ -25,6 +25,7 @@ import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
 import com.zwash.repository.CarRepository;
 import com.zwash.service.BookingService;
+import com.zwash.service.CarService;
 import com.zwash.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +43,7 @@ import jakarta.transaction.Transactional;
 @RequestMapping("v1/bookings")
 public class BookingController {
 	@Autowired
-	private CarRepository carRepository;
+	private CarService carService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -94,7 +95,7 @@ public class BookingController {
 		User user =userService.getUserFromToken(booking.getToken());
 		
 		booking.setUser(user);
-		booking.getToken();
+	
 	
 		if (booking.getCar() == null) {
 			throw new IllegalArgumentException("Car object cannot be null");
@@ -108,7 +109,7 @@ public class BookingController {
 		if (booking.getScheduledTime().isBefore(LocalDateTime.now())) {
 			throw new IllegalArgumentException("Scheduled time cannot be in the past");
 		}
-		Car car = carRepository.findByRegisterationPlate(booking.getCar().getRegisterationPlate());
+		Car car = carService.getCar(booking.getCar().getRegisterationPlate());
 		booking.setCar(car);
 		// Save the car entity if it is not already persisted
 		Long carId = booking.getCar() != null ? booking.getCar().getCarId() : null;
@@ -176,7 +177,7 @@ public class BookingController {
 	@Operation(summary = "Check if a booking exists for a given car")
 	@GetMapping("validate/{registrationPlate}")
 	public ResponseEntity<Boolean> isBookingExistsForCar(@PathVariable String registrationPlate) {
-		Car car = carRepository.findByRegisterationPlate(registrationPlate);
+		Car car = carService.getCar(registrationPlate);
 		if (car == null) {
 			// Car not found
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);

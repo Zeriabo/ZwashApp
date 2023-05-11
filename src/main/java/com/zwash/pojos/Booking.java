@@ -53,7 +53,7 @@ public class Booking {
     @Column(name = "scheduled_time", nullable = false)
     private LocalDateTime scheduledTime;
 
-
+    
     private String token;
 
     private boolean executed;

@@ -14,9 +14,10 @@ public class BookingDTO {
 
     public BookingDTO() {}
 
-    public BookingDTO(Long id, Long carId, Long washingProgramId, LocalDateTime scheduledTime, String token, boolean executed) {
+    public BookingDTO(Long id, Long carId, Long userId,Long washingProgramId, LocalDateTime scheduledTime, String token, boolean executed) {
         this.id = id;
         this.carId = carId;
+        this.userId=userId;
         this.washingProgramId = washingProgramId;
         this.scheduledTime = scheduledTime;
         this.setToken(token);
