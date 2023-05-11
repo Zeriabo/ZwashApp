@@ -5,6 +5,7 @@ HELP.md
 !**/src/test/**/build/
 ### Log files ###
 myapp.log
+.logs
 ### STS ###
 .apt_generated
 .classpath
