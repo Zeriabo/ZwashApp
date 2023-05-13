@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.zwash.dtos.BookingDTO;
+import com.zwash.dto.BookingDTO;
 import com.zwash.pojos.Booking;
 
 @Service

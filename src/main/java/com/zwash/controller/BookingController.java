@@ -17,28 +17,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.zwash.dtos.BookingDTO;
+import com.zwash.dto.BookingDTO;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
-import com.zwash.repository.CarRepository;
 import com.zwash.service.BookingService;
 import com.zwash.service.CarService;
 import com.zwash.service.UserService;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.servers.Server;
 import jakarta.transaction.Transactional;
+import org.springframework.http.MediaType;
 
-
-@OpenAPIDefinition(servers = { @Server(url = "http://localhost:7001") }, info = @Info(title = "Car washing API", version = "v1", description = "A car washing app"))
 @RestController
 @RequestMapping("v1/bookings")
 public class BookingController {
@@ -53,12 +42,7 @@ public class BookingController {
     Logger logger = LoggerFactory.getLogger(BookingController.class);
 
 
-    @Operation(summary = "Get a booking by ID")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Booking found"),
-			@ApiResponse(code = 404, message = "Booking not found")
-	})
-	@GetMapping("/{id}")
+	@GetMapping(value="/{id}" ,produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Booking> getBooking(@PathVariable Long id) {
     	Booking booking = bookingService.getBookingById(id);
 		if (booking != null) {
@@ -68,8 +52,7 @@ public class BookingController {
 		}
 	}
 
-    @Operation(summary = "Get all booking")
-	@ApiOperation(value = "Get all bookings", response = List.class)
+ 
 	@GetMapping
 	public  ResponseEntity<List<BookingDTO>>getAllBookings() throws Exception {
     	try {
@@ -81,11 +64,7 @@ public class BookingController {
     	}
 	}
 
-	@Operation(summary = "Create a new booking")
-	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "Booking created"),
-			@ApiResponse(code = 400, message = "Invalid request parameters")
-	})
+  
 	@PostMapping
 	@Transactional
 	public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws UserIsNotFoundException {
@@ -120,12 +99,6 @@ public class BookingController {
 		bookingService.saveBooking(booking);
 		return new ResponseEntity<>(booking, HttpStatus.CREATED);
 	}
-	 @Operation(summary = "Update an existing booking")
-	    @ApiResponses(value = {
-	        @ApiResponse(code = 200, message = "Successfully updated booking"),
-	        @ApiResponse(code = 404, message = "The booking you were trying to update is not found"),
-	        @ApiResponse(code = 400, message = "Invalid input")
-	    })
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking newBooking) {
@@ -157,12 +130,7 @@ public class BookingController {
 		}
 	}
 
-	@Operation(summary = "Delete a booking by ID")
-	@ApiResponses(value = {
-			@ApiResponse(code = 204, message = "Booking deleted"),
-			@ApiResponse(code = 404, message = "Booking not found")
-	})
-	@DeleteMapping("/{id}")
+   @DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
 		Booking booking = bookingService.getBookingById(id);
@@ -173,8 +141,6 @@ public class BookingController {
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
-
-	@Operation(summary = "Check if a booking exists for a given car")
 	@GetMapping("validate/{registrationPlate}")
 	public ResponseEntity<Boolean> isBookingExistsForCar(@PathVariable String registrationPlate) {
 		Car car = carService.getCar(registrationPlate);

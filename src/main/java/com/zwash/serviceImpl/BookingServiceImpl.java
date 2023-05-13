@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.zwash.dtos.BookingDTO;
+import com.zwash.dto.BookingDTO;
 import com.zwash.mapper.BookingMapper;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
