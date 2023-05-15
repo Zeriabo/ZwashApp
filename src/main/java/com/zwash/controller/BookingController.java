@@ -24,6 +24,7 @@ import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
 import com.zwash.service.BookingService;
 import com.zwash.service.CarService;
+import com.zwash.service.CarWashService;
 import com.zwash.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
@@ -42,6 +43,9 @@ public class BookingController {
 	private UserService userService;
 	@Autowired
 	private BookingService bookingService;
+	
+	@Autowired
+	private CarWashService carWashService;
 
 
     Logger logger = LoggerFactory.getLogger(BookingController.class);
@@ -174,6 +178,22 @@ public class BookingController {
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
+	    @PostMapping("/{id}")
+		@Transactional
+		@ApiOperation(value = "Delete a booking by id")
+		@ApiResponses(value = {
+		@ApiResponse(code = 204, message = "Booking deleted successfully"),
+		@ApiResponse(code = 404, message = "Booking with provided id not found")
+		})
+		public ResponseEntity<Void> executeBookingWash(@PathVariable Long id) {
+			Booking booking = bookingService.getBookingById(id);
+			if (booking != null) {
+				carWashService.executeWash(booking);
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			} else {
+				throw new IllegalArgumentException("Booking with id " + id + " not found");
+			}
+		}
 
    @DeleteMapping("/{id}")
 	@Transactional
