@@ -42,7 +42,6 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-
 	  @GetMapping("/")
 	    public ModelAndView home() {
 		  return new ModelAndView("users");

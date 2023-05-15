@@ -9,12 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.zwash.dto.BookingDTO;
 import com.zwash.pojos.Booking;
+import com.zwash.pojos.User;
 
 @Service
 public interface BookingService {
     Booking saveBooking(Booking booking);
     Booking getBookingById(Long id);
-    List<Booking> getBookingsByUserId(Long userId);
+    List<BookingDTO> getBookingsByUserId(User userId) throws Exception;
     List<Booking> getBookingsByCarId(Long carId);
 	boolean isBookingExistsForCar(String registrationPlate);
 	List<BookingDTO> getAllBookings() throws DataAccessException, SQLException, Exception;

@@ -10,6 +10,7 @@ import com.zwash.dto.BookingDTO;
 import com.zwash.mapper.BookingMapper;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
+import com.zwash.pojos.User;
 import com.zwash.repository.BookingRepository;
 import com.zwash.repository.CarRepository;
 import com.zwash.service.BookingService;
@@ -60,9 +61,20 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> getBookingsByUserId(Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BookingDTO> getBookingsByUserId(User user) throws Exception {
+	    try {
+	         List<Booking> bookings =bookingRepository.findByUser(user);
+	        return bookings.stream()
+	        		.map(BookingMapper.INSTANCE::toBookingDto)//toBookingDtoList
+	                .collect(Collectors.toList());
+	    } catch (Exception ex) {
+	        if (ex instanceof InvocationTargetException) {
+	            Throwable targetException = ((InvocationTargetException) ex).getCause();
+	            System.out.println(targetException);
+	        }
+	        throw new Exception("Error occurred while getting all bookings", ex);
+	    }
+
 	}
 
 	@Override

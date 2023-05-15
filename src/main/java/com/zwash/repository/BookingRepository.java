@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
+import com.zwash.pojos.User;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
@@ -22,8 +23,9 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
 	 List<Booking> findByCarAndExecuted(Car car, boolean executed);
 
-
-
+	 @Query("SELECT b FROM Booking b WHERE b.user = :user")
+	 List<Booking> findByUser(User user);
+	 
 
 }
 

@@ -79,6 +79,25 @@ public class BookingController {
     	}
 	}
 
+    @GetMapping("/user/{id}")
+ 	@ApiOperation(value = "Get bookings belong to a User", response = BookingDTO.class, responseContainer = "List")
+ 	@ApiResponses(value = {
+ 			@ApiResponse(code = 200, message = "Successfully retrieved bookings"),
+ 			@ApiResponse(code = 404, message = "Bookings not found")
+ 	})
+ 	public  ResponseEntity<List<BookingDTO>>getUsersBookings(@PathVariable("id") Long userId) throws Exception {
+     	try {
+     		User user = userService.getUser(userId);
+     		List<BookingDTO> list= bookingService.getBookingsByUserId(user);
+ 		return new ResponseEntity<>(list, HttpStatus.OK);
+ 		  	
+    } catch (UserIsNotFoundException ex) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    } catch (Exception ex) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+ 	}
+
   
     @PostMapping
 	@Transactional
