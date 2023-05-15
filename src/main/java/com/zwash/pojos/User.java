@@ -5,6 +5,12 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "zwashuser")
+@ApiModel(description = "A user entity.")
 public class User {
 
 	public User()
@@ -103,28 +110,38 @@ public class User {
 		this.token = token;
 	}
 
+	
 	@Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
      @Column(name = "id", unique = true, nullable = false)
+	 @ApiModelProperty(value = "The unique ID of the user.", example = "1")
 	private Long id;
 	 @Column(name = "firstName")
+	 @ApiModelProperty(value = "The first name of the user.", example = "John")
 	private String firstName;
 	 @Column(name = "lastName")
+	 @ApiModelProperty(value = "The last name of the user.", example = "Doe")
 	private String lastName;
 	 @Column(name = "username",unique=true)
+	 @ApiModelProperty(value = "The username of the user.", example = "johndoe")
 	private String username;
 	 @Column(name = "password")
+	 @ApiModelProperty(value = "The password of the user.", example = "MyPass123")
 	private String password;
 	 @Column(name = "dateOfBirth")
+	 @ApiModelProperty(value = "The date of birth of the user.", example = "1922-02-22")
 	private String dateOfBirth;
 	 @Column(name = "secretQuestion")
+	 @ApiModelProperty(value = "The secret question of the user.", example = "What is your favorite color?")
 	private String secretQuestion;
 	 @Column(name = "secretAnswer")
+	 @ApiModelProperty(value = "The secret answer of the user.", example = "Blue")
 	private String secretAnswer;
+	 @ApiModelProperty(value = "Whether the user is active or not.", example = "true")
 	 @Column(name = "active")
 	private Boolean active;
 
-	 private String token;
+	private String token;
 
 
      @CreationTimestamp

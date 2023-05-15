@@ -23,9 +23,6 @@ import com.zwash.service.CarService;
 import com.zwash.service.UserService;
 
 import io.jsonwebtoken.Claims;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.servers.Server;
 
 
 @RestController

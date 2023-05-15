@@ -2,7 +2,6 @@ package com.zwash.pojos;
 
 public class BasicCarWashingProgram extends CarWashingProgram {
 
-    private Long id;
 
     private int waterPressure;
     private int soapAmount;

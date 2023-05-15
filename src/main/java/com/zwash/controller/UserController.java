@@ -26,7 +26,11 @@ import com.zwash.security.JwtUtils;
 import com.zwash.service.UserService;
 import org.springframework.http.MediaType;
 import io.jsonwebtoken.Claims;
-
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -45,10 +49,19 @@ public class UserController {
 	    }
 
 	@PostMapping(value = "/signin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<LoggedUser> signIn(@RequestBody  SignInfo userInfo ) throws Exception {
+	@ApiOperation(value = "Signs in an existing user.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiImplicitParams({
+	    @ApiImplicitParam(name = "username", value = "The username of the user to sign in.", required = true, dataType = "string", paramType = "body"),
+	    @ApiImplicitParam(name = "password", value = "The password of the user to sign in.", required = true, dataType = "string", paramType = "body")
+	})
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "User signed in successfully."),
+	    @ApiResponse(code = 401, message = "Invalid username or password."),
+	    @ApiResponse(code = 500, message = "Internal server error.")
+	})
+	public ResponseEntity<LoggedUser> signIn(@RequestBody SignInfo userInfo ) throws Exception {
 
-
-
+		
 		LoggedUser signedUser;
 		try {
 
@@ -83,12 +96,21 @@ public class UserController {
 
 
 
+	/**
+	 * Registers a new user.
+	 *
+	 * @param registerDetails the user registration details in JSON format
+	 * @return a response entity indicating whether the registration was successful or not
+	 * @throws Exception if there is an error during the registration process
+	 */
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> register(@RequestBody String registerDetails) throws Exception {
-
-		ObjectMapper mapper = new ObjectMapper();
-		User user = mapper.readValue(registerDetails, User.class);
-
+	@ApiOperation(value = "Registers a new user.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "User created successfully."),
+		@ApiResponse(code = 406, message = "User already exists."),
+		@ApiResponse(code = 500, message = "Internal server error.")
+	})
+	public ResponseEntity<String> register(@RequestBody User user) throws Exception {
 		User userCreated;
 	try {
 		userCreated = userService.register(user);

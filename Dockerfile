@@ -1,3 +1,15 @@
-FROM openjdk@sha256:a996cdcc040704ec6badaf5fecf1e144c096e00231a29188596c784bcf858d05
-COPY build/libs/Zwash-0.0.1.jar Zwash-0.0.1.jar
-ENTRYPOINT ["java","-jar","/Zwash-0.0.1.jar"]
+FROM gradle:jdk17 AS builder
+
+WORKDIR /app
+COPY . .
+
+RUN gradle clean build
+
+FROM openjdk:17
+
+WORKDIR /app
+COPY --from=builder /app/build/libs/Zwash-0.0.1.jar .
+
+ENTRYPOINT ["java", "-jar", "Zwash-0.0.1.jar"]
+EXPOSE 8080
+EXPOSE 7001
