@@ -29,6 +29,7 @@ import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -140,16 +141,20 @@ public class UserController {
 
 
 	@PostMapping(value = "/changepassword", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> changePassword(@RequestBody String body) throws Exception {
+	@ApiOperation(value = "Change password for a user.")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Password changed successfully."),
+	    @ApiResponse(code = 401, message = "Unauthorized access."),
+	    @ApiResponse(code = 500, message = "Internal server error.")
+	})
+	public ResponseEntity<String> changePassword(@RequestBody User user) throws Exception {
 
-		ObjectMapper mapper = new ObjectMapper();
-		User userToEdit = mapper.readValue(body, User.class);
-
+	
 		JwtUtils jwtUtils = new JwtUtils();
 
 		try {
-			Claims cl =jwtUtils.verifyJWT(userToEdit.getToken());
-			userToEdit.setUsername(cl.getId());
+			Claims cl =jwtUtils.verifyJWT(user.getToken());
+			user.setUsername(cl.getId());
 		}catch(Exception ex)
 		{
 			throw new IncorrectTokenException("The token is not valid!");
@@ -158,7 +163,7 @@ public class UserController {
 
 		boolean changed;
 		try {
-			changed = userService.changePassword(userToEdit.getUsername(),userToEdit.getPassword());
+			changed = userService.changePassword(user.getUsername(),user.getPassword());
 
 			if(changed)
 			{
@@ -177,39 +182,49 @@ public class UserController {
 
 
 	}
+	/**
+	 * Validates if the user is signed in.
+	 *
+	 * @param token JWT token of the user
+	 * @return Response indicating whether the user is signed in or not
+	 * @throws Exception if there is an error while validating the user
+	 */
+	@GetMapping(value = "/validate", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Validates if the user is signed in.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "User is signed in."),
+	    @ApiResponse(code = 200, message = "User is not signed in."),
+	    @ApiResponse(code = 500, message = "Internal server error.")
+	})
+	public Response validateIfSigned(
+	        @ApiParam(value = "JWT token of the user", required = true) @QueryParam("token") String token)
+	        throws Exception {
 
+	    boolean valid = false;
+	    try {
+	        valid = userService.validateSignIn(token);
+	    } catch (Exception exp) {
+	        return Response.status(500).entity(exp.getMessage()).build();
+	    }
+	    if (valid) {
+	        return Response.ok(valid).build();
+	    } else {
+	        return Response.ok(false).build();
+	    }
+	}
 
-	@GetMapping(value = "/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response validateIfSigned(@QueryParam("token")  String  token) throws Exception {
-
-      boolean valid=false;
-      try {
-
-    	  valid =userService.validateSignIn(token);
-      }
-       catch(Exception exp)
-      {
-
-    	   return Response.status(500).entity(exp.getMessage()).build();
-      }
-      if(valid)
-      {
-    	  return Response.ok(valid).build();
-
-      }else {
-
-    	  return Response.ok(false).build();
-      }
-
-
-    }
 
 	@PostMapping(value = "/getsecrets", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Response getSecretQuestionAnswer(User userToEdit) throws Exception {
+	@ApiOperation(value = "Get secret question and answer for a user.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Secret question and answer retrieved successfully."),
+	    @ApiResponse(code = 500, message = "Internal server error.")
+	})
+	public Response getSecretQuestionAnswer(@RequestBody User user) throws Exception {
 	    try {
-	        userToEdit.setSecretAnswer(userService.getSecretQuestionAnswer(userToEdit.getUsername()));
+	        user.setSecretAnswer(userService.getSecretQuestionAnswer(user.getUsername()));
 
-	        if(userToEdit instanceof User) {
+	        if(user instanceof User) {
 	            return Response.ok(true).build();
 	        }
 	    } catch (Exception e) {
