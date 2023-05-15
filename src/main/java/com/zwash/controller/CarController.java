@@ -23,7 +23,9 @@ import com.zwash.service.CarService;
 import com.zwash.service.UserService;
 
 import io.jsonwebtoken.Claims;
-
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("v1/cars")
@@ -36,24 +38,34 @@ public class CarController {
 
     Logger logger = LoggerFactory.getLogger(CarController.class);
 
-	public CarController(CarService carService, UserService userService) {
-		this.carService = carService;
-		this.userService = userService;
-	}
-
+	@ApiOperation(value = "Register a new car")
 	@PostMapping("/register")
+	@ApiResponses(value = {
+			@ApiResponse(code = 202, message = "Car registered successfully"),
+			@ApiResponse(code = 500, message = "Internal server error")
+	})
 	public ResponseEntity<Void> registerCar(@RequestBody UserCar userCar) throws Exception {
 		Car car = carService.register(userCar);
 		return car instanceof Car ? ResponseEntity.accepted().build() : ResponseEntity.status(500).build();
 	}
 
+	@ApiOperation(value = "Get car details by registration plate")
 	@GetMapping("/{registrationPlate}")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Car details retrieved successfully"),
+			@ApiResponse(code = 404, message = "Car not found")
+	})
 	public ResponseEntity<Car> getCar(@PathVariable String registrationPlate) {
 		Car car = carService.getCar(registrationPlate);
 		return car != null ? ResponseEntity.ok(car) : ResponseEntity.notFound().build();
 	}
 
+	@ApiOperation(value = "Get all cars owned by a user")
 	@GetMapping("/user/{username}")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Cars retrieved successfully"),
+			@ApiResponse(code = 404, message = "User not found")
+	})
 	public ResponseEntity<List<Car>> getCarsForUser(@PathVariable String username) throws UserIsNotFoundException {
 		User user = new User();
 		user.setUsername(username);
@@ -61,7 +73,12 @@ public class CarController {
 		return ResponseEntity.ok(cars);
 	}
 
+	@ApiOperation(value = "Set the owner of a car")
 	@PostMapping("/set")
+	@ApiResponses(value = {
+			@ApiResponse(code = 202, message = "Car owner updated successfully"),
+			@ApiResponse(code = 500, message = "Internal server error")
+	})
 	public ResponseEntity<Void> setCar(@RequestBody UserCar userCar) throws IncorrectTokenException {
 		try {
 			String registrationPlate = userCar.getRegisterationPlate();
