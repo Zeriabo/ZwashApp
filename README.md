@@ -20,7 +20,7 @@ Clone the repository to your local machine using the following command:
 
 bash
 Copy code
-git clone https://github.com/your-username/zwash.git
+git clone https://github.com/zeriabo/zwash.git
 Open the project in your preferred IDE (Integrated Development Environment).
 
 Build the project to download the required dependencies.
