@@ -135,9 +135,10 @@ public class BookingController {
 		// Save the car entity if it is not already persisted
 		Long carId = booking.getCar() != null ? booking.getCar().getCarId() : null;
 		if (carId == null) {
+			logger.error("The car "+booking.getCar().getRegisterationPlate()+ "  is not registered in the system!");
 			throw new IllegalArgumentException("There is no car in the system with registeration number "+booking.getCar().getRegisterationPlate());
 		}
-
+       logger.info("The booking for "+booking.getCar().getRegisterationPlate()+ " is saved successfully!" );
 		bookingService.saveBooking(booking);
 		return new ResponseEntity<>(booking, HttpStatus.CREATED);
 	}
@@ -172,8 +173,10 @@ public class BookingController {
 			booking.setWashingProgram(newBooking.getWashingProgram());
 			booking.setScheduledTime(newBooking.getScheduledTime());
 			 bookingService.saveBooking(booking);
+			 logger.info("the  booking for "+booking.getCar().getRegisterationPlate()+" has been updated successfully");
 			return new ResponseEntity<>(booking, HttpStatus.OK);
 		} else {
+			logger.error("Booking with id " + id + " not found");
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
@@ -188,8 +191,13 @@ public class BookingController {
 			Booking booking = bookingService.getBookingById(id);
 			if (booking != null) {
 				carWashService.executeCarWash(booking);
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				
+				 logger.info("the  booking for "+booking.getCar().getRegisterationPlate()+" has been executed successfully");
+					
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);
 			} else {
+				logger.error("Booking with car " + booking.getCar().getRegisterationPlate() + " not executed!");
+				
 				throw new IllegalArgumentException("Booking with id " + id + " not found");
 			}
 		}
@@ -204,9 +212,13 @@ public class BookingController {
 	public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
 		Booking booking = bookingService.getBookingById(id);
 		if (booking != null) {
+			 logger.info("the  booking for "+booking.getCar().getRegisterationPlate()+" has been deleted successfully");
+				
 			bookingService.deleteBooking(booking);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
+			logger.error("Booking with car " + booking.getCar().getRegisterationPlate() + " not deleted!");
+			
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
@@ -222,8 +234,18 @@ public class BookingController {
 			// Car not found
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
 		}
+		if(bookingService.isBookingExistsForCar(registrationPlate))
+				{
+			logger.info("the  booking for "+registrationPlate+" has been deleted successfully");
+			
 
-		return ResponseEntity.ok(bookingService.isBookingExistsForCar(registrationPlate));
+			return ResponseEntity.ok(bookingService.isBookingExistsForCar(registrationPlate));
+				}else {
+					logger.error("the  booking for "+registrationPlate+" has not been deleted successfully");
+					
+					return ResponseEntity.status(400).body(false);
+				}
+	
 
 	}
 
