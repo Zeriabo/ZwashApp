@@ -41,4 +41,3 @@ out/
 /build/
 /data/
 src/main/resources/application.properties
-src/main/java/com/zwash/utility/FirebaseInitializer.java
