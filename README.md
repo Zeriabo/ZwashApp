@@ -60,7 +60,7 @@ In the Swagger UI, you will see a list of available endpoints categorized by con
 
 To interact with the APIs, click on an endpoint and provide the required parameters. You can also try out the endpoints by clicking the "Try it out" button and observing the responses.
 
-When making requests, make sure to include the necessary JSON payload in the request body. If using the Jackson library, ensure that you include the @class attribute in the JSON payload for proper serialization and deserialization.
+When making requests, make sure to include the necessary JSON payload in the request body. code is using the Jackson library, ensure that you include the @class attribute in the JSON payload for proper serialization and deserialization.
 
 Endpoints
 Here are the main controllers and their associated endpoints:
