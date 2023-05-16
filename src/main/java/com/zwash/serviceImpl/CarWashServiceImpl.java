@@ -11,7 +11,7 @@ public class CarWashServiceImpl implements CarWashService {
      @Autowired
 	 BookingRepository bookingRepository;
 	@Override
-	public void executeWash(Booking booking) {
+	public void executeCarWash(Booking booking) {
 		
 		bookingRepository.executeWash(booking.getId());
 		

@@ -4,5 +4,5 @@ import com.zwash.pojos.Booking;
 
 public interface CarWashService {
 
-	void executeWash(Booking booking);
+	void executeCarWash(Booking booking);
 }

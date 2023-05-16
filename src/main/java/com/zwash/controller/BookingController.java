@@ -31,7 +31,6 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.Api;
 import jakarta.transaction.Transactional;
-import org.springframework.http.MediaType;
 
 @RestController
 @RequestMapping("v1/bookings")
@@ -180,15 +179,15 @@ public class BookingController {
 	}
 	    @PostMapping("/{id}")
 		@Transactional
-		@ApiOperation(value = "Delete a booking by id")
+		@ApiOperation(value = "Execute a Wash")
 		@ApiResponses(value = {
-		@ApiResponse(code = 204, message = "Booking deleted successfully"),
+		@ApiResponse(code = 204, message = "Wash executed successfully"),
 		@ApiResponse(code = 404, message = "Booking with provided id not found")
 		})
 		public ResponseEntity<Void> executeBookingWash(@PathVariable Long id) {
 			Booking booking = bookingService.getBookingById(id);
 			if (booking != null) {
-				carWashService.executeWash(booking);
+				carWashService.executeCarWash(booking);
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			} else {
 				throw new IllegalArgumentException("Booking with id " + id + " not found");
