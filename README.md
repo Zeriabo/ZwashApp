@@ -19,10 +19,21 @@ To use the Zwash app and interact with its APIs, you need to follow these instal
 Clone the repository to your local machine using the following command:
 
 bash
-Copy code
 git clone https://github.com/zeriabo/zwash.git
 Open the project in your preferred IDE (Integrated Development Environment).
+Clone the repository to your local machine using the following command:
 
+bash
+
+git clone https://github.com/zeriabo/zwash.git
+Navigate to the project directory:
+
+bash
+cd zwash
+Build the Docker image by running the following command:
+
+Copy code
+docker build -t zwash .
 Build the project to download the required dependencies.
 
 Usage
@@ -31,6 +42,19 @@ Once you have completed the installation steps, you can start using the Zwash ap
 Start the application by running the main method in the ZwashApplication class.
 
 Open your web browser and navigate to http://localhost:8080/swagger-ui/index.html to access the Swagger UI.
+Usage
+Once you have completed the installation steps, you can start using the Zwash app. To run the app using Docker Compose:
+
+Make sure you have Docker Compose installed on your machine.
+
+In the project directory, create a file named docker-compose.yml 
+Open a terminal and navigate to the project directory.
+
+Run the following command to start the Zwash app using Docker Compose:
+
+docker-compose up
+Once the containers are up and running, you can access the Zwash app by opening your web browser and navigating to (http://localhost:8080/swagger-ui/index.html). This will launch the Swagger UI, where you can explore and interact with the available endpoints.
+
 
 In the Swagger UI, you will see a list of available endpoints categorized by controllers. Explore the available endpoints to understand the functionality of the Zwash app.
 
