@@ -53,8 +53,12 @@ public class Booking {
     @Column(name = "scheduled_time", nullable = false)
     private LocalDateTime scheduledTime;
 
+    @ManyToOne
+    @JoinColumn(name = "station_id", nullable = false)
+    private Station station;
     
-    private String token;
+
+	private String token;
 
     private boolean executed;
 
@@ -113,6 +117,14 @@ public class Booking {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+	
+    public Station getStation() {
+		return station;
+	}
+
+	public void setStation(Station station) {
+		this.station = station;
 	}
 
 	public boolean isExecuted() {
