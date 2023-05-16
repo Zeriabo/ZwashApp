@@ -69,17 +69,20 @@ public class UserController {
 			if(signedUser instanceof LoggedUser)
 			{
 				if(signedUser.isActive()) {
-
+					logger.info("User has signed in successfully "+userInfo.getUsername());
 					 return new ResponseEntity<>(
 							 signedUser, HttpStatus.OK);
 
 
 				}else {
+					
+					logger.error("User doesn't exists "+userInfo.getUsername());
 					throw new UserIsNotActiveException(userInfo.getUsername());
 
 				}
 
 			}else {
+				logger.info("User has not signed in Inncorrect password or username "+userInfo.getUsername());
 				 return new ResponseEntity<>(
 						  HttpStatus.NOT_ACCEPTABLE);
 			}
@@ -116,15 +119,17 @@ public class UserController {
 
 		if(userCreated instanceof User)
 		{
+			logger.info("User has registered  successfully "+user.getUsername());
 			 return new ResponseEntity<>(
 					 userCreated.getString(), HttpStatus.OK);
 		}else {
+			logger.error("User has not registered  "+user.getUsername());
 			 return new ResponseEntity<>(
 					 "not created", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}catch(DataIntegrityViolationException dx)
 	{
-
+		logger.error("User already exists  "+user.getUsername());
 		return new ResponseEntity<>(
 
 				 "User already exists", HttpStatus.NOT_ACCEPTABLE);
@@ -155,6 +160,7 @@ public class UserController {
 			user.setUsername(cl.getId());
 		}catch(Exception ex)
 		{
+			logger.error("The token is not valid! "+user.getUsername());
 			throw new IncorrectTokenException("The token is not valid!");
 		}
 
@@ -165,15 +171,18 @@ public class UserController {
 
 			if(changed)
 			{
+				logger.info("The password changed! "+user.getUsername());
 				 return new ResponseEntity<>("Password changed",
 						HttpStatus.OK);
 			}else {
+				logger.error("The password is not changed! "+user.getUsername());
 				return new ResponseEntity<>("Password not changed",
 						HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 
 
 		} catch (Exception e) {
+			logger.error("The password is not changed! "+e.getMessage());
 			return new ResponseEntity<>(e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -202,11 +211,15 @@ public class UserController {
 	    try {
 	        valid = userService.validateSignIn(token);
 	    } catch (Exception exp) {
+	    	
+	    	logger.error("validation error! "+exp.getMessage());
 	        return Response.status(500).entity(exp.getMessage()).build();
 	    }
 	    if (valid) {
+	    	logger.info("The token is valid! "+token);
 	        return Response.ok(valid).build();
 	    } else {
+	    	logger.error("The token is not valid! "+token);
 	        return Response.ok(false).build();
 	    }
 	}
@@ -223,12 +236,15 @@ public class UserController {
 	        user.setSecretAnswer(userService.getSecretQuestionAnswer(user.getUsername()));
 
 	        if(user instanceof User) {
+	        	
+	        	logger.info("The Secrets are returned! of"+user.getUsername());
 	            return Response.ok(true).build();
 	        }
 	    } catch (Exception e) {
+	    	logger.error("The Secrets are not returned! of"+user.getUsername() +" because : "+e.getMessage());
 	        return Response.status(500).entity(e.getMessage()).build();
 	    }
-
+	    logger.error("The Secrets are not returned! of"+user.getUsername() +" because : User is not found!");
 	    return Response.status(500).entity("User not found").build();
 	}
 
