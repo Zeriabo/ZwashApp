@@ -116,7 +116,7 @@ Usage:
 
 TODO:
 
-Payment processing: You will need to integrate a payment gateway to allow users to pay for their bookings.
+Payment processing:  need to integrate a payment gateway to allow users to pay for their bookings.
 
 Notifications: Implement a notification system to inform users about their booking status, such as confirmation of the booking, changes in the schedule, or cancellation.
 
