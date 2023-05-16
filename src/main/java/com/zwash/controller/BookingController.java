@@ -168,6 +168,7 @@ public class BookingController {
 		}
 	}
 
+	@SuppressWarnings("null")
 	@PostMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Execute a Wash")
@@ -189,6 +190,7 @@ public class BookingController {
 		}
 	}
 
+	@SuppressWarnings("null")
 	@DeleteMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Delete a booking by id")
