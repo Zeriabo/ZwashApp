@@ -9,17 +9,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import io.github.cdimascio.dotenv.Dotenv;
-import java.io.FileInputStream;
-import java.io.IOException;
+
 public class FirebaseInitializer {
 
 
