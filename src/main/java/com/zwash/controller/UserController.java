@@ -72,19 +72,15 @@ public class UserController {
 					logger.info("User has signed in successfully "+userInfo.getUsername());
 					 return new ResponseEntity<>(
 							 signedUser, HttpStatus.OK);
-
-
 				}else {
 					
 					logger.error("User doesn't exists "+userInfo.getUsername());
 					throw new UserIsNotActiveException(userInfo.getUsername());
-
 				}
 
 			}else {
 				logger.info("User has not signed in Inncorrect password or username "+userInfo.getUsername());
-				 return new ResponseEntity<>(
-						  HttpStatus.NOT_ACCEPTABLE);
+				 return new ResponseEntity<>(						  HttpStatus.NOT_ACCEPTABLE);
 			}
 
 		} catch (Exception e) {
