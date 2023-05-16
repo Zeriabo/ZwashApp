@@ -42,22 +42,18 @@ public class BookingController {
 	private UserService userService;
 	@Autowired
 	private BookingService bookingService;
-	
+
 	@Autowired
 	private CarWashService carWashService;
 
+	Logger logger = LoggerFactory.getLogger(BookingController.class);
 
-    Logger logger = LoggerFactory.getLogger(BookingController.class);
-
-
-    @GetMapping(value="/{id}")
+	@GetMapping(value = "/{id}")
 	@ApiOperation(value = "Get a booking by ID", response = Booking.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Successfully retrieved booking"),
-			@ApiResponse(code = 404, message = "Booking not found")
-	})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved booking"),
+			@ApiResponse(code = 404, message = "Booking not found") })
 	public ResponseEntity<Booking> getBooking(@PathVariable Long id) {
-    	Booking booking = bookingService.getBookingById(id);
+		Booking booking = bookingService.getBookingById(id);
 		if (booking != null) {
 			return new ResponseEntity<>(booking, HttpStatus.OK);
 		} else {
@@ -65,59 +61,49 @@ public class BookingController {
 		}
 	}
 
- 
-    @GetMapping
+	@GetMapping
 	@ApiOperation(value = "Get all bookings", response = BookingDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Successfully retrieved bookings"),
-			@ApiResponse(code = 404, message = "Bookings not found")
-	})
-	public  ResponseEntity<List<BookingDTO>>getAllBookings() throws Exception {
-    	try {
-    		List<BookingDTO> list= bookingService.getAllBookings();
-		return new ResponseEntity<>(list, HttpStatus.OK);
-    	}catch(Exception ex)
-    	{
-    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    	}
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved bookings"),
+			@ApiResponse(code = 404, message = "Bookings not found") })
+	public ResponseEntity<List<BookingDTO>> getAllBookings() throws Exception {
+		try {
+			List<BookingDTO> list = bookingService.getAllBookings();
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
-    @GetMapping("/user/{id}")
- 	@ApiOperation(value = "Get bookings belong to a User", response = BookingDTO.class, responseContainer = "List")
- 	@ApiResponses(value = {
- 			@ApiResponse(code = 200, message = "Successfully retrieved bookings"),
- 			@ApiResponse(code = 404, message = "Bookings not found")
- 	})
- 	public  ResponseEntity<List<BookingDTO>>getUsersBookings(@PathVariable("id") Long userId) throws Exception {
-     	try {
-     		User user = userService.getUser(userId);
-     		List<BookingDTO> list= bookingService.getBookingsByUserId(user);
- 		return new ResponseEntity<>(list, HttpStatus.OK);
- 		  	
-    } catch (UserIsNotFoundException ex) {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    } catch (Exception ex) {
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
- 	}
+	@GetMapping("/user/{id}")
+	@ApiOperation(value = "Get bookings belong to a User", response = BookingDTO.class, responseContainer = "List")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved bookings"),
+			@ApiResponse(code = 404, message = "Bookings not found") })
+	public ResponseEntity<List<BookingDTO>> getUsersBookings(@PathVariable("id") Long userId) throws Exception {
+		try {
+			User user = userService.getUser(userId);
+			List<BookingDTO> list = bookingService.getBookingsByUserId(user);
+			return new ResponseEntity<>(list, HttpStatus.OK);
 
-  
-    @PostMapping
+		} catch (UserIsNotFoundException ex) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Create a booking", response = Booking.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "Successfully created booking"),
-			@ApiResponse(code = 400, message = "Invalid request")
-	})
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created booking"),
+			@ApiResponse(code = 400, message = "Invalid request") })
 	public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws UserIsNotFoundException {
 		if (booking == null) {
 			throw new IllegalArgumentException("Booking  cannot be null");
 		}
-		User user =userService.getUserFromToken(booking.getToken());
-		
+		User user = userService.getUserFromToken(booking.getToken());
+
 		booking.setUser(user);
-	
-	
+
 		if (booking.getCar() == null) {
 			throw new IllegalArgumentException("Car object cannot be null");
 		}
@@ -135,21 +121,21 @@ public class BookingController {
 		// Save the car entity if it is not already persisted
 		Long carId = booking.getCar() != null ? booking.getCar().getCarId() : null;
 		if (carId == null) {
-			logger.error("The car "+booking.getCar().getRegisterationPlate()+ "  is not registered in the system!");
-			throw new IllegalArgumentException("There is no car in the system with registeration number "+booking.getCar().getRegisterationPlate());
+			logger.error("The car " + booking.getCar().getRegisterationPlate() + "  is not registered in the system!");
+			throw new IllegalArgumentException("There is no car in the system with registeration number "
+					+ booking.getCar().getRegisterationPlate());
 		}
-       logger.info("The booking for "+booking.getCar().getRegisterationPlate()+ " is saved successfully!" );
+		logger.info("The booking for " + booking.getCar().getRegisterationPlate() + " is saved successfully!");
 		bookingService.saveBooking(booking);
 		return new ResponseEntity<>(booking, HttpStatus.CREATED);
 	}
+
 	@PutMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update an existing booking", response = Booking.class)
-	@ApiResponses(value = {
-	@ApiResponse(code = 200, message = "Booking updated successfully"),
-	@ApiResponse(code = 400, message = "Invalid request. Check input parameters"),
-	@ApiResponse(code = 404, message = "Booking with provided id not found")
-	})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Booking updated successfully"),
+			@ApiResponse(code = 400, message = "Invalid request. Check input parameters"),
+			@ApiResponse(code = 404, message = "Booking with provided id not found") })
 	public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking newBooking) {
 		if (newBooking == null) {
 			throw new IllegalArgumentException("Booking object cannot be null");
@@ -172,80 +158,76 @@ public class BookingController {
 			booking.setCar(newBooking.getCar());
 			booking.setWashingProgram(newBooking.getWashingProgram());
 			booking.setScheduledTime(newBooking.getScheduledTime());
-			 bookingService.saveBooking(booking);
-			 logger.info("the  booking for "+booking.getCar().getRegisterationPlate()+" has been updated successfully");
+			bookingService.saveBooking(booking);
+			logger.info(
+					"the  booking for " + booking.getCar().getRegisterationPlate() + " has been updated successfully");
 			return new ResponseEntity<>(booking, HttpStatus.OK);
 		} else {
 			logger.error("Booking with id " + id + " not found");
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
-	    @PostMapping("/{id}")
-		@Transactional
-		@ApiOperation(value = "Execute a Wash")
-		@ApiResponses(value = {
-		@ApiResponse(code = 204, message = "Wash executed successfully"),
-		@ApiResponse(code = 404, message = "Booking with provided id not found")
-		})
-		public ResponseEntity<Void> executeBookingWash(@PathVariable Long id) {
-			Booking booking = bookingService.getBookingById(id);
-			if (booking != null) {
-				carWashService.executeCarWash(booking);
-				
-				 logger.info("the  booking for "+booking.getCar().getRegisterationPlate()+" has been executed successfully");
-					
-				return new ResponseEntity<>(HttpStatus.ACCEPTED);
-			} else {
-				logger.error("Booking with car " + booking.getCar().getRegisterationPlate() + " not executed!");
-				
-				throw new IllegalArgumentException("Booking with id " + id + " not found");
-			}
-		}
 
-   @DeleteMapping("/{id}")
+	@PostMapping("/{id}")
+	@Transactional
+	@ApiOperation(value = "Execute a Wash")
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Wash executed successfully"),
+			@ApiResponse(code = 404, message = "Booking with provided id not found") })
+	public ResponseEntity<Void> executeBookingWash(@PathVariable Long id) {
+		Booking booking = bookingService.getBookingById(id);
+		if (booking != null) {
+			carWashService.executeCarWash(booking);
+
+			logger.info(
+					"the  booking for " + booking.getCar().getRegisterationPlate() + " has been executed successfully");
+
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		} else {
+			logger.error("Booking with car " + booking.getCar().getRegisterationPlate() + " not executed!");
+
+			throw new IllegalArgumentException("Booking with id " + id + " not found");
+		}
+	}
+
+	@DeleteMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Delete a booking by id")
-	@ApiResponses(value = {
-	@ApiResponse(code = 204, message = "Booking deleted successfully"),
-	@ApiResponse(code = 404, message = "Booking with provided id not found")
-	})
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Booking deleted successfully"),
+			@ApiResponse(code = 404, message = "Booking with provided id not found") })
 	public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
 		Booking booking = bookingService.getBookingById(id);
 		if (booking != null) {
-			 logger.info("the  booking for "+booking.getCar().getRegisterationPlate()+" has been deleted successfully");
-				
+			logger.info(
+					"the  booking for " + booking.getCar().getRegisterationPlate() + " has been deleted successfully");
+
 			bookingService.deleteBooking(booking);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			logger.error("Booking with car " + booking.getCar().getRegisterationPlate() + " not deleted!");
-			
+
 			throw new IllegalArgumentException("Booking with id " + id + " not found");
 		}
 	}
+
 	@GetMapping("validate/{registrationPlate}")
 	@ApiOperation(value = "Check if a booking exists for a given car registration plate", response = Boolean.class)
-	@ApiResponses(value = {
-	@ApiResponse(code = 200, message = "Request processed successfully"),
-	@ApiResponse(code = 404, message = "Car with provided registration plate not found")
-	})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Request processed successfully"),
+			@ApiResponse(code = 404, message = "Car with provided registration plate not found") })
 	public ResponseEntity<Boolean> isBookingExistsForCar(@PathVariable String registrationPlate) {
 		Car car = carService.getCar(registrationPlate);
 		if (car == null) {
 			// Car not found
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
 		}
-		if(bookingService.isBookingExistsForCar(registrationPlate))
-				{
-			logger.info("the  booking for "+registrationPlate+" has been deleted successfully");
-			
+		if (bookingService.isBookingExistsForCar(registrationPlate)) {
+			logger.info("the  booking for " + registrationPlate + " has been deleted successfully");
 
 			return ResponseEntity.ok(bookingService.isBookingExistsForCar(registrationPlate));
-				}else {
-					logger.error("the  booking for "+registrationPlate+" has not been deleted successfully");
-					
-					return ResponseEntity.status(400).body(false);
-				}
-	
+		} else {
+			logger.error("the  booking for " + registrationPlate + " has not been deleted successfully");
+
+			return ResponseEntity.status(400).body(false);
+		}
 
 	}
 
