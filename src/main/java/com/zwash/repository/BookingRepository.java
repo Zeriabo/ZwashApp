@@ -26,7 +26,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 	 @Query("SELECT b FROM Booking b WHERE b.user = :user")
 	 List<Booking> findByUser(User user);
 	 
-	 @Query("Update  Booking b SET b.executed:=true WHERE b.id = :id")
+	 @Query("Update  Booking b SET b.executed=true WHERE b.id = :id")
 	 boolean executeWash(Long id);
 	 
 
