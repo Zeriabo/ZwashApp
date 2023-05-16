@@ -31,6 +31,10 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.Api;
 import jakarta.transaction.Transactional;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 
 @RestController
 @RequestMapping("v1/bookings")
@@ -126,8 +130,28 @@ public class BookingController {
 					+ booking.getCar().getRegisterationPlate());
 		}
 		logger.info("The booking for " + booking.getCar().getRegisterationPlate() + " is saved successfully!");
-		bookingService.saveBooking(booking);
-		return new ResponseEntity<>(booking, HttpStatus.CREATED);
+		Booking newBooking = bookingService.saveBooking(booking);
+		if (newBooking instanceof Booking) {
+			// Construct the message
+			Message message = Message.builder()
+					.setNotification(Notification.builder().setTitle("Booking made!")
+							.setBody("You have made a booking for car: " + booking.getCar().getRegisterationPlate())
+							.build())
+					.setToken(booking.getUser().getDeviceRegistrationToken())// to get from the react native app
+					.build();
+
+			// Send the message
+			try {
+				String response = FirebaseMessaging.getInstance().send(message);
+				System.out.println("Successfully sent message: " + response);
+			} catch (FirebaseMessagingException e) {
+				System.out.println("Failed to send message: " + e.getMessage());
+			}
+			return new ResponseEntity<>(booking, HttpStatus.CREATED);
+		} else {
+			return new ResponseEntity<>(booking, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
 
 	@PutMapping("/{id}")
@@ -161,6 +185,21 @@ public class BookingController {
 			bookingService.saveBooking(booking);
 			logger.info(
 					"the  booking for " + booking.getCar().getRegisterationPlate() + " has been updated successfully");
+			// Construct the message
+			Message message = Message.builder()
+					.setNotification(Notification.builder().setTitle("Booking made!")
+							.setBody("You have updated a booking for car: " + booking.getCar().getRegisterationPlate())
+							.build())
+					.setToken("DEVICE_REGISTRATION_TOKEN")// to get from the react native app
+					.build();
+
+			// Send the message
+			try {
+				String response = FirebaseMessaging.getInstance().send(message);
+				System.out.println("Successfully sent message: " + response);
+			} catch (FirebaseMessagingException e) {
+				System.out.println("Failed to send message: " + e.getMessage());
+			}
 			return new ResponseEntity<>(booking, HttpStatus.OK);
 		} else {
 			logger.error("Booking with id " + id + " not found");

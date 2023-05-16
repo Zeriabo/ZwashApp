@@ -106,6 +106,14 @@ public class User {
 	}
 
 	
+	public String getDeviceRegistrationToken() {
+		return deviceRegistrationToken;
+	}
+	public void setDeviceRegistrationToken(String deviceRegistrationToken) {
+		this.deviceRegistrationToken = deviceRegistrationToken;
+	}
+
+
 	@Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
      @Column(name = "id", unique = true, nullable = false)
@@ -136,7 +144,13 @@ public class User {
 	 @Column(name = "active")
 	private Boolean active;
 
+	 @Column(name = "deviceRegistrationToken")
+     @ApiModelProperty(value = "The Device registeration token of the user.")
+    private String deviceRegistrationToken;
+    
 	private String token;
+
+
 
 
      @CreationTimestamp

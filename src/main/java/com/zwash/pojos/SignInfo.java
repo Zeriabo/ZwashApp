@@ -9,10 +9,11 @@ public class SignInfo {
 
 	}
 
-	public SignInfo(String username,String password)
+	public SignInfo(String username,String password, String deviceRegistrationToken)
 	{
 		this.password=password;
 		this.setUsername(username);
+		this.setDeviceRegistrationToken(deviceRegistrationToken);
 	}
 
 
@@ -32,7 +33,16 @@ public class SignInfo {
 		this.username = username;
 	}
 
+	public String getDeviceRegistrationToken() {
+		return deviceRegistrationToken;
+	}
+
+	public void setDeviceRegistrationToken(String deviceRegistrationToken) {
+		this.deviceRegistrationToken = deviceRegistrationToken;
+	}
+
 	private String username;
 	private String password;
+	 private String deviceRegistrationToken;
 
 }

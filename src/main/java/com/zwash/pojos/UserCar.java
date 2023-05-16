@@ -1,11 +1,8 @@
 package com.zwash.pojos;
 
-
 import java.time.LocalDate;
 
-
 public class UserCar {
-
 
 	public UserCar() {
 
@@ -23,11 +20,9 @@ public class UserCar {
 	 * @throws Exception
 	 */
 	public void setRegisterationPlate(String registerationPlate) throws Exception {
-	this.registerationPlate=registerationPlate;
+		this.registerationPlate = registerationPlate;
 
 	}
-
-
 
 	/**
 	 * @return the mark
@@ -57,8 +52,7 @@ public class UserCar {
 		this.dateOfManufacture = dateOfManufacture;
 	}
 
-
-    public String getToken() {
+	public String getToken() {
 		return token;
 	}
 
@@ -66,18 +60,22 @@ public class UserCar {
 		this.token = token;
 	}
 
+	public String getDeviceRegistrationToken() {
+		return deviceRegistrationToken;
+	}
+
+	public void setDeviceRegistrationToken(String deviceRegistrationToken) {
+		this.deviceRegistrationToken = deviceRegistrationToken;
+	}
 
 	private String token;
 
-
 	private String registerationPlate;
-
 
 	private String manufacture;
 
-
 	private LocalDate dateOfManufacture;
 
-
+	private String deviceRegistrationToken;
 
 }
