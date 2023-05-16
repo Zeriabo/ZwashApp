@@ -107,7 +107,10 @@ public class BookingController {
 		User user = userService.getUserFromToken(booking.getToken());
 
 		booking.setUser(user);
-
+		
+		if (booking.getStation() == null) {
+			throw new IllegalArgumentException("Station object cannot be null");
+		}
 		if (booking.getCar() == null) {
 			throw new IllegalArgumentException("Car object cannot be null");
 		}
@@ -163,6 +166,9 @@ public class BookingController {
 	public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking newBooking) {
 		if (newBooking == null) {
 			throw new IllegalArgumentException("Booking object cannot be null");
+		}
+		if (newBooking.getStation() == null) {
+			throw new IllegalArgumentException("Station object cannot be null");
 		}
 		if (newBooking.getCar() == null) {
 			throw new IllegalArgumentException("Car object cannot be null");
