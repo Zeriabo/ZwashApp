@@ -42,3 +42,4 @@ out/
 /data/
 src/main/resources/application.properties
 config/zwash-385807-firebase-adminsdk-3fuy0-71a94dfd15.json
+.env
