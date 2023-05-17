@@ -31,6 +31,8 @@ services:
       - server.port=7001
       - logging.level.org.springframework=DEBUG
       - spring.main.allow-bean-definition-overriding=true
+      - ENCRYPTION_ALGORITHM=AES
+      - ENCRYPTION_KEY=asjkdhaskjdh2938u1ihdb0wf1839hdiwqndoi
   db:
     image: postgres:15.2
     restart: always

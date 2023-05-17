@@ -14,61 +14,89 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class FirebaseInitializer {
 
+	  private static final String JSON_FILE_PATH = "config/zwash-385807-firebase-adminsdk-3fuy0-71a94dfd15.json";
+	   
 
+	    private static final String ENCRYPTED_FILE_PATH = "config/encrypted-json.txt";
 
     public static void initializeFirebaseApp() {
         try {
        
             Dotenv dotenv = Dotenv.configure().load();
-            
+
+         // Check if the encrypted file exists
+            if (!isEncryptedFileExists()) {
+                // Encrypt the JSON file and create the encrypted file
+                encryptJsonFile(JSON_FILE_PATH, ENCRYPTED_FILE_PATH);
+              
+            }
             // Decrypt the JSON file content
             String decryptedContent = decryptJsonFile();
 
+
       
-            // Create Firebase options from the decrypted content
+         // Create Firebase options from the decrypted content
             FirebaseOptions options = new FirebaseOptions.Builder()
-            		.setCredentials(GoogleCredentials.fromStream(new ByteArrayInputStream(decryptedContent.getBytes())))
+                    .setCredentials(GoogleCredentials.fromStream(new ByteArrayInputStream(decryptedContent.getBytes())))
                     .build();
+
 
             FirebaseApp.initializeApp(options);
             
-         	encryptJsonFile();
+          
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    private static String decryptJsonFile() throws IOException {
-        FileInputStream file = new FileInputStream("config/encrypted-zwash-385807-firebase-adminsdk-3fuy0-71a94dfd15.json");
-
-        // Read encrypted file content
-        byte[] encryptedBytes = file.readAllBytes();
-        String encryptedContent = new String(encryptedBytes);
-
-        // Decrypt the JSON file content using EncryptionUtils
-        String decryptedContent = EncryptionUtils.decrypt(encryptedContent);
-        
-
-        file.close();
-        return decryptedContent;
+    private static boolean isEncryptedFileExists() {
+        File file = new File(ENCRYPTED_FILE_PATH);
+        return file.exists();
     }
-    private static void encryptJsonFile() throws IOException {
-    	File file= new File("config/encrypted-zwash-385807-firebase-adminsdk-3fuy0-71a94dfd15.json");
-        FileInputStream fileinputStream = new FileInputStream(file);
+    private static void encryptJsonFile(String jsonFilePath, String encryptedFilePath) throws IOException {
+        File jsonFile = new File(jsonFilePath);
+        FileInputStream fileInputStream = new FileInputStream(jsonFile);
 
         // Read the JSON file content
-        byte[] jsonBytes = fileinputStream.readAllBytes();
+        byte[] jsonBytes = fileInputStream.readAllBytes();
         String jsonContent = new String(jsonBytes);
 
-        // Encrypt the JSON file content using EncryptionUtils
+        // Encrypt the JSON content
         String encryptedContent = EncryptionUtils.encrypt(jsonContent);
 
-        // Write the encrypted content back to the file
-        FileOutputStream outputFile = new FileOutputStream("config/encrypted-zwash-385807-firebase-adminsdk-3fuy0-71a94dfd15.json");
-        outputFile.write(encryptedContent.getBytes());
- 
-       
-        outputFile.close();
+        // Close the input stream
+        fileInputStream.close();
+
+        // Delete the original JSON file
+        jsonFile.delete();
+        
+        // Create the new JSON file
+        File newJsonFile = new File(jsonFilePath);
+
+        // Write the encrypted content to the new JSON file
+        FileOutputStream fileOutputStream = new FileOutputStream(newJsonFile);
+        fileOutputStream.write(encryptedContent.getBytes());
+
+        fileOutputStream.close();
+
+        // Create the encrypted file
+        FileOutputStream encryptedOutputStream = new FileOutputStream(encryptedFilePath);
+        encryptedOutputStream.write(encryptedContent.getBytes());
+
+        encryptedOutputStream.close();
+        newJsonFile.delete();
+    }
+    private static String decryptJsonFile() throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(ENCRYPTED_FILE_PATH);
+
+        // Read the encrypted file content
+        byte[] encryptedBytes = fileInputStream.readAllBytes();
+        String encryptedContent = new String(encryptedBytes);
+
+        // Decrypt the content
+        String decryptedContent = EncryptionUtils.decrypt(encryptedContent);
+
+        fileInputStream.close();
+        return decryptedContent;
     }
 
 }
