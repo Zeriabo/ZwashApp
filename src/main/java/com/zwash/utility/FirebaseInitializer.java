@@ -20,8 +20,6 @@ public class FirebaseInitializer {
 	public static void initializeFirebaseApp() {
 		try {
 
-			Dotenv dotenv = Dotenv.configure().load();
-
 			// Check if the encrypted file exists
 			if (!isEncryptedFileExists()) {
 				// Encrypt the JSON file and create the encrypted file
