@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/stations")
+@RequestMapping("/v1/stations")
 public class StationController {
 
     @Autowired

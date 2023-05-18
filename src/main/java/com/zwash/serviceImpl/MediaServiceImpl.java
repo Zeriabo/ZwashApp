@@ -30,21 +30,38 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public Media saveMedia(Media media,Station station ) {
-    	
-    	   // Upload logo file
-        if (media.getLogo() != null && media.getLogo()!="") {
+    public Media saveMedia(Media media, Station station) {
+        Media existingMedia = station.getMedia();
+        
+        // Upload logo file
+        if (media.getLogoFile() != null && !media.getLogoFile().isEmpty()) {
             String logoFileName = saveFile(media.getLogoFile());
-            station.getMedia().setLogo(logoFileName);
+            if (existingMedia == null) {
+                Media newMedia = new Media();
+                newMedia.setLogo(logoFileName);
+                station.setMedia(newMedia);
+            } else {
+                existingMedia.setLogo(logoFileName);
+            }
         }
 
-     // Upload picture file
-        if (media.getPictureFile() != null && media.getPicture()!="") {
+        // Upload picture file
+        if (media.getPictureFile() != null && !media.getPictureFile().isEmpty()) {
             String pictureFileName = saveFile(media.getPictureFile());
-            station.getMedia().setPicture(pictureFileName);
+            if (existingMedia == null) {
+                Media newMedia = new Media();
+                newMedia.setPicture(pictureFileName);
+     
+                station.setMedia(newMedia);
+                
+            } else {
+                existingMedia.setPicture(pictureFileName);
+            }
         }
-        return mediaRepository.save(media);
+
+        return mediaRepository.save(station.getMedia());
     }
+
 
     @Override
     public Media getMediaById(Long id) {
