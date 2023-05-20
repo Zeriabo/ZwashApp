@@ -44,7 +44,7 @@ public class CarController {
 			@ApiResponse(code = 202, message = "Car registered successfully"),
 			@ApiResponse(code = 500, message = "Internal server error")
 	})
-	public ResponseEntity<Void> registerCar(@RequestBody UserCar userCar) throws Exception {
+	public ResponseEntity<Car> registerCar(@RequestBody UserCar userCar) throws Exception {
 		Car car = carService.register(userCar);
 		return car instanceof Car ? ResponseEntity.accepted().build() : ResponseEntity.status(500).build();
 	}
