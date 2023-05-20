@@ -40,7 +40,8 @@ public class StationController {
         Station existingStation = stationRepository.findById(id).orElse(null);
         if (existingStation != null) {
             existingStation.setName(station.getName());
-            existingStation.setAddress(station.getAddress());
+            existingStation.setLatitude(station.getLatitude());
+            existingStation.setLongitude(station.getLongitude());
             return stationRepository.save(existingStation);
         }
         return null;

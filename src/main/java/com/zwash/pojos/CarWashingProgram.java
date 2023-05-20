@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -25,8 +26,12 @@ public abstract class CarWashingProgram {
 	  @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long id;
+	  
+	  @ManyToOne
+	    private Station station;
+	  
 
-	  @JsonProperty("type")
+	@JsonProperty("type")
 	    @Column(name = "program_type", insertable = false, updatable = false)
 	    private String programType;
  
@@ -54,5 +59,12 @@ public abstract class CarWashingProgram {
     public void setProgramType(String programType) {
         this.programType = programType;
     }
+	  public Station getStation() {
+		return station;
+	}
+
+	public void setStation(Station station) {
+		this.station = station;
+	}
 
 }

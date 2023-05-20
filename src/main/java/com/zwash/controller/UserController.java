@@ -68,7 +68,7 @@ public class UserController {
 					return new ResponseEntity<>(signedUser, HttpStatus.OK);
 				} else {
 
-					logger.error("User doesn't exists " + userInfo.getUsername());
+					logger.error("User is not actived" + userInfo.getUsername());
 					throw new UserIsNotActiveException(userInfo.getUsername());
 				}
 

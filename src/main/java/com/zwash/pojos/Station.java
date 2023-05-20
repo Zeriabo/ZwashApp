@@ -1,12 +1,16 @@
 package com.zwash.pojos;
 
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -24,6 +28,16 @@ public class Station {
     @OneToOne
     @JoinColumn(name = "media_id")
     private Media media;
+    
+    @Column
+    private double latitude;
+    
+    @Column
+    private double longitude;
+    
+    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
+    private List<CarWashingProgram> programs;
+
     
     public Media getMedia() {
 		return media;
@@ -49,15 +63,31 @@ public class Station {
 		this.name = name;
 	}
 
-	private String address;
-
-	public String getAddress() {
-		return address;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public List<CarWashingProgram> getPrograms() {
+		return programs;
+	}
+
+	public void setPrograms(List<CarWashingProgram> programs) {
+		this.programs = programs;
+	}
+
+
 
 
     

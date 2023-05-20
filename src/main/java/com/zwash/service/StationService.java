@@ -14,7 +14,7 @@ public interface StationService  extends Serializable {
 
 	 Station getStation(Long id) throws StationNotExistsException;
 	 void setMedia(Long id,Media media);
-	 void setAddress(Long id, String address);
+	void setAddress(Long id, Long latitude, Long longitude);
 
 
 

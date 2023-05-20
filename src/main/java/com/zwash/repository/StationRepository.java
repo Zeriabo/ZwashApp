@@ -21,8 +21,8 @@ public interface StationRepository extends JpaRepository<Station, Long> {
 	@Modifying
 	@Query("UPDATE Station s SET s.media = :media WHERE s.id = :id")
 	void setMedia(@Param("id") Long id, @Param("media") Media media);
-
+	
 	@Modifying
-	@Query("UPDATE Station s SET s.address = :address WHERE s.id = :id")
-	void setAddress(@Param("id") Long id, @Param("address") String address);
+	@Query("UPDATE Station s SET s.latitude = :latitude, s.longitude = :longitude WHERE s.id = :id")
+	void setAddress(@Param("id") Long id, @Param("latitude") Long latitude, @Param("longitude") Long longitude);
 }

@@ -40,9 +40,9 @@ public class StationServiceImpl implements StationService {
 
 	@Override
 	@Transactional
-	public void setAddress(Long id, String address) {
+	public void setAddress(Long id,Long latitude, Long longitude) {
 		
-		stationRepository.setAddress(id, address);
+		stationRepository.setAddress(id,  latitude,  longitude);
 		
 	}
 
