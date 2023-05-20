@@ -9,13 +9,17 @@ import io.swagger.annotations.ApiResponses;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zwash.pojos.Car;
 import com.zwash.pojos.CarWashingProgram;
+import com.zwash.service.CarWashingProgramService;
 
 @RestController
 @RequestMapping("v1/programs")
@@ -24,7 +28,9 @@ public class CarWashingProgramController {
     private List<CarWashingProgram> washingPrograms;
 
     Logger logger = LoggerFactory.getLogger(CarWashingProgramController.class);
-
+   
+    @Autowired
+    private CarWashingProgramService carWashingProgramService;
 
     public CarWashingProgramController() {
         washingPrograms = new ArrayList<>();
@@ -36,8 +42,10 @@ public class CarWashingProgramController {
             @ApiResponse(code = 400, message = "Invalid input")
     })
     @PostMapping("/")
-    public void addWashingProgram(@RequestBody CarWashingProgram washingProgram) {
-        washingPrograms.add(washingProgram);
+    public ResponseEntity<CarWashingProgram> addWashingProgram(@RequestBody CarWashingProgram washingProgram) {
+    	
+    	CarWashingProgram carWashingProgram = carWashingProgramService.createProgram(washingProgram);
+    	return carWashingProgram != null ? ResponseEntity.accepted().body(carWashingProgram) : ResponseEntity.status(500).build();
     }
 
     @ApiOperation(value = "Remove a car washing program")
