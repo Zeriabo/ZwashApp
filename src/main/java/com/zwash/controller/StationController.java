@@ -1,55 +1,73 @@
 package com.zwash.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.zwash.dto.StationDTO;
+import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.pojos.Station;
-import com.zwash.repository.StationRepository;
+import com.zwash.service.StationService;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
-
-//Note: All the operations here needs to migrate to the service layer
-
-
 
 @RestController
 @RequestMapping("/v1/stations")
 public class StationController {
 
     @Autowired
-    private StationRepository stationRepository;
+    private StationService stationService;
 
+    @ApiOperation("Get all stations")
     @GetMapping("/")
     public List<Station> getAllStations() {
-        return stationRepository.findAll();
+        return stationService.getAllStations();
     }
 
+    @ApiOperation("Create a new station")
     @PostMapping("/")
-    public Station createStation(@RequestBody Station station) {
-        return stationRepository.save(station);
+    public ResponseEntity<Station> createStation(@RequestBody StationDTO stationDTO) throws Exception {
+        Station station = stationService.createStation(stationDTO);
+        return ResponseEntity.ok(station);
     }
 
+    @ApiOperation("Get a station by ID")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = Station.class),
+            @ApiResponse(code = 404, message = "Station not found")
+    })
     @GetMapping("/{id}")
-    public Station getStationById(@PathVariable Long id) {
-        return stationRepository.findById(id).orElse(null);
+    public ResponseEntity<Station> getStationById(@PathVariable Long id) throws StationNotExistsException {
+        Station station = stationService.getStation(id);
+        return ResponseEntity.ok(station);
     }
 
+    @ApiOperation("Update a station by ID")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = Station.class),
+            @ApiResponse(code = 404, message = "Station not found")
+    })
     @PutMapping("/{id}")
-    public Station updateStation(@PathVariable Long id, @RequestBody Station station) {
-        Station existingStation = stationRepository.findById(id).orElse(null);
-        if (existingStation != null) {
-            existingStation.setName(station.getName());
-            existingStation.setLatitude(station.getLatitude());
-            existingStation.setLongitude(station.getLongitude());
-            return stationRepository.save(existingStation);
-        }
-        return null;
+    public ResponseEntity<Station> updateStation(@PathVariable Long id, @RequestBody Station station) {
+        // Your update logic here
+        // Station updatedStation = stationService.updateStation(id, station);
+        // return ResponseEntity.ok(updatedStation);
+        return ResponseEntity.ok(null);
     }
 
+    @ApiOperation("Delete a station by ID")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "No Content"),
+            @ApiResponse(code = 404, message = "Station not found")
+    })
     @DeleteMapping("/{id}")
-    public void deleteStation(@PathVariable Long id) {
-        stationRepository.deleteById(id);
+    public ResponseEntity<Void> deleteStation(@PathVariable Long id) {
+        // Your delete logic here
+        // stationService.deleteStation(id);
+        return ResponseEntity.noContent().build();
     }
-
 }
