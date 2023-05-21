@@ -1,5 +1,6 @@
 package com.zwash.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,6 +22,7 @@ import jakarta.persistence.ManyToOne;
     @JsonSubTypes.Type(value = FoamCarWashingProgram.class, name = "foam"),
     @JsonSubTypes.Type(value = TouchlessCarWashingProgram.class, name = "touch_less")
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class CarWashingProgram {
 
 	  @Id
@@ -31,8 +33,8 @@ public abstract class CarWashingProgram {
 	    private Station station;
 	  
 
-	@JsonProperty("type")
-	    @Column(name = "program_type", insertable = false, updatable = false)
+	  @JsonProperty("program")
+	  @Column(name = "program_type", insertable = false, updatable = false)
 	    private String programType;
  
     public abstract void setWaterPressure(int pressure);

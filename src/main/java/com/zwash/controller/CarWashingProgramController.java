@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zwash.exceptions.ProgramAlreadyExistsException;
+import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.CarWashingProgram;
 import com.zwash.service.CarWashingProgramService;
@@ -42,10 +44,16 @@ public class CarWashingProgramController {
             @ApiResponse(code = 400, message = "Invalid input")
     })
     @PostMapping("/")
-    public ResponseEntity<CarWashingProgram> addWashingProgram(@RequestBody CarWashingProgram washingProgram) {
+    public ResponseEntity<Boolean> addWashingProgram(@RequestBody CarWashingProgram washingProgram) throws StationNotExistsException, ProgramAlreadyExistsException {
     	
     	CarWashingProgram carWashingProgram = carWashingProgramService.createProgram(washingProgram);
-    	return carWashingProgram != null ? ResponseEntity.accepted().body(carWashingProgram) : ResponseEntity.status(500).build();
+    	if( carWashingProgram != null){
+    		
+    	return	ResponseEntity.accepted().body(true) ;
+    	
+    	}else {
+    		return ResponseEntity.status(500).build();
+    	}
     }
 
     @ApiOperation(value = "Remove a car washing program")

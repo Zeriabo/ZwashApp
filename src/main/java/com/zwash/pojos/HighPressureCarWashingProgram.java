@@ -27,12 +27,12 @@ public class HighPressureCarWashingProgram extends CarWashingProgram {
     // Getters and setters
 
     @Override
-    public void setWaterPressure(int pressure) {
-        this.waterPressure = pressure;
+    public void setWaterPressure(int waterPressure) {
+        this.waterPressure = waterPressure;
     }
 
     @Override
-    public void setSoapAmount(int amount) {
+    public void setSoapAmount(int soapAmount) {
         // This method doesn't apply to high-pressure car washing programs
     }
 

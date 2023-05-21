@@ -15,6 +15,7 @@ import com.zwash.pojos.HighPressureCarWashingProgram;
 import com.zwash.pojos.Media;
 import com.zwash.pojos.Station;
 import com.zwash.pojos.TouchlessCarWashingProgram;
+import com.zwash.repository.CarWashingProgramRepository;
 import com.zwash.repository.StationRepository;
 import com.zwash.service.StationService;
 
@@ -27,6 +28,9 @@ public class StationServiceImpl implements StationService {
 	@Autowired
 	private StationRepository stationRepository;
 
+	@Autowired
+	private CarWashingProgramRepository carWashingProgramRepository;
+	
 	@Override
 	public Station getStation(Long id) throws StationNotExistsException {
 		
@@ -70,7 +74,8 @@ public class StationServiceImpl implements StationService {
 	    
 	    // Set the programs (CarWashingPrograms) for the station
 	    List<CarWashingProgram> programs = new ArrayList<>();
-	    for (CarWashingProgramDTO programRequestDTO : StationDTO.getPrograms()) {
+	    if(stationRequestDTO.getPrograms()!=null) {
+	    for (CarWashingProgramDTO programRequestDTO : stationRequestDTO.getPrograms()) {
 	        CarWashingProgram program;
 	        if (programRequestDTO.getProgramType().equals("high_pressure")) {
 	            program = new HighPressureCarWashingProgram();
@@ -84,12 +89,29 @@ public class StationServiceImpl implements StationService {
 	        } else {
 	            throw new Exception(programRequestDTO.getProgramType());
 	        }
-	  
+	        carWashingProgramRepository.save(program);
 	        programs.add(program);
+	    }
 	    }
 	    station.setPrograms(programs);
 	    
 	    return stationRepository.save(station);
+	}
+
+	@Override
+	public Station updateStation(Station station) throws StationNotExistsException {
+		// TODO Auto-generated method stub
+		   Station existingStation = getStation(station.getId());
+		   
+		    // Update the station properties
+		    existingStation.setName(station.getName());
+		    existingStation.setLatitude(station.getLatitude());
+		    existingStation.setLongitude(station.getLongitude());
+		    
+		    existingStation.setPrograms(station.getPrograms());
+		    
+		    // Save the updated station
+		    return stationRepository.save(existingStation);
 	}
 
 	

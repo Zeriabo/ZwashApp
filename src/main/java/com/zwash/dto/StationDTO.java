@@ -2,12 +2,30 @@ package com.zwash.dto;
 
 import java.util.List;
 
+
+
 public class StationDTO {
 
     private String name;
     private double latitude;
     private double longitude;
-    private static List<CarWashingProgramDTO> programs;
+    private List<CarWashingProgramDTO> programs;
+    // Default constructor
+    public StationDTO() {
+    }
+
+    
+    public StationDTO(String name, double latitude, double longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+    public StationDTO(String name, double latitude, double longitude, List<CarWashingProgramDTO> programs ) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.programs=programs;
+    }
     
 	public String getName() {
 		return name;
@@ -27,7 +45,7 @@ public class StationDTO {
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
-	public static List<CarWashingProgramDTO> getPrograms() {
+	public  List<CarWashingProgramDTO> getPrograms() {
 		return programs;
 	}
 	public void setPrograms(List<CarWashingProgramDTO> programs) {

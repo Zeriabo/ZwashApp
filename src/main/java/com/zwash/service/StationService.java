@@ -21,6 +21,6 @@ public interface StationService  extends Serializable {
 	void setAddress(Long id, Long latitude, Long longitude);
 	Station createStation(StationDTO stationDTO) throws Exception;
 
-
+	Station updateStation(Station station) throws StationNotExistsException;
 
 }
