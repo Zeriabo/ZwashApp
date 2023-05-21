@@ -33,13 +33,13 @@ public class FoamCarWashingProgram extends CarWashingProgram {
     // Getters and setters
 
     @Override
-    public void setWaterPressure(int pressure) {
-        this.waterPressure = pressure;
+    public void setWaterPressure(int waterPressure) {
+        this.waterPressure = waterPressure;
     }
 
     @Override
-    public void setSoapAmount(int amount) {
-        this.soapAmount = amount;
+    public void setSoapAmount(int soapAmount) {
+        this.soapAmount = soapAmount;
     }
 
     @Override
