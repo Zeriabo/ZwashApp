@@ -34,7 +34,7 @@ public abstract class CarWashingProgram {
 	  
 
 	  @JsonProperty("program")
-	  @Column(name = "program_type", insertable = false, updatable = false)
+	  @Column(name = "program_type")
 	    private String programType;
  
     public abstract void setWaterPressure(int pressure);

@@ -23,11 +23,20 @@ public class CarWashingProgramServiceImpl implements CarWashingProgramService {
     private StationService  stationService;
 
     @Override
-    public CarWashingProgram createProgram(CarWashingProgram program) throws StationNotExistsException, ProgramAlreadyExistsException {
-      Station station = program.getStation();
-      station= stationService.getStation(station.getId());
-      program.setStation(station);
-      List<CarWashingProgram> listprograms = station.getPrograms();
+    public CarWashingProgram createProgram(CarWashingProgram program) throws  Exception, ProgramAlreadyExistsException {
+    	List<CarWashingProgram> listprograms;
+    	Station station;
+    	
+     try {
+    	  station = program.getStation();
+         station= stationService.getStation(station.getId());
+         program.setStation(station);
+         program.setProgramType(program.getClass().getSimpleName());
+         listprograms   = station.getPrograms();
+     }catch(StationNotExistsException stationNotExistsException)
+     {
+    	 throw new StationNotExistsException(program.getStation().getId());
+     }
       // Check if a program with the same id exists in the list
       boolean programExists = false;
       for (CarWashingProgram existingProgram : listprograms) {
@@ -65,5 +74,20 @@ public class CarWashingProgramServiceImpl implements CarWashingProgramService {
     public void deleteProgram(Long id) {
         programRepository.deleteById(id);
     }
+
+	@Override
+	public List<CarWashingProgram> getPrograms(Long stationId) {
+		
+		return programRepository.findByStationId(stationId);
+	
+	}
+	
+	@Override
+	public List<CarWashingProgram> getPrograms() {
+		
+		return programRepository.findAll();
+	
+	}
+
 
 }

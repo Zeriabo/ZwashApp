@@ -15,28 +15,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.zwash.exceptions.ProgramAlreadyExistsException;
-import com.zwash.exceptions.StationNotExistsException;
-import com.zwash.pojos.Car;
 import com.zwash.pojos.CarWashingProgram;
 import com.zwash.service.CarWashingProgramService;
-
 @RestController
 @RequestMapping("v1/programs")
 public class CarWashingProgramController {
 
-    private List<CarWashingProgram> washingPrograms;
+    private final Logger logger = LoggerFactory.getLogger(CarWashingProgramController.class);
 
-    Logger logger = LoggerFactory.getLogger(CarWashingProgramController.class);
-   
     @Autowired
     private CarWashingProgramService carWashingProgramService;
-
-    public CarWashingProgramController() {
-        washingPrograms = new ArrayList<>();
-    }
 
     @ApiOperation(value = "Add a new car washing program")
     @ApiResponses(value = {
@@ -44,16 +34,15 @@ public class CarWashingProgramController {
             @ApiResponse(code = 400, message = "Invalid input")
     })
     @PostMapping("/")
-    public ResponseEntity<Boolean> addWashingProgram(@RequestBody CarWashingProgram washingProgram) throws StationNotExistsException, ProgramAlreadyExistsException {
-    	
-    	CarWashingProgram carWashingProgram = carWashingProgramService.createProgram(washingProgram);
-    	if( carWashingProgram != null){
-    		
-    	return	ResponseEntity.accepted().body(true) ;
-    	
-    	}else {
-    		return ResponseEntity.status(500).build();
-    	}
+    public ResponseEntity<Boolean> addWashingProgram(@RequestBody CarWashingProgram washingProgram) {
+        try {
+            CarWashingProgram carWashingProgram = carWashingProgramService.createProgram(washingProgram);
+            logger.info("Washing program: {} was successfully registered!", carWashingProgram.getProgramType());
+            return ResponseEntity.accepted().body(true);
+        } catch (Exception e) {
+            logger.error("Failed to add washing program", e);
+            return ResponseEntity.status(500).body(false);
+        }
     }
 
     @ApiOperation(value = "Remove a car washing program")
@@ -62,8 +51,14 @@ public class CarWashingProgramController {
             @ApiResponse(code = 404, message = "Washing program not found")
     })
     @PostMapping("/{id}")
-    public void removeWashingProgram(@RequestBody CarWashingProgram washingProgram) {
-        washingPrograms.remove(washingProgram);
+    public ResponseEntity<Void> removeWashingProgram(@RequestBody CarWashingProgram washingProgram) {
+        try {
+            carWashingProgramService.deleteProgram(washingProgram.getId());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error("Failed to remove washing program", e);
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @ApiOperation(value = "Get all car washing programs")
@@ -72,8 +67,25 @@ public class CarWashingProgramController {
             @ApiResponse(code = 404, message = "Washing programs not found")
     })
     @GetMapping("/")
-    public List<CarWashingProgram> getWashingPrograms() {
-        return washingPrograms;
+    public ResponseEntity<List<CarWashingProgram>> getWashingPrograms(@RequestParam Long stationId) {
+        try {
+            List<CarWashingProgram> programs = carWashingProgramService.getPrograms(stationId);
+            return ResponseEntity.ok(programs);
+        } catch (Exception e) {
+            logger.error("Failed to retrieve washing programs", e);
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CarWashingProgram>> getAllWashingPrograms() {
+        try {
+            List<CarWashingProgram> programs = carWashingProgramService.getPrograms();
+            return ResponseEntity.ok(programs);
+        } catch (Exception e) {
+            logger.error("Failed to retrieve all washing programs", e);
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @ApiOperation(value = "Start a car washing program")
@@ -82,8 +94,13 @@ public class CarWashingProgramController {
             @ApiResponse(code = 404, message = "Washing program not found")
     })
     @PostMapping("/{id}/start")
-    public void startWashingProgram(@RequestBody CarWashingProgram washingProgram) {
-        washingProgram.startWashing();
+    public ResponseEntity<Void> startWashingProgram(@RequestBody CarWashingProgram washingProgram) {
+        try {
+            washingProgram.startWashing();
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error("Failed to start washing program", e);
+            return ResponseEntity.status(500).build();
+        }
     }
-
 }
