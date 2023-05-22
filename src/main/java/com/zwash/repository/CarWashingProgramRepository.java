@@ -14,6 +14,6 @@ import com.zwash.pojos.CarWashingProgram;
 public interface CarWashingProgramRepository extends JpaRepository<CarWashingProgram, Long> {
 
 
-	 @Query("SELECT * FROM car_washing_program c WHERE c.station_id = :stationId")
-	 List<CarWashingProgram> findByStationId(Long stationId);
-}
+	 @Query("SELECT c FROM CarWashingProgram c WHERE c.station.id = :stationId")
+	    List<CarWashingProgram> findByStationId(Long stationId);
+	}
