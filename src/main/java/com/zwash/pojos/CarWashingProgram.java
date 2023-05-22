@@ -1,5 +1,6 @@
 package com.zwash.pojos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -27,6 +28,7 @@ public abstract class CarWashingProgram {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@JsonBackReference
 	@ManyToOne
 	private Station station;
 

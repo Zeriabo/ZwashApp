@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zwash.dto.StationDTO;
 import com.zwash.exceptions.StationNotExistsException;
+import com.zwash.pojos.CarWashingProgram;
 import com.zwash.pojos.Media;
 import com.zwash.pojos.Station;
 
@@ -26,5 +27,7 @@ public interface StationService extends Serializable {
 	Station updateStation(Station station) throws StationNotExistsException;
 	
 	void removeStation(Long id)  throws StationNotExistsException;
+	
+	List<CarWashingProgram> getStationWashed(Long id ) throws StationNotExistsException;
 
 }

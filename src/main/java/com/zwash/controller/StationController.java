@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.zwash.dto.StationDTO;
 import com.zwash.exceptions.StationNotExistsException;
+import com.zwash.pojos.CarWashingProgram;
 import com.zwash.pojos.Station;
 import com.zwash.service.StationService;
 
@@ -28,7 +29,16 @@ public class StationController {
 	public List<Station> getAllStations() {
 		return stationService.getAllStations();
 	}
-
+	
+	
+	@ApiOperation("Get all station washes")
+	@GetMapping("/washes")
+	public ResponseEntity<List<CarWashingProgram>> getStationWashes(@RequestParam Long id) throws StationNotExistsException {
+		//getStationWashed
+		List<CarWashingProgram> list = stationService.getStationWashed(id);
+		return ResponseEntity.ok(list);
+	}
+	
 	@ApiOperation("Create a new station")
 	@PostMapping("/")
 	public ResponseEntity<Station> createStation(@RequestBody StationDTO stationDTO) throws Exception {
@@ -77,4 +87,6 @@ public class StationController {
 
 		return ResponseEntity.noContent().build();
 	}
+	
+	
 }

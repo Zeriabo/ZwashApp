@@ -126,4 +126,11 @@ public class StationServiceImpl implements StationService {
 	    stationRepository.deleteById(id);
 	}
 
+	@Override
+	public List<CarWashingProgram> getStationWashed(Long id) throws StationNotExistsException {
+		List<CarWashingProgram> washesList= stationRepository.getWashes(id);
+		
+		return washesList;
+	}
+
 }

@@ -1,11 +1,13 @@
 package com.zwash.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.zwash.pojos.CarWashingProgram;
 import com.zwash.pojos.Media;
 import com.zwash.pojos.Station;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,6 +20,11 @@ public interface StationRepository extends JpaRepository<Station, Long> {
 	@Query("SELECT s FROM Station s WHERE s.id = :id")
 	Optional<Station> findById(@Param("id") Long id);
 
+	@Query("SELECT cw "
+			+ "FROM Station s JOIN s.programs cw "
+			+ "WHERE s.id = :id")
+	List<CarWashingProgram> getWashes(@Param("id") Long id);
+	
 	@Modifying
 	@Query("UPDATE Station s SET s.media = :media WHERE s.id = :id")
 	void setMedia(@Param("id") Long id, @Param("media") Media media);

@@ -3,6 +3,9 @@ package com.zwash.pojos;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +38,7 @@ public class Station {
     @Column
     private double longitude;
     
+    @JsonManagedReference
     @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
     private List<CarWashingProgram> programs;
 
