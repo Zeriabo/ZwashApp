@@ -2,6 +2,7 @@ package com.zwash.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,13 +35,19 @@ public class StationServiceImpl implements StationService {
 	@Override
 	public Station getStation(Long id) throws StationNotExistsException {
 		
-		Station station= stationRepository.findById(id).get();
-		if(station instanceof Station)
+		
+	try
 		{
+			Station station= stationRepository.findById(id).get();
 			return station;
-		}else {
+		}catch(NoSuchElementException  noSuchElementException) {
 			throw new StationNotExistsException(id);
-		}
+		}catch(Exception ex)
+	{
+			throw ex;
+	}
+	
+	
 	
 	}
 
