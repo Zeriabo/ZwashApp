@@ -17,51 +17,48 @@ import jakarta.persistence.ManyToOne;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "programType")
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = HighPressureCarWashingProgram.class, name = "high_pressure"),
-    @JsonSubTypes.Type(value = FoamCarWashingProgram.class, name = "foam"),
-    @JsonSubTypes.Type(value = TouchlessCarWashingProgram.class, name = "touch_less")
-})
+@JsonSubTypes({ @JsonSubTypes.Type(value = HighPressureCarWashingProgram.class, name = "high_pressure"),
+		@JsonSubTypes.Type(value = FoamCarWashingProgram.class, name = "foam"),
+		@JsonSubTypes.Type(value = TouchlessCarWashingProgram.class, name = "touch_less") })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class CarWashingProgram {
 
-	  @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
-	  
-	  @ManyToOne
-	    private Station station;
-	  
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	  @JsonProperty("program")
-	  @Column(name = "program_type")
-	    private String programType;
- 
-    public abstract void setWaterPressure(int pressure);
+	@ManyToOne
+	private Station station;
 
-    public abstract void setSoapAmount(int amount);
+	@JsonProperty("program")
+	@Column(name = "program_type")
+	private String programType;
 
-    public abstract void setBrushType(String brushType);
+	public abstract void setWaterPressure(int pressure);
 
-    public abstract void startWashing();
-    
+	public abstract void setSoapAmount(int amount);
 
-    public Long getId() {
-        return id;
-    }
+	public abstract void setBrushType(String brushType);
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public abstract void startWashing();
 
-    public String getProgramType() {
-        return programType;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setProgramType(String programType) {
-        this.programType = programType;
-    }
-	  public Station getStation() {
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getProgramType() {
+		return programType;
+	}
+
+	public void setProgramType(String programType) {
+		this.programType = programType;
+	}
+
+	public Station getStation() {
 		return station;
 	}
 

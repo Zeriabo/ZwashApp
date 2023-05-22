@@ -10,17 +10,21 @@ import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.pojos.Media;
 import com.zwash.pojos.Station;
 
-
-
 @Service
-public interface StationService  extends Serializable {
+public interface StationService extends Serializable {
 
-	 Station getStation(Long id) throws StationNotExistsException;
-	 List<Station> getAllStations();
-	 void setMedia(Long id,Media media);
+	Station getStation(Long id) throws StationNotExistsException;
+
+	List<Station> getAllStations();
+
+	void setMedia(Long id, Media media);
+
 	void setAddress(Long id, Long latitude, Long longitude);
+
 	Station createStation(StationDTO stationDTO) throws Exception;
 
 	Station updateStation(Station station) throws StationNotExistsException;
+	
+	void removeStation(Long id)  throws StationNotExistsException;
 
 }

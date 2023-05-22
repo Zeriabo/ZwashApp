@@ -16,78 +16,76 @@ import com.zwash.service.StationService;
 @Service
 public class CarWashingProgramServiceImpl implements CarWashingProgramService {
 
-    @Autowired
-    private CarWashingProgramRepository programRepository;
-    
-    @Autowired
-    private StationService  stationService;
+	@Autowired
+	private CarWashingProgramRepository programRepository;
 
-    @Override
-    public CarWashingProgram createProgram(CarWashingProgram program) throws  Exception, ProgramAlreadyExistsException {
-    	List<CarWashingProgram> listprograms;
-    	Station station;
-    	
-     try {
-    	  station = program.getStation();
-         station= stationService.getStation(station.getId());
-         program.setStation(station);
-         program.setProgramType(program.getClass().getSimpleName());
-         listprograms   = station.getPrograms();
-     }catch(StationNotExistsException stationNotExistsException)
-     {
-    	 throw new StationNotExistsException(program.getStation().getId());
-     }
-      // Check if a program with the same id exists in the list
-      boolean programExists = false;
-      for (CarWashingProgram existingProgram : listprograms) {
-          if (existingProgram.getProgramType().equals(program.getProgramType())) {
-              programExists = true;
-              break;
-          }
-      }
+	@Autowired
+	private StationService stationService;
 
-      if (programExists) {
-          // Handle the case when the program already exists
-          // For example, throw an exception or return an error message
-          throw new ProgramAlreadyExistsException("Program already exists");
-      }else {
-    	  listprograms.add(program);
-      }
-      station.setPrograms(listprograms);
-      
-      stationService.updateStation(station);
-      return program;
-       // return programRepository.save(program);
-    }
+	@Override
+	public CarWashingProgram createProgram(CarWashingProgram program) throws Exception, ProgramAlreadyExistsException {
+		List<CarWashingProgram> listprograms;
+		Station station;
 
-    @Override
-    public CarWashingProgram getProgramById(Long id) {
-        return programRepository.findById(id).orElse(null);
-    }
+		try {
+			station = program.getStation();
+			station = stationService.getStation(station.getId());
+			program.setStation(station);
+			program.setProgramType(program.getClass().getSimpleName());
+			listprograms = station.getPrograms();
+		} catch (StationNotExistsException stationNotExistsException) {
+			throw new StationNotExistsException(program.getStation().getId());
+		}
+		// Check if a program with the same id exists in the list
+		boolean programExists = false;
+		for (CarWashingProgram existingProgram : listprograms) {
+			if (existingProgram.getProgramType().equals(program.getProgramType())) {
+				programExists = true;
+				break;
+			}
+		}
 
-    @Override
-    public void updateProgram(CarWashingProgram program) {
-        programRepository.save(program);
-    }
+		if (programExists) {
+			// Handle the case when the program already exists
+			// For example, throw an exception or return an error message
+			throw new ProgramAlreadyExistsException("Program already exists");
+		} else {
+			listprograms.add(program);
+		}
+		station.setPrograms(listprograms);
 
-    @Override
-    public void deleteProgram(Long id) {
-        programRepository.deleteById(id);
-    }
+		stationService.updateStation(station);
+		return program;
+		// return programRepository.save(program);
+	}
+
+	@Override
+	public CarWashingProgram getProgramById(Long id) {
+		return programRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public void updateProgram(CarWashingProgram program) {
+		programRepository.save(program);
+	}
+
+	@Override
+	public void deleteProgram(Long id) {
+		programRepository.deleteById(id);
+	}
 
 	@Override
 	public List<CarWashingProgram> getPrograms(Long stationId) {
-		
+
 		return programRepository.findByStationId(stationId);
-	
-	}
-	
-	@Override
-	public List<CarWashingProgram> getPrograms() {
-		
-		return programRepository.findAll();
-	
+
 	}
 
+	@Override
+	public List<CarWashingProgram> getPrograms() {
+
+		return programRepository.findAll();
+
+	}
 
 }
