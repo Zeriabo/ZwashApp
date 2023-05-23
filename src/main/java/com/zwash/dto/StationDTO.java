@@ -7,6 +7,7 @@ import java.util.List;
 public class StationDTO {
 
     private String name;
+    private String address;
     private double latitude;
     private double longitude;
     private List<CarWashingProgramDTO> programs;
@@ -33,6 +34,7 @@ public class StationDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public double getLatitude() {
 		return latitude;
 	}
@@ -50,6 +52,16 @@ public class StationDTO {
 	}
 	public void setPrograms(List<CarWashingProgramDTO> programs) {
 		this.programs = programs;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
     
    

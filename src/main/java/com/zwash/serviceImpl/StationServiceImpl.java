@@ -73,6 +73,7 @@ public class StationServiceImpl implements StationService {
 		station.setName(stationRequestDTO.getName());
 		station.setLatitude(stationRequestDTO.getLatitude());
 		station.setLongitude(stationRequestDTO.getLongitude());
+		station.setAddress(stationRequestDTO.getAddress());
 		// Set the programs (CarWashingPrograms) for the station
 		List<CarWashingProgram> programs = new ArrayList<>();
 		if (stationRequestDTO.getPrograms() != null) {
@@ -108,7 +109,7 @@ public class StationServiceImpl implements StationService {
 		existingStation.setName(station.getName());
 		existingStation.setLatitude(station.getLatitude());
 		existingStation.setLongitude(station.getLongitude());
-
+        existingStation.setAddress(station.getAddress());
 		existingStation.setPrograms(station.getPrograms());
 
 		// Save the updated station

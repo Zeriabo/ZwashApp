@@ -1,6 +1,5 @@
 package com.zwash.pojos;
 
-
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,29 +20,31 @@ import jakarta.persistence.Table;
 @Table(name = "station")
 public class Station {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private String name;
+	@Column(nullable = false)
+	private String name;
 
-    @OneToOne
-    @JoinColumn(name = "media_id")
-    private Media media;
-    
-    @Column
-    private double latitude;
-    
-    @Column
-    private double longitude;
-    
-    @JsonManagedReference
-    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
-    private List<CarWashingProgram> programs;
+	@Column(nullable = false)
+	private String address;
 
-    
-    public Media getMedia() {
+	@OneToOne
+	@JoinColumn(name = "media_id")
+	private Media media;
+
+	@Column
+	private double latitude;
+
+	@Column
+	private double longitude;
+
+	@JsonManagedReference
+	@OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
+	private List<CarWashingProgram> programs;
+
+	public Media getMedia() {
 		return media;
 	}
 
@@ -65,6 +66,14 @@ public class Station {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public double getLatitude() {
@@ -91,8 +100,4 @@ public class Station {
 		this.programs = programs;
 	}
 
-
-
-
-    
 }
