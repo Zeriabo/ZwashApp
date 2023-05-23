@@ -126,6 +126,7 @@
   <p>Request Body:</p>
   <pre>
     {
+	  "@class": "com.zwash.pojos.SignInfo",
       "username": "string",
       "password": "string"
     }
@@ -147,6 +148,7 @@
   <p>Request Body:</p>
   <pre>
     {
+	"@class": "com.zwash.pojos.User",
       "username": "string",
       "password": "string",
       "email": "string",
@@ -164,6 +166,7 @@
   <p>Request Body:</p>
   <pre>
     {
+	  "@class": "com.zwash.pojos.User",
       "username": "string",
       "password": "string",
       "token": "string"
@@ -237,6 +240,8 @@
     <td>/v1/stations/</td>
     <td>Creates a new station.</td>
     <td>POST</td>
+
+      
   </tr>
   <tr>
     <td>/v1/stations/{id}</td>
@@ -266,6 +271,17 @@
 
 <p>Description: Creates a new station.</p>
 <p>Request Method: POST</p>
+    <td><p>Request Body:</p>
+  <pre>
+    {
+  "@class": "com.zwash.dto.StationDTO",
+  "name": "string",
+  "address":"string",
+  "latitude": long,
+  "longitude": long,
+ "programs":  null || array of programs
+    }
+  </pre></td>
 <b>Endpoint: /v1/stations/{id}</b>
 
 <p>Description: Retrieves a specific station by ID.</p>
