@@ -12,7 +12,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/zwash
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-password
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - spring.jpa.database-platform = org.hibernate.dialect.PostgreSQL94Dialect
       - spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
       - spring.jpa.show-sql = false
