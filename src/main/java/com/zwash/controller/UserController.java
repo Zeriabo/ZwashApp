@@ -64,6 +64,7 @@ public class UserController {
 			userService.setDeviceRegistrationToken(signedUser.getId(), userInfo.getDeviceRegistrationToken());
 			if (signedUser instanceof LoggedUser) {
 				if (signedUser.isActive()) {
+					
 					logger.info("User has signed in successfully " + userInfo.getUsername());
 					return new ResponseEntity<>(signedUser, HttpStatus.OK);
 				} else {
@@ -99,7 +100,7 @@ public class UserController {
 	public ResponseEntity<String> register(@RequestBody User user) throws Exception {
 		User userCreated;
 		try {
-			userCreated = userService.register(user);
+			userCreated = userService.register(user, false);
 
 			if (userCreated instanceof User) {
 				logger.info("User has registered  successfully " + user.getUsername());
@@ -120,6 +121,32 @@ public class UserController {
 		}
 
 	}
+	
+	@PostMapping(value = "/register/admin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Registers a new admin.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Admin created successfully."),
+	        @ApiResponse(code = 406, message = "Admin already exists."),
+	        @ApiResponse(code = 500, message = "Internal server error.") })
+	public ResponseEntity<String> registerAdmin(@RequestBody User user) throws Exception {
+	    User adminCreated;
+	    try {
+	        adminCreated = userService.register(user,true);
+
+	        if (adminCreated instanceof User) {
+	            logger.info("Admin has registered successfully: " + user.getUsername());
+	            return new ResponseEntity<>("Admin created", HttpStatus.OK);
+	        } else {
+	            logger.error("Admin has not registered: " + user.getUsername());
+	            return new ResponseEntity<>("Admin not created", HttpStatus.NOT_ACCEPTABLE);
+	        }
+	    } catch (DataIntegrityViolationException dx) {
+	        logger.error("Admin already exists: " + user.getUsername());
+	        return new ResponseEntity<>("Admin already exists", HttpStatus.NOT_ACCEPTABLE);
+	    } catch (Exception e) {
+	        throw e;
+	    }
+	}
+
 
 	@PostMapping(value = "/changepassword", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Change password for a user.")

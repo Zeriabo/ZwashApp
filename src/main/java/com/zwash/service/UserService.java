@@ -13,7 +13,7 @@ public interface UserService extends Serializable {
 
 	LoggedUser signIn(String username, String password) throws Exception;
 
-	User register(User user) throws Exception;
+	User register(User user,boolean isAdmin) throws Exception;
 
 	boolean changePassword(String username, String password) throws Exception;
 

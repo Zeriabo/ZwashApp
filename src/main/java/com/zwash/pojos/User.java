@@ -23,7 +23,7 @@ public class User {
 
 	}
 	public User(String firstName, String lastName, String username, String password, String dateOfBirth,
-			String secretQuestion, String secretAnswer)
+			String secretQuestion, String secretAnswer, Boolean admin)
 	{
 		this.firstName=firstName;
 		this.lastName= lastName;
@@ -32,6 +32,7 @@ public class User {
 		this.secretQuestion=secretQuestion;
 		this.username=username;
 		this.dateOfBirth=dateOfBirth;
+		this.admin=admin;
 	}
 
 	public Long getId()
@@ -104,6 +105,13 @@ public class User {
 	public void setToken(String token) {
 		this.token = token;
 	}
+	public Boolean isAdmin() {
+	    return admin;
+	}
+
+	public void setAdmin(Boolean admin) {
+	    this.admin = admin;
+	}
 
 	
 	public String getDeviceRegistrationToken() {
@@ -143,6 +151,10 @@ public class User {
 	 @ApiModelProperty(value = "Whether the user is active or not.", example = "true")
 	 @Column(name = "active")
 	private Boolean active;
+	 @Column(name = "admin")
+	 @ApiModelProperty(value = "Whether the user is an admin or not.", example = "true")
+	 private Boolean admin;
+
 
 	 @Column(name = "deviceRegistrationToken")
      @ApiModelProperty(value = "The Device registeration token of the user.")

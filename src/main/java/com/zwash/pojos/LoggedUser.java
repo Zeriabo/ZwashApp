@@ -66,7 +66,6 @@ public class LoggedUser {
 	}
 
 	public String getString() {
-
 		return this.getFirstName() + " " + this.getLastName() + " Active: " + this.isActive();
 	}
 
@@ -102,23 +101,23 @@ public class LoggedUser {
 		this.deviceRegistrationToken = deviceRegistrationToken;
 	}
 
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
 	private long id;
-
 	private String firstName;
-
 	private String lastName;
-
 	private String username;
-
 	private String dateOfBirth;
-
 	private Boolean active;
-
 	private String token;
-
 	private LocalDateTime createDateTime;
-
 	private LocalDateTime updateDateTime;
-
 	private String deviceRegistrationToken;
+	private boolean admin;
 }

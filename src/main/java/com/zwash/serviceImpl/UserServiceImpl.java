@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
 		loggedUser.setDateOfBirth(user.getDateOfBirth());
 		loggedUser.setFirstName(user.getFirstName());
 		loggedUser.setLastName(user.getLastName());
+		loggedUser.setAdmin(user.isAdmin());
 
 		// Create a JWTToken
 		Long id = loggedUser.getId();
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User register(User user) throws Exception {
+	public User register(User user, boolean isAdmin) throws Exception {
 
 		user.setActive(true);
 		try {
@@ -72,6 +73,7 @@ public class UserServiceImpl implements UserService {
 		return user;
 
 	}
+	
 
 	@Override
 	public User getUserFromToken(String token) throws UserIsNotFoundException {
@@ -166,5 +168,6 @@ public class UserServiceImpl implements UserService {
 		}
 
 	}
+
 
 }
