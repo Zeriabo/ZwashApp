@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.zwash.exceptions.IncorrectCredentialsException;
+import com.zwash.exceptions.UserAlreadyExistsException;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.LoggedUser;
 import com.zwash.pojos.User;
@@ -59,6 +60,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User register(User user, boolean isAdmin) throws Exception {
 
+		Optional<User> found = userRepository.findByUsername(user.getUsername());
+		 if (found.isPresent()) {
+		        // User is found
+		        throw new UserAlreadyExistsException(user.getUsername());
+		    }
+		
 		user.setActive(true);
 		try {
 			user = userRepository.save(user);

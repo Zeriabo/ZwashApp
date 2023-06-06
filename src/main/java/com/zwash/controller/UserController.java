@@ -104,16 +104,16 @@ public class UserController {
 
 			if (userCreated instanceof User) {
 				logger.info("User has registered  successfully " + user.getUsername());
-				return new ResponseEntity<>(userCreated.getString(), HttpStatus.OK);
+				return new ResponseEntity<>(userCreated.getString(), HttpStatus.CREATED);
 			} else {
 				logger.error("User has not registered  " + user.getUsername());
-				return new ResponseEntity<>("not created", HttpStatus.NOT_ACCEPTABLE);
+				return new ResponseEntity<>( HttpStatus.NOT_ACCEPTABLE);
 			}
 		} catch (DataIntegrityViolationException dx) {
 			logger.error("User already exists  " + user.getUsername());
 			return new ResponseEntity<>(
 
-					"User already exists", HttpStatus.NOT_ACCEPTABLE);
+					"User already exists", HttpStatus.CONFLICT);
 		}
 
 		catch (Exception e) {
