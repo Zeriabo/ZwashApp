@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
 		    }
 		
 		user.setActive(true);
+		user.setAdmin(false);
 		try {
 			user = userRepository.save(user);
 		} catch (DataIntegrityViolationException de) {
