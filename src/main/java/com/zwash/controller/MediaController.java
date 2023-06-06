@@ -55,7 +55,7 @@ public class MediaController {
 	
 
       Media savedMedia =  mediaService.saveMedia(newMedia, station);
-		stationService.setMedia(id, savedMedia);
+	  stationService.setMedia(id, savedMedia);
 	
 		
 	}
