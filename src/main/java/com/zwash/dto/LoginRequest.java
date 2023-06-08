@@ -7,7 +7,7 @@ public class LoginRequest {
 
 	@Schema(description = "Login Id")
 	private String loginId;
-	
+
 	@Schema(description = "password")
 	private String password;
 

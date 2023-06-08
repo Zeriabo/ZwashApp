@@ -2,8 +2,6 @@ package com.zwash.service;
 
 import java.util.List;
 
-import com.zwash.exceptions.ProgramAlreadyExistsException;
-import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.pojos.CarWashingProgram;
 
 public interface CarWashingProgramService {

@@ -1,7 +1,8 @@
 package com.zwash.utility;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.jasypt.util.text.AES256TextEncryptor;
+
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class EncryptionUtils {
     public static String encrypt(String plaintext) {

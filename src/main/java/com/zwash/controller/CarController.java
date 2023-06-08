@@ -24,8 +24,8 @@ import com.zwash.service.UserService;
 
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("v1/cars")

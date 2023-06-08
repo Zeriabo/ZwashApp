@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import jakarta.persistence.Column;
@@ -113,7 +114,7 @@ public class User {
 	    this.admin = admin;
 	}
 
-	
+
 	public String getDeviceRegistrationToken() {
 		return deviceRegistrationToken;
 	}
@@ -159,7 +160,7 @@ public class User {
 	 @Column(name = "deviceRegistrationToken")
      @ApiModelProperty(value = "The Device registeration token of the user.")
     private String deviceRegistrationToken;
-    
+
 	private String token;
 
 

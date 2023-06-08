@@ -7,13 +7,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 @Entity
-@Table(name = "media")	
+@Table(name = "media")
 public class Media {
 
     public Long getId() {
@@ -55,7 +53,7 @@ public class Media {
 	public void setPictureFile(MultipartFile pictureFile) {
 		this.pictureFile = pictureFile;
 	}
-	
+
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,7 +70,6 @@ public class Media {
 
     @Transient // Exclude from database mapping
     private MultipartFile pictureFile;
-    
+
 
 }
-	

@@ -6,7 +6,7 @@ import com.zwash.pojos.HighPressureCarWashingProgram;
 import com.zwash.pojos.TouchlessCarWashingProgram;
 
 public abstract class CarWashingProgramFactory {
-    
+
     public static CarWashingProgram createCarWashingProgram(String dtype) {
         switch (dtype) {
             case "foam":

@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 import com.zwash.dto.BookingDTO;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
@@ -26,15 +31,12 @@ import com.zwash.service.BookingService;
 import com.zwash.service.CarService;
 import com.zwash.service.CarWashService;
 import com.zwash.service.UserService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
+
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import jakarta.transaction.Transactional;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
 
 @RestController
 @RequestMapping("v1/bookings")
@@ -107,7 +109,7 @@ public class BookingController {
 		User user = userService.getUserFromToken(booking.getToken());
 
 		booking.setUser(user);
-		
+
 		if (booking.getStation() == null) {
 			throw new IllegalArgumentException("Station object cannot be null");
 		}

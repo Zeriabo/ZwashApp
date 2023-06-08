@@ -56,7 +56,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "station_id", nullable = false)
     private Station station;
-    
+
 
 	private String token;
 
@@ -118,7 +118,7 @@ public class Booking {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
+
     public Station getStation() {
 		return station;
 	}

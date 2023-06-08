@@ -15,7 +15,7 @@ public class StationDTO {
     public StationDTO() {
     }
 
-    
+
     public StationDTO(String name, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
@@ -27,14 +27,14 @@ public class StationDTO {
         this.longitude = longitude;
         this.programs=programs;
     }
-    
+
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public double getLatitude() {
 		return latitude;
 	}
@@ -63,7 +63,7 @@ public class StationDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-    
-   
+
+
 }
 

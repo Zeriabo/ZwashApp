@@ -5,10 +5,10 @@ public class CarWashingProgramDTO {
     private String name;
     private int duration;
     private String programType;
-    
+
     public CarWashingProgramDTO()
     {
-    	
+
     }
     public CarWashingProgramDTO(String name, int duration, String programType) {
         this.name = name;
@@ -39,6 +39,6 @@ public class CarWashingProgramDTO {
     public void setProgramType(String programType) {
         this.programType = programType;
     }
-    
-   
+
+
 }

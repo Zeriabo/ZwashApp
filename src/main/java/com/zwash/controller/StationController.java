@@ -1,9 +1,19 @@
 package com.zwash.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.zwash.dto.StationDTO;
 import com.zwash.exceptions.StationNotExistsException;
@@ -14,8 +24,6 @@ import com.zwash.service.StationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1/stations")
@@ -29,8 +37,8 @@ public class StationController {
 	public List<Station> getAllStations() {
 		return stationService.getAllStations();
 	}
-	
-	
+
+
 	@ApiOperation("Get all station washes")
 	@GetMapping("/washes")
 	public ResponseEntity<List<CarWashingProgram>> getStationWashes(@RequestParam Long id) throws StationNotExistsException {
@@ -38,7 +46,7 @@ public class StationController {
 		List<CarWashingProgram> list = stationService.getStationWashed(id);
 		return ResponseEntity.ok(list);
 	}
-	
+
 	@ApiOperation("Create a new station")
 	@PostMapping("/")
 	public ResponseEntity<Station> createStation(@RequestBody StationDTO stationDTO) throws Exception {
@@ -61,7 +69,7 @@ public class StationController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Station> updateStation(@PathVariable Long id, @RequestBody Station station) throws StationNotExistsException {
 		Station updatedStation = stationService.updateStation(station);
-		
+
 		if (updatedStation != null) {
 			return ResponseEntity.ok(updatedStation); // Station was successfully updated
 		} else {
@@ -70,14 +78,14 @@ public class StationController {
 	}
 
 	@ApiOperation("Delete a station by ID")
-	@ApiResponses({ 
+	@ApiResponses({
 		@ApiResponse(code = 204, message = "No Content"),
-		@ApiResponse(code = 404, message = "Station not found") 
+		@ApiResponse(code = 404, message = "Station not found")
 	})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteStation(@PathVariable Long id) throws StationNotExistsException {
 		// Check if the station exists
-		
+
 		if (stationService.getStation(id) != null) {
 			throw new StationNotExistsException(id );
 		}
@@ -87,6 +95,6 @@ public class StationController {
 
 		return ResponseEntity.noContent().build();
 	}
-	
-	
+
+
 }

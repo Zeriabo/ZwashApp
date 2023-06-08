@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		        // User is found
 		        throw new UserAlreadyExistsException(user.getUsername());
 		    }
-		
+
 		user.setActive(true);
 		user.setAdmin(false);
 		try {
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 		return user;
 
 	}
-	
+
 
 	@Override
 	public User getUserFromToken(String token) throws UserIsNotFoundException {

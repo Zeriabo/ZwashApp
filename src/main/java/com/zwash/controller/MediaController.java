@@ -44,20 +44,20 @@ public class MediaController {
 
 		newMedia.setPicture(picture.getName());
 		newMedia.setPictureFile(picture);
-	
-		Station station = stationService.getStation(id); 
+
+		Station station = stationService.getStation(id);
 		Media stationMedia = mediaService.getMediaById(id);
       if(stationMedia!=null && stationMedia.getLogo()!=null)
       {
     		newMedia.setLogo(stationMedia.getLogo());
-    		newMedia.setLogoFile(stationMedia.getLogoFile());  
+    		newMedia.setLogoFile(stationMedia.getLogoFile());
       }
-	
+
 
       Media savedMedia =  mediaService.saveMedia(newMedia, station);
 	  stationService.setMedia(id, savedMedia);
-	
-		
+
+
 	}
 
 	@ApiOperation(value = "Upload a logo for a station", response = Station.class)
@@ -74,13 +74,13 @@ public class MediaController {
       if(stationMedia!=null && stationMedia.getPicture()!=null)
       {
     		newMedia.setPicture(stationMedia.getPicture());
-    		newMedia.setPictureFile(stationMedia.getPictureFile());  
+    		newMedia.setPictureFile(stationMedia.getPictureFile());
       }
-	
+
 
       Media savedMedia =  mediaService.saveMedia(newMedia, station);
 		stationService.setMedia(id, savedMedia);
 
-		
+
 	}
 }

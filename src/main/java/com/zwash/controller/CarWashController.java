@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zwash.pojos.Booking;
 import com.zwash.service.CarWashService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,10 +24,10 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/v1/car-wash")
 @Api(tags = "Car Wash API")
 public class CarWashController {
-	
+
 	@Autowired
 	private CarWashService carWashService;
-	
+
 	 Logger logger = LoggerFactory.getLogger(CarWashController.class);
 
 	@PostMapping
@@ -43,25 +44,25 @@ public class CarWashController {
 	    		if(!booking.isExecuted())
 		    	{
 		    		 carWashService.executeCarWash(booking);
-		    		 
+
 		    		 logger.info("car "+booking.getCar().getRegisterationPlate()+" has executed a wash");
 		    		 return new ResponseEntity<>("Car wash executed successfully", HttpStatus.OK);
-		    		 
-		    		 
+
+
 		    	}else {
-		    		
+
 		    		 logger.info("car "+booking.getCar().getRegisterationPlate()+" wash failed has washed already!");
 		    		return new ResponseEntity<>("Car wash is already executed", HttpStatus.NOT_ACCEPTABLE);
 		    	}
-		       
+
 	    	}else {
-	    		
+
 	    		 logger.info("car "+booking.getCar().getRegisterationPlate()+" came too early to wash!");
 	    		return new ResponseEntity<>("Come back on "+booking.getScheduledTime()+" or after!", HttpStatus.NOT_ACCEPTABLE);
 	    	}
-	    	
-	    	
-	        
+
+
+
 	    } catch (Exception ex) {
 	    	 logger.error("car "+booking.getCar().getRegisterationPlate()+" has an error on attempt to wash "+ex.getMessage());
 	        return new ResponseEntity<>("Failed to execute car wash: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
