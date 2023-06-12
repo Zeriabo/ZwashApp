@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zwash.pojos.Booking;
+import com.zwash.service.CarService;
 import com.zwash.service.CarWashService;
 import com.zwash.service.RegistrationPlateMonitorService;
 
@@ -31,6 +32,7 @@ public class CarWashController {
 	private  RegistrationPlateMonitorService registrationPlateMonitorService;
 	@Autowired
 	private CarWashService carWashService;
+
 
 	 Logger logger = LoggerFactory.getLogger(CarWashController.class);
 

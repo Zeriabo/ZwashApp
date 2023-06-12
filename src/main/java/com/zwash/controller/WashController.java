@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import com.zwash.pojos.Wash;
+import com.zwash.service.RegistrationPlateMonitorService;
 import com.zwash.service.WashService;
 
 @RestController
@@ -31,14 +32,24 @@ public class WashController {
 	@Autowired
 	private WashService washService;
 
+	@Autowired
+	private RegistrationPlateMonitorService registrationPlateMonitorService;
+	
 	Logger logger = LoggerFactory.getLogger(WashController.class);
 
 	@GetMapping("/")
 	public ModelAndView home() {
 		return new ModelAndView("washes");
 	}
-
-
+	
+	@GetMapping("/registrationPlate")
+	@ApiOperation(value = "Perform a wash for a  car registration plate number", notes = "Performs a wash")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "registrationPlate", value = "registration plate opf the car", required = true, dataType = "String", paramType = "query") })
+	public ResponseEntity<String> washCar(@ApiParam(value = "Registerationplate", required = true) @RequestParam String registerationPlate) {
+		registrationPlateMonitorService.addRegistrationPlate(registerationPlate);
+		return new ResponseEntity<>(registerationPlate, HttpStatus.OK);
+	}
 	@ApiOperation(value = "Start a wash", notes = "Starts the wash for the specified washId")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query") })
@@ -83,8 +94,6 @@ public class WashController {
 		}
 	}
 
-	
-
 	@ApiOperation(value = "Cancel a wash", notes = "Cancels the wash for the specified washId")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query") })
@@ -106,8 +115,7 @@ public class WashController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	
+
 	@ApiOperation(value = "Reschedule a wash", notes = "Reschedules the wash for the specified washId with a new start time")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query"),
@@ -131,6 +139,5 @@ public class WashController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-
 
 }

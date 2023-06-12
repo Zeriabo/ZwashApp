@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.zwash.pojos.Booking;
@@ -18,7 +20,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
 
 	 @Query("SELECT b FROM Booking b WHERE b.car.id = :carId")
-	 List<Booking> findByCarId(Long carId);
+	 List<Booking> findByCarId(@Param("carId") Long carId);
 
 	 @Query("SELECT b FROM Booking b WHERE b.id = :id and b.executed=false")
 	  Optional<Booking> findByIdAndExecutedFalse(Long id);
@@ -29,8 +31,9 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 	 @Query("SELECT b FROM Booking b WHERE b.user = :user")
 	 List<Booking> findByUser(User user);
 
+	 @Modifying
 	 @Query("Update  Booking b SET b.executed=true WHERE b.id = :id")
-	 boolean executeWash(Long id);
+	 void executeWash(@Param("id") Long id);
 
 
 }

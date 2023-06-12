@@ -6,6 +6,9 @@ import java.util.TimerTask;
 
 import org.springframework.stereotype.Service;
 
+import com.zwash.exceptions.CarDoesNotExistException;
+import com.zwash.pojos.Car;
+
 @Service
 public interface RegistrationPlateMonitorService {
 
@@ -13,7 +16,7 @@ public interface RegistrationPlateMonitorService {
 
     void addRegistrationPlate(String plateNumber);
 
-    void performCarWash(String plateNumber);
+    void  performCarWash(Car car)  throws CarDoesNotExistException;
 
     class MonitorTask extends TimerTask {
         private final RegistrationPlateMonitorService monitorService;
