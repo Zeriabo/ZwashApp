@@ -14,6 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import com.zwash.pojos.Wash;
 import com.zwash.service.WashService;
 
@@ -31,8 +38,13 @@ public class WashController {
 		return new ModelAndView("washes");
 	}
 
+
+	@ApiOperation(value = "Start a wash", notes = "Starts the wash for the specified washId")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query") })
 	@GetMapping("/start")
-	public ResponseEntity<Wash> startWash(@RequestParam Long washId) {
+	public ResponseEntity<Wash> startWash(
+			@ApiParam(value = "Wash ID", required = true) @RequestParam Long washId) {
 		try {
 			Wash wash = washService.getWash(washId);
 			boolean started = washService.startWash(wash);
@@ -49,8 +61,12 @@ public class WashController {
 		}
 	}
 
+	@ApiOperation(value = "Finish a wash", notes = "Finishes the wash for the specified washId")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query") })
 	@GetMapping("/finish")
-	public ResponseEntity<Wash> finishWash(@RequestParam Long washId) {
+	public ResponseEntity<Wash> finishWash(
+			@ApiParam(value = "Wash ID", required = true) @RequestParam Long washId) {
 		try {
 			Wash wash = washService.getWash(washId);
 			boolean finished = washService.finishWash(wash);
@@ -67,8 +83,14 @@ public class WashController {
 		}
 	}
 
+	
+
+	@ApiOperation(value = "Cancel a wash", notes = "Cancels the wash for the specified washId")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query") })
 	@GetMapping("/cancel")
-	public ResponseEntity<Wash> cancelWash(@RequestParam Long washId) {
+	public ResponseEntity<Wash> cancelWash(
+			@ApiParam(value = "Wash ID", required = true) @RequestParam Long washId) {
 		try {
 			Wash wash = washService.getWash(washId);
 			boolean cancelled = washService.cancelWash(wash);
@@ -84,9 +106,16 @@ public class WashController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-
+	
+	
+	@ApiOperation(value = "Reschedule a wash", notes = "Reschedules the wash for the specified washId with a new start time")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query"),
+			@ApiImplicitParam(name = "startTime", value = "New start time for the wash", required = true, dataType = "LocalDateTime", paramType = "query") })
 	@GetMapping("/reschedule")
-	public ResponseEntity<Wash> rescheduleWash(@RequestParam Long washId, @RequestParam LocalDateTime startTime) {
+	public ResponseEntity<Wash> rescheduleWash(
+			@ApiParam(value = "Wash ID", required = true) @RequestParam Long washId,
+			@ApiParam(value = "New start time", required = true) @RequestParam LocalDateTime startTime) {
 		try {
 			Wash wash = washService.getWash(washId);
 			boolean rescheduled = washService.rescheduleWash(wash, startTime);
@@ -102,5 +131,6 @@ public class WashController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+
 
 }
