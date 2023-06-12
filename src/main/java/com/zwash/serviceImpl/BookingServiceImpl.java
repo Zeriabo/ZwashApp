@@ -1,6 +1,7 @@
 package com.zwash.serviceImpl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,8 +12,10 @@ import com.zwash.mapper.BookingMapper;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
+import com.zwash.pojos.Wash;
 import com.zwash.repository.BookingRepository;
 import com.zwash.repository.CarRepository;
+import com.zwash.repository.WashRepository;
 import com.zwash.service.BookingService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +25,8 @@ public class BookingServiceImpl implements BookingService {
 
 	private final BookingRepository bookingRepository;
 	private final CarRepository carRepository;
+	private final WashRepository washRepository;
+
 
 	@Override
 	public Booking saveBooking(Booking booking) {
@@ -50,9 +55,10 @@ public class BookingServiceImpl implements BookingService {
 
 	}
 
-	public BookingServiceImpl(BookingRepository bookingRepository, CarRepository carRepository) {
+	public BookingServiceImpl(BookingRepository bookingRepository, CarRepository carRepository,WashRepository washRepository) {
 		this.bookingRepository = bookingRepository;
 		this.carRepository = carRepository;
+		this.washRepository = washRepository;
 	}
 
 	@Override
@@ -85,8 +91,8 @@ public class BookingServiceImpl implements BookingService {
 			throw new EntityNotFoundException("Car not found");
 		}
 		// Check if any booking exists for the car
-		List<Booking> bookings = bookingRepository.findByCarAndExecuted(car, false);
-		return !bookings.isEmpty();
+		Booking booking = bookingRepository.findByCarAndExecuted(car.getCarId(), false);
+		return booking==null;
 	}
 
 	@Override
@@ -94,4 +100,30 @@ public class BookingServiceImpl implements BookingService {
 		bookingRepository.delete(booking);
 		return true;
 	}
+
+	@Override
+	public Booking moveToWash(String registrationPlate) {
+		
+		Car car = carRepository.findByRegisterationPlate(registrationPlate);
+		
+		
+        Booking booking = bookingRepository.findByCarAndExecuted(car.getCarId(), false);
+
+        if (booking != null) {
+            booking.setExecuted(true);
+
+            Wash wash = new Wash();
+            wash.setBooking(booking);
+            wash.setStatus("executing");
+            wash.setStartTime(LocalDateTime.now());
+
+           
+            bookingRepository.save(booking);
+
+            return booking;
+        } else {
+            // Handle the case where no booking is found for the given registration plate
+            throw new IllegalArgumentException("No non-executed booking found for registration plate: " + registrationPlate);
+        }
+    }
 }

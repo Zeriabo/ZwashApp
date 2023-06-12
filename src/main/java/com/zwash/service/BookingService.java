@@ -20,5 +20,6 @@ public interface BookingService {
 	boolean isBookingExistsForCar(String registrationPlate);
 	List<BookingDTO> getAllBookings() throws DataAccessException, SQLException, Exception;
 	boolean deleteBooking(Booking booking);
+	Booking moveToWash(String carRegisterationPlate);
 
 }

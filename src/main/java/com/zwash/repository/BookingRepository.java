@@ -23,7 +23,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 	 @Query("SELECT b FROM Booking b WHERE b.id = :id and b.executed=false")
 	  Optional<Booking> findByIdAndExecutedFalse(Long id);
 
-	 List<Booking> findByCarAndExecuted(Car car, boolean executed);
+	 @Query("SELECT b FROM Booking b WHERE b.car_id = :carId and b.executed=:executed")
+	  Booking findByCarAndExecuted(Long carId, boolean executed);
 
 	 @Query("SELECT b FROM Booking b WHERE b.user = :user")
 	 List<Booking> findByUser(User user);
