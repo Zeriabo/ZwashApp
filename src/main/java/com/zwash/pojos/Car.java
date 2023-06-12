@@ -100,7 +100,7 @@ public class Car {
 
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq_gen")
-     @Column(name = "car_id", unique = true, nullable = false)
+     @Column(name = "id", unique = true, nullable = false)
 	private long carId;
 
 	 @ManyToOne(fetch = FetchType.LAZY, optional = false)

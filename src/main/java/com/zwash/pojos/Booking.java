@@ -18,6 +18,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -49,18 +50,21 @@ public class Booking {
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-
     @Column(name = "scheduled_time", nullable = false)
     private LocalDateTime scheduledTime;
 
     @ManyToOne
     @JoinColumn(name = "station_id", nullable = false)
     private Station station;
-
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "wash_id", referencedColumnName = "id")
+    private Wash wash;
 
 	private String token;
 
     private boolean executed;
+
 
 
     public Booking() {}
@@ -133,6 +137,14 @@ public class Booking {
 
 	public void setExecuted(boolean executed) {
 		this.executed = executed;
+	}
+
+	public Wash getWash() {
+		return wash;
+	}
+
+	public void setWash(Wash wash) {
+		this.wash = wash;
 	}
 
 

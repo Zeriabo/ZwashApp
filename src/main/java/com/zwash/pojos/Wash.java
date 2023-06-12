@@ -1,10 +1,12 @@
 package com.zwash.pojos;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -16,8 +18,10 @@ public class Wash {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(mappedBy = "wash")
+    
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id")
     private Booking booking;
 
     @Column(name = "status", nullable = false)
@@ -36,6 +40,11 @@ public class Wash {
     private LocalDateTime updatedAt;
 
     public Wash() {}
+
+    public Wash(String status, LocalDateTime startTime) {
+        this.status = status;
+        this.startTime = startTime;
+    }
 
     public Wash(Booking booking, String status, LocalDateTime startTime, LocalDateTime endTime,
                 LocalDateTime createdAt, LocalDateTime updatedAt) {

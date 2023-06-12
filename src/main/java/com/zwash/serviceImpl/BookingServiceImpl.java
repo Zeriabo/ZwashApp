@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zwash.dto.BookingDTO;
@@ -17,6 +18,7 @@ import com.zwash.repository.BookingRepository;
 import com.zwash.repository.CarRepository;
 import com.zwash.repository.WashRepository;
 import com.zwash.service.BookingService;
+import com.zwash.service.WashService;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -27,7 +29,8 @@ public class BookingServiceImpl implements BookingService {
 	private final CarRepository carRepository;
 	private final WashRepository washRepository;
 
-
+	@Autowired
+	 WashService washService;
 	@Override
 	public Booking saveBooking(Booking booking) {
 		return bookingRepository.save(booking);
@@ -58,7 +61,8 @@ public class BookingServiceImpl implements BookingService {
 	public BookingServiceImpl(BookingRepository bookingRepository, CarRepository carRepository,WashRepository washRepository) {
 		this.bookingRepository = bookingRepository;
 		this.carRepository = carRepository;
-		this.washRepository = washRepository;
+		this.washRepository=washRepository;
+
 	}
 
 	@Override
@@ -110,15 +114,11 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findByCarAndExecuted(car.getCarId(), false);
 
         if (booking != null) {
+        	
             booking.setExecuted(true);
-
-            Wash wash = new Wash();
-            wash.setBooking(booking);
-            wash.setStatus("executing");
-            wash.setStartTime(LocalDateTime.now());
-
-           
             bookingRepository.save(booking);
+            washService.startWash(booking.getWash());
+         
 
             return booking;
         } else {

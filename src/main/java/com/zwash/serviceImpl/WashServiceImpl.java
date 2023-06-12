@@ -22,6 +22,8 @@ public class WashServiceImpl implements WashService {
         if (wash.getStatus().equals("Pending")) {
             wash.setStatus("Executing");
             wash.setStartTime(LocalDateTime.now());
+            
+            washRepository.save(wash);
             return true;
         } else {
             return false;
