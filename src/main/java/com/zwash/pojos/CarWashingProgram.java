@@ -59,9 +59,6 @@ public abstract class CarWashingProgram {
 
 	public abstract void startWashing();
 
-	public abstract void setDescription(String description);
-
-	public abstract String getDescription();
 
 	public Long getId() {
 		return id;
@@ -103,6 +100,15 @@ public abstract class CarWashingProgram {
 		this.updatedAt = updatedAt;
 	}
 
+	public String getDescription()
+	{
+		return description;
+	}
+	
+	public void setDescription(String description)
+	{
+		 this.description=description;
+	}
 	@PrePersist
 	protected void onCreate() {
 		setCreatedAt(LocalDateTime.now());

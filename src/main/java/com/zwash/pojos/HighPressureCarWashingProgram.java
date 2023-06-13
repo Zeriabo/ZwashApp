@@ -18,16 +18,11 @@ public class HighPressureCarWashingProgram extends CarWashingProgram {
 
     private int waterPressure;
 
-    private String description;
     
     public HighPressureCarWashingProgram() {
         // Empty constructor required for JPA
     }
 
-    public HighPressureCarWashingProgram(int waterPressure, String description) {
-        this.waterPressure = waterPressure;
-        this.description = description;
-    }
     public HighPressureCarWashingProgram(int waterPressure) {
         this.waterPressure = waterPressure;
     }
@@ -55,17 +50,5 @@ public class HighPressureCarWashingProgram extends CarWashingProgram {
         System.out.println("Starting high-pressure car washing program with " + waterPressure + " water pressure.");
     }
 
-	@Override
-	public void setDescription(String description) {
-		
-		 this.description = "The High Pressure Car Washing Program is a specialized car wash option that utilizes powerful water jets to deliver a thorough and intense cleaning for your vehicle";
-		
-	}
-
-	@Override
-	public String getDescription() {
-		
-		return description;
-	}
-
+	
 }

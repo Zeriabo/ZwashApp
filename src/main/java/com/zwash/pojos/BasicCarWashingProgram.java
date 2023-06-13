@@ -6,7 +6,7 @@ public class BasicCarWashingProgram extends CarWashingProgram {
     private int waterPressure;
     private int soapAmount;
     private String brushType;
-    private String description;
+
     
     public BasicCarWashingProgram(int waterPressure, int soapAmount, String brushType) {
         this.waterPressure = waterPressure;
@@ -37,18 +37,7 @@ public class BasicCarWashingProgram extends CarWashingProgram {
         System.out.println("Starting foam car washing program with " + waterPressure + " water pressure, " + soapAmount + " soap amount, and " + brushType + " brush type.");
     }
 
-	@Override
-	public void setDescription(String description) {
-		
-		 this.description = "The Basic Car Washing Program is a traditional and straightforward car wash option that offers a comprehensive cleaning for your vehicle";
-		
-	}
-
-	@Override
-	public String getDescription() {
-		
-		return description;
-	}
+	
 
 
 }
