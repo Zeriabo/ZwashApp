@@ -19,6 +19,8 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,85 +29,85 @@ import jakarta.persistence.Table;
 
 public class Booking {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "car_id", nullable = false)
-    private Car car;
+	@ManyToOne
+	@JoinColumn(name = "car_id", nullable = false)
+	private Car car;
 
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "washing_program_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonSubTypes({ @JsonSubTypes.Type(value = FoamCarWashingProgram.class, name = "foam"),
+			@JsonSubTypes.Type(value = HighPressureCarWashingProgram.class, name = "high_pressure"),
+			@JsonSubTypes.Type(value = TouchlessCarWashingProgram.class, name = "touch_less") })
+	private CarWashingProgram washingProgram;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "washing_program_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonSubTypes({
-            @JsonSubTypes.Type(value = FoamCarWashingProgram.class, name = "foam"),
-            @JsonSubTypes.Type(value = HighPressureCarWashingProgram.class, name = "high_pressure"),
-            @JsonSubTypes.Type(value = TouchlessCarWashingProgram.class, name = "touch_less")
-    })
-    private CarWashingProgram washingProgram;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private User user;
+	@Column(name = "scheduled_time", nullable = false)
+	private LocalDateTime scheduledTime;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
-    @Column(name = "scheduled_time", nullable = false)
-    private LocalDateTime scheduledTime;
+	@ManyToOne
+	@JoinColumn(name = "station_id", nullable = false)
+	private Station station;
 
-    @ManyToOne
-    @JoinColumn(name = "station_id", nullable = false)
-    private Station station;
-    
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "wash_id", referencedColumnName = "id")
-    private Wash wash;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "wash_id", referencedColumnName = "id")
+	private Wash wash;
 
 	private String token;
 
-    private boolean executed;
+	private boolean executed;
 
+	private LocalDateTime createdAt;
 
+	private LocalDateTime updatedAt;
 
-    public Booking() {}
+	public Booking() {
+	}
 
-    public Booking(Car car, CarWashingProgram washingProgram, LocalDateTime scheduledTime) {
-        this.car = car;
-        this.washingProgram = washingProgram;
-        this.scheduledTime = scheduledTime;
-    }
+	public Booking(Car car, CarWashingProgram washingProgram, LocalDateTime scheduledTime) {
+		this.car = car;
+		this.washingProgram = washingProgram;
+		this.scheduledTime = scheduledTime;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Car getCar() {
-        return car;
-    }
+	public Car getCar() {
+		return car;
+	}
 
-    public void setCar(Car car) {
-        this.car = car;
-    }
+	public void setCar(Car car) {
+		this.car = car;
+	}
 
-    public CarWashingProgram getWashingProgram() {
-        return washingProgram;
-    }
+	public CarWashingProgram getWashingProgram() {
+		return washingProgram;
+	}
 
-    public void setWashingProgram(CarWashingProgram washingProgram) {
-        this.washingProgram = washingProgram;
-    }
+	public void setWashingProgram(CarWashingProgram washingProgram) {
+		this.washingProgram = washingProgram;
+	}
 
-    public LocalDateTime getScheduledTime() {
-        return scheduledTime;
-    }
+	public LocalDateTime getScheduledTime() {
+		return scheduledTime;
+	}
 
-    public void setScheduledTime(LocalDateTime scheduledTime) {
-        this.scheduledTime = scheduledTime;
-    }
+	public void setScheduledTime(LocalDateTime scheduledTime) {
+		this.scheduledTime = scheduledTime;
+	}
 
 	public User getUser() {
 		return user;
@@ -123,7 +125,7 @@ public class Booking {
 		this.token = token;
 	}
 
-    public Station getStation() {
+	public Station getStation() {
 		return station;
 	}
 
@@ -147,6 +149,31 @@ public class Booking {
 		this.wash = wash;
 	}
 
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
 
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	@PrePersist
+	protected void onCreate() {
+		setCreatedAt(LocalDateTime.now());
+		setUpdatedAt(LocalDateTime.now());
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		setUpdatedAt(LocalDateTime.now());
+	}
 
 }
