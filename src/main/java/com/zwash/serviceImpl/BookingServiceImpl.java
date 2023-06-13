@@ -7,16 +7,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.zwash.dto.BookingDTO;
 import com.zwash.mapper.BookingMapper;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
-import com.zwash.pojos.Wash;
 import com.zwash.repository.BookingRepository;
 import com.zwash.repository.CarRepository;
-import com.zwash.repository.WashRepository;
 import com.zwash.service.BookingService;
 import com.zwash.service.WashService;
 
@@ -27,10 +24,11 @@ public class BookingServiceImpl implements BookingService {
 
 	private final BookingRepository bookingRepository;
 	private final CarRepository carRepository;
-	private final WashRepository washRepository;
 
 	@Autowired
 	 WashService washService;
+	
+	
 	@Override
 	public Booking saveBooking(Booking booking) {
 		return bookingRepository.save(booking);
@@ -58,10 +56,10 @@ public class BookingServiceImpl implements BookingService {
 
 	}
 
-	public BookingServiceImpl(BookingRepository bookingRepository, CarRepository carRepository,WashRepository washRepository) {
+	public BookingServiceImpl(BookingRepository bookingRepository, CarRepository carRepository) {
 		this.bookingRepository = bookingRepository;
 		this.carRepository = carRepository;
-		this.washRepository=washRepository;
+	
 
 	}
 

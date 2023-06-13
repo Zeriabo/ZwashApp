@@ -38,20 +38,21 @@ public class WashController {
 	
 	Logger logger = LoggerFactory.getLogger(WashController.class);
 
-	@GetMapping("/")
-	public ModelAndView home() {
-		return new ModelAndView("washes");
-	}
-	
-	
-	@GetMapping("/")
-	public ResponseEntity<Wash> getWash(@ApiParam(value = "bookingId", required = true) @RequestParam Long bookingId) {
-		Wash wash =washService.getWashByBooking(bookingId);
-		
-		return new ResponseEntity<>(wash, HttpStatus.OK);
-	}
-	
-	
+	   @GetMapping("/")
+	    @ApiOperation(value = "Home", notes = "Get the home page")
+	    public ModelAndView getHome() {
+	        return new ModelAndView("washes");
+	    }
+
+	    @GetMapping("/getByBooking")
+	    @ApiOperation(value = "Get Wash by Booking", notes = "Get wash details by booking ID")
+	    public ResponseEntity<Wash> getWashByBooking(
+	            @ApiParam(value = "Booking ID", required = true) @RequestParam Long bookingId) {
+	        Wash wash = washService.getWashByBooking(bookingId);
+	        return new ResponseEntity<>(wash, HttpStatus.OK);
+	    }
+
+
 	@PostMapping("/registrationPlate")
 	@ApiOperation(value = "Perform a wash for a  car registration plate number", notes = "Performs a wash")
 	@ApiImplicitParams({
