@@ -3,6 +3,8 @@ package com.zwash.pojos;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,8 +26,9 @@ public class Wash {
     @JoinColumn(name = "booking_id")
     private Booking booking;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private WashStatus status;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -41,12 +44,12 @@ public class Wash {
 
     public Wash() {}
 
-    public Wash(String status, LocalDateTime startTime) {
+    public Wash(WashStatus status, LocalDateTime startTime) {
         this.status = status;
         this.startTime = startTime;
     }
 
-    public Wash(Booking booking, String status, LocalDateTime startTime, LocalDateTime endTime,
+    public Wash(Booking booking, WashStatus status, LocalDateTime startTime, LocalDateTime endTime,
                 LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.booking = booking;
         this.status = status;
@@ -72,11 +75,11 @@ public class Wash {
         this.booking = booking;
     }
 
-    public String getStatus() {
+    public WashStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(WashStatus status) {
         this.status = status;
     }
     

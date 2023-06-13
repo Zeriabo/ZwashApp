@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zwash.pojos.Wash;
+import com.zwash.pojos.WashStatus;
 import com.zwash.repository.WashRepository;
 import com.zwash.service.WashService;
 
@@ -19,10 +20,10 @@ public class WashServiceImpl implements WashService {
 
     @Override
     public boolean startWash(Wash wash) {
-        if (wash.getStatus().equals("Pending")) {
-            wash.setStatus("Executing");
+        if (wash.getStatus().equals(WashStatus.QUEUING)){
+            wash.setStatus(WashStatus.WASHING);
             wash.setStartTime(LocalDateTime.now());
-            
+        	
             washRepository.save(wash);
             return true;
         } else {
@@ -32,9 +33,10 @@ public class WashServiceImpl implements WashService {
 
     @Override
     public boolean finishWash(Wash wash) {
-        if (wash.getStatus().equals("Executing")) {
-            wash.setStatus("Finished");
-            wash.setEndTime(LocalDateTime.now());
+        if (wash.getStatus().equals(WashStatus.QUEUING)||wash.getStatus().equals(WashStatus.WASHING)) {
+            wash.setStatus(WashStatus.FINISHED);
+            wash.setEndTime(LocalDateTime.now().plusMinutes(20));
+            washRepository.save(wash);
             return true;
         } else {
             return false;
@@ -43,9 +45,11 @@ public class WashServiceImpl implements WashService {
 
     @Override
     public boolean cancelWash(Wash wash) {
-        if (!wash.getStatus().equals("Finished") && !wash.getStatus().equals("Executing")) {
-            wash.setStatus("Cancelled");
+        if (!wash.getStatus().equals(WashStatus.FINISHED) && !wash.getStatus().equals(WashStatus.WASHING)) {
+            wash.setStatus(WashStatus.CANCELED);
+            washRepository.save(wash);
             return true;
+ 
         } else {
             return false;
         }
@@ -53,7 +57,7 @@ public class WashServiceImpl implements WashService {
 
     @Override
     public boolean rescheduleWash(Wash wash, LocalDateTime startTime) {
-        if (!wash.getStatus().equals("Finished") && !wash.getStatus().equals("Executing")) {
+        if (!wash.getStatus().equals(WashStatus.FINISHED) && !wash.getStatus().equals(WashStatus.QUEUING)) {
             wash.setStartTime(startTime);
             washRepository.save(wash);
             return true;
