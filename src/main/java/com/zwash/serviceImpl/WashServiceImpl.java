@@ -70,4 +70,9 @@ public class WashServiceImpl implements WashService {
     public Wash getWash(Long id) throws NoSuchElementException {
         return washRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Wash not found"));
     }
+
+	@Override
+	public Wash getWashByBooking(Long bookingId) throws NoSuchElementException {
+		return washRepository.findByBookingId(bookingId);
+	}
 }

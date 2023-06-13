@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,16 @@ public class WashController {
 		return new ModelAndView("washes");
 	}
 	
-	@GetMapping("/registrationPlate")
+	
+	@GetMapping("/")
+	public ResponseEntity<Wash> getWash(@ApiParam(value = "bookingId", required = true) @RequestParam Long bookingId) {
+		Wash wash =washService.getWashByBooking(bookingId);
+		
+		return new ResponseEntity<>(wash, HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("/registrationPlate")
 	@ApiOperation(value = "Perform a wash for a  car registration plate number", notes = "Performs a wash")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "registrationPlate", value = "registration plate opf the car", required = true, dataType = "String", paramType = "query") })
@@ -75,7 +85,7 @@ public class WashController {
 	@ApiOperation(value = "Finish a wash", notes = "Finishes the wash for the specified washId")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query") })
-	@GetMapping("/finish")
+	@PostMapping("/finish")
 	public ResponseEntity<Wash> finishWash(
 			@ApiParam(value = "Wash ID", required = true) @RequestParam Long washId) {
 		try {
@@ -97,7 +107,7 @@ public class WashController {
 	@ApiOperation(value = "Cancel a wash", notes = "Cancels the wash for the specified washId")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query") })
-	@GetMapping("/cancel")
+	@PostMapping("/cancel")
 	public ResponseEntity<Wash> cancelWash(
 			@ApiParam(value = "Wash ID", required = true) @RequestParam Long washId) {
 		try {
@@ -120,7 +130,7 @@ public class WashController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query"),
 			@ApiImplicitParam(name = "startTime", value = "New start time for the wash", required = true, dataType = "LocalDateTime", paramType = "query") })
-	@GetMapping("/reschedule")
+	@PostMapping("/reschedule")
 	public ResponseEntity<Wash> rescheduleWash(
 			@ApiParam(value = "Wash ID", required = true) @RequestParam Long washId,
 			@ApiParam(value = "New start time", required = true) @RequestParam LocalDateTime startTime) {
