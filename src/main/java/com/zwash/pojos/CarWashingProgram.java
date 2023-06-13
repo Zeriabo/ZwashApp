@@ -40,6 +40,9 @@ public abstract class CarWashingProgram {
 	@Column(name = "program_type")
 	private String programType;
 
+	@Column(name = "description")
+	private String description;
+
 	@CreationTimestamp
 	@Column(name = "createdAt")
 	private LocalDateTime createdAt;
@@ -55,6 +58,10 @@ public abstract class CarWashingProgram {
 	public abstract void setBrushType(String brushType);
 
 	public abstract void startWashing();
+
+	public abstract void setDescription(String description);
+
+	public abstract String getDescription();
 
 	public Long getId() {
 		return id;

@@ -16,7 +16,8 @@ public class TouchlessCarWashingProgram extends CarWashingProgram {
 	private Long id;
     private int waterPressure;
     private int soapAmount;
-
+    private String description;
+    
     public TouchlessCarWashingProgram(){
 
     }
@@ -45,4 +46,17 @@ public class TouchlessCarWashingProgram extends CarWashingProgram {
     public void startWashing() {
         System.out.println("Starting touchless car washing program with " + waterPressure + " water pressure and " + soapAmount + " soap amount.");
     }
+	@Override
+	public void setDescription(String description) {
+		
+		 this.description = "The Touchless Car Washing Program is a state-of-the-art car wash system that provides a thorough and gentle cleaning experience without any physical contact with the vehicle's surface";
+		
+	}
+
+	@Override
+	public String getDescription() {
+		
+		return description;
+	}
+
 }

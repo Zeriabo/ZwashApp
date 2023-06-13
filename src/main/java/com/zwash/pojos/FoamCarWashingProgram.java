@@ -19,7 +19,7 @@ public class FoamCarWashingProgram extends CarWashingProgram {
     private int waterPressure;
     private int soapAmount;
     private String brushType;
-
+    private String description;
     public FoamCarWashingProgram() {
         // Empty constructor required for JPA
     }
@@ -52,5 +52,18 @@ public class FoamCarWashingProgram extends CarWashingProgram {
         // Implementation details for starting a foam car washing program
         System.out.println("Starting foam car washing program with " + waterPressure + " water pressure, " + soapAmount + " soap amount, and " + brushType + " brush type.");
     }
+
+	@Override
+	public void setDescription(String description) {
+		
+		 this.description = "The Foam Car Washing Program is a specialized car wash program that focuses on using a high-quality foam solution to effectively remove dirt and grime from the car's surface";
+		
+	}
+
+	@Override
+	public String getDescription() {
+		
+		return description;
+	}
 
 }
