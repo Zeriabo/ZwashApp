@@ -12,6 +12,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -122,6 +124,31 @@ public class User {
 		this.deviceRegistrationToken = deviceRegistrationToken;
 	}
 
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	@PrePersist
+	protected void onCreate() {
+		setCreatedAt(LocalDateTime.now());
+		setUpdatedAt(LocalDateTime.now());
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		setUpdatedAt(LocalDateTime.now());
+	}
 
 	@Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
@@ -164,13 +191,13 @@ public class User {
 	private String token;
 
 
+	@CreationTimestamp
+	@Column(name = "createdAt")
+	private LocalDateTime createdAt;
+
+	@UpdateTimestamp
+	@Column(name = "updatedAt")
+	private LocalDateTime updatedAt;
 
 
-     @CreationTimestamp
-     @Column(name = "createdAt")
-     private LocalDateTime createDateTime;
-
-     @UpdateTimestamp
-     @Column(name = "updatedAt")
-     private LocalDateTime updateDateTime;
 }

@@ -1,6 +1,10 @@
 package com.zwash.pojos;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -13,6 +17,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -43,6 +49,15 @@ public class Station {
 	@OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
 	private List<CarWashingProgram> programs;
 
+	@CreationTimestamp
+	@Column(name = "createdAt")
+	private LocalDateTime createdAt;
+
+	@UpdateTimestamp
+	@Column(name = "updatedAt")
+	private LocalDateTime updatedAt;
+	
+	
 	public Media getMedia() {
 		return media;
 	}
@@ -97,6 +112,31 @@ public class Station {
 
 	public void setPrograms(List<CarWashingProgram> programs) {
 		this.programs = programs;
+	}
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	@PrePersist
+	protected void onCreate() {
+		setCreatedAt(LocalDateTime.now());
+		setUpdatedAt(LocalDateTime.now());
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		setUpdatedAt(LocalDateTime.now());
 	}
 
 }
