@@ -1,9 +1,12 @@
 package com.zwash.pojos;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -15,6 +18,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -41,6 +46,14 @@ public class CarWashContract {
     @Column(name = "price")
     private double price;
 
+    @CreationTimestamp
+    @Column(name = "createdAt")
+	private LocalDateTime createdAt;
+
+
+    @UpdateTimestamp
+    @Column(name = "updatedAt")
+	private LocalDateTime updatedAt;
     // Constructors
     public CarWashContract() {}
 
@@ -91,5 +104,30 @@ public class CarWashContract {
     public void setPrice(double price) {
         this.price = price;
     }
+	public LocalDateTime getCreateDateTime() {
+		return createdAt;
+	}
+
+	public void setCreateDateTime(LocalDateTime createDateTime) {
+		this.createdAt = createDateTime;
+	}
+
+	public LocalDateTime getUpdateDateTime() {
+		return updatedAt;
+	}
+
+	public void setUpdateDateTime(LocalDateTime updateDateTime) {
+		this.updatedAt = updateDateTime;
+	}
+	@PrePersist
+	protected void onCreate() {
+		setCreateDateTime(LocalDateTime.now());
+		setUpdateDateTime(LocalDateTime.now());
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		setUpdateDateTime(LocalDateTime.now());
+	}
 }
 

@@ -1,5 +1,10 @@
 package com.zwash.pojos;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,12 +16,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "programType")
 @JsonSubTypes({ @JsonSubTypes.Type(value = HighPressureCarWashingProgram.class, name = "high_pressure"),
 		@JsonSubTypes.Type(value = FoamCarWashingProgram.class, name = "foam"),
@@ -35,6 +39,14 @@ public abstract class CarWashingProgram {
 	@JsonProperty("program")
 	@Column(name = "program_type")
 	private String programType;
+
+	@CreationTimestamp
+	@Column(name = "createdAt")
+	private LocalDateTime createdAt;
+
+	@UpdateTimestamp
+	@Column(name = "updatedAt")
+	private LocalDateTime updatedAt;
 
 	public abstract void setWaterPressure(int pressure);
 
@@ -68,4 +80,30 @@ public abstract class CarWashingProgram {
 		this.station = station;
 	}
 
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	@PrePersist
+	protected void onCreate() {
+		setCreatedAt(LocalDateTime.now());
+		setUpdatedAt(LocalDateTime.now());
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		setUpdatedAt(LocalDateTime.now());
+	}
 }
