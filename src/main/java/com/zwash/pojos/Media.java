@@ -1,5 +1,9 @@
 package com.zwash.pojos;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.Column;
@@ -7,6 +11,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
@@ -53,7 +59,31 @@ public class Media {
 	public void setPictureFile(MultipartFile pictureFile) {
 		this.pictureFile = pictureFile;
 	}
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
 
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	@PrePersist
+	protected void onCreate() {
+		setCreatedAt(LocalDateTime.now());
+		setUpdatedAt(LocalDateTime.now());
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		setUpdatedAt(LocalDateTime.now());
+	}
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,5 +101,11 @@ public class Media {
     @Transient // Exclude from database mapping
     private MultipartFile pictureFile;
 
+	@CreationTimestamp
+	@Column(name = "createdAt")
+	private LocalDateTime createdAt;
 
+	@UpdateTimestamp
+	@Column(name = "updatedAt")
+	private LocalDateTime updatedAt;
 }
