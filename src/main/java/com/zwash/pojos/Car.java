@@ -19,6 +19,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -97,7 +99,31 @@ public class Car {
 	public void setDateOfManufacture(LocalDate dateOfManufacture) {
 		this.dateOfManufacture = dateOfManufacture;
 	}
+	public LocalDateTime getCreateDateTime() {
+		return createDateTime;
+	}
 
+	public void setCreateDateTime(LocalDateTime createDateTime) {
+		this.createDateTime = createDateTime;
+	}
+
+	public LocalDateTime getUpdateDateTime() {
+		return updateDateTime;
+	}
+
+	public void setUpdateDateTime(LocalDateTime updateDateTime) {
+		this.updateDateTime = updateDateTime;
+	}
+	@PrePersist
+	protected void onCreate() {
+		setCreateDateTime(LocalDateTime.now());
+		setUpdateDateTime(LocalDateTime.now());
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		setUpdateDateTime(LocalDateTime.now());
+	}
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq_gen")
      @Column(name = "id", unique = true, nullable = false)
@@ -125,5 +151,7 @@ public class Car {
     @UpdateTimestamp
     @Column(name = "updatedAt")
     private LocalDateTime updateDateTime;
+
+
 
 }
