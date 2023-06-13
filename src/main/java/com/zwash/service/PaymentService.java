@@ -7,15 +7,17 @@ import com.stripe.param.checkout.SessionCreateParams;
 
 public class PaymentService {
     static {
-        Stripe.apiKey = "YOUR_STRIPE_SECRET_KEY";
+    	Stripe.apiKey = "sk_test_rfaBmNUu1lWB7VZ0MMSIsYjH";
+    	
     }
 
     public String createCheckoutSession() throws StripeException {
+    	 String DOMAIN = "http://localhost:7001";
         SessionCreateParams.Builder builder = new SessionCreateParams.Builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("https://your-website.com/success")
-                .setCancelUrl("https://your-website.com/cancel");
+                .setSuccessUrl(DOMAIN+"/success")
+                .setCancelUrl(DOMAIN+"/cancel");
 
         SessionCreateParams.LineItem item = new SessionCreateParams.LineItem.Builder()
                 .setPriceData(new SessionCreateParams.LineItem.PriceData.Builder()
