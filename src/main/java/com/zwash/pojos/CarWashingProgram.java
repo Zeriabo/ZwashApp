@@ -42,6 +42,9 @@ public abstract class CarWashingProgram {
 
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "price")
+	private double price;
 
 	@CreationTimestamp
 	@Column(name = "createdAt")
@@ -109,6 +112,15 @@ public abstract class CarWashingProgram {
 	{
 		 this.description=description;
 	}
+	
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 	@PrePersist
 	protected void onCreate() {
 		setCreatedAt(LocalDateTime.now());
