@@ -21,9 +21,8 @@ public interface StationRepository extends JpaRepository<Station, Long> {
 	Optional<Station> findById(@Param("id") Long id);
 
 	@Query("SELECT cw "
-			+ "FROM Station s,CarWashingProgram cw "
-			+ "WHERE s.id = cw.station.id "
-			+ "and s.id=:id")
+			+ "FROM CarWashingProgram cw "
+			+ "WHERE cw.station.id =:id")
 	List<CarWashingProgram> getWashes(@Param("id") Long id);
 
 	@Modifying
