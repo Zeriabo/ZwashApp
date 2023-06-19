@@ -5,15 +5,17 @@ public class CarWashingProgramDTO {
     private String name;
     private int duration;
     private String programType;
+    double price;
 
     public CarWashingProgramDTO()
     {
 
     }
-    public CarWashingProgramDTO(String name, int duration, String programType) {
+    public CarWashingProgramDTO(String name, int duration, String programType, double price) {
         this.name = name;
         this.duration = duration;
         this.programType = programType;
+        this.price=price;
     }
     // Getters and setters
     public String getName() {
