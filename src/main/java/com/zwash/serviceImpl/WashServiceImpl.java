@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.zwash.pojos.Wash;
 import com.zwash.pojos.WashStatus;
 import com.zwash.repository.WashRepository;
+import com.zwash.service.StripeClientService;
 import com.zwash.service.WashService;
+import com.stripe.model.Charge;
 
 @Service
 public class WashServiceImpl implements WashService {
@@ -17,6 +19,9 @@ public class WashServiceImpl implements WashService {
     private static final long serialVersionUID = 1L;
 	@Autowired
     private WashRepository washRepository;
+	
+	 @Autowired
+	    private StripeClientService stripeClientService;
 
     @Override
     public boolean startWash(Wash wash) {
@@ -75,4 +80,32 @@ public class WashServiceImpl implements WashService {
 	public Wash getWashByBooking(Long bookingId) throws NoSuchElementException {
 		return washRepository.findByBookingId(bookingId);
 	}
+
+
+    @Override
+    public boolean buyWash(Wash wash) {
+        if (wash.getStatus().equals(WashStatus.NOT_PURCHASED)) {
+            try {
+                // Charge the customer using Stripe
+                Charge charge = stripeClientService.chargeNewCard(wash.getStripeToken(), wash.getPrice());
+                if (charge.getPaid()) {
+                    // Payment successful, update wash status and save changes
+                    wash.setStatus(WashStatus.PURCHASED);
+                    washRepository.save(wash);
+                    return true;
+                } else {
+                    // Payment failed, return false
+                    return false;
+                }
+            } catch (Exception e) {
+                // Handle any exceptions that occur during payment processing
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
 }
+    
+}
+    

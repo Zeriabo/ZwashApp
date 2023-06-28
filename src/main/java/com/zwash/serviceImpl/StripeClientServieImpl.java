@@ -20,6 +20,7 @@ public class StripeClientServieImpl implements StripeClientService {
         Stripe.apiKey = "sk_test_51NInIUC7hkCZnQICPVg265tvEEClxVcWdBmavlo8LBBtnCjc4VVCtPaegEyry1YJ7pAUCoBuPfmJ8yoQ068uERae001BvwzOiW";
     }
 	
+	
 	@Override
 	   public Customer createCustomer(String token, String email) throws Exception {
         Map<String, Object> customerParams = new HashMap<String, Object>();
@@ -32,18 +33,18 @@ public class StripeClientServieImpl implements StripeClientService {
     }
 	@Override
 	  public Charge chargeNewCard(String token, double amount) throws Exception {
-//        Map<String, Object> chargeParams = new HashMap<String, Object>();
-//        chargeParams.put("amount", (int)(amount));
-//        chargeParams.put("currency", "EUR");
-//        chargeParams.put("source", token);
-        // Create a charge
-        ChargeCreateParams chargeParams =
-            ChargeCreateParams.builder()
-                .setAmount((long) 1000) // Amount in cents
-                .setCurrency("usd")
-                .setSource("tok_visa") // Token generated from client-side
-                .setDescription("Payment description")
-                .build();
+        Map<String, Object> chargeParams = new HashMap<String, Object>();
+        chargeParams.put("amount", (int)(amount));
+        chargeParams.put("currency", "EUR");
+        chargeParams.put("source", token);
+//         Create a charge
+//        ChargeCreateParams chargeParams =
+//            ChargeCreateParams.builder()
+//                .setAmount((long) 1000) // Amount in cents
+//                .setCurrency("usd")
+//                .setSource("tok_visa") // Token generated from client-side
+//                .setDescription("Payment description")
+//                .build();
 
         Charge charge = Charge.create(chargeParams);
       

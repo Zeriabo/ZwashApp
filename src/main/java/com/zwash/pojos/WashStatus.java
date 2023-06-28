@@ -4,5 +4,7 @@ public enum WashStatus {
 	 WASHING,
 	 QUEUING,
 	 FINISHED, 
-	 CANCELED
+	 CANCELED,
+	 NOT_PURCHASED,
+	 PURCHASED
 }

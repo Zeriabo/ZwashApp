@@ -23,6 +23,6 @@ public interface WashService extends Serializable{
 
 	boolean rescheduleWash(Wash wash, LocalDateTime startTime);
 
-	
+	boolean buyWash(Wash wash);
 	
 }

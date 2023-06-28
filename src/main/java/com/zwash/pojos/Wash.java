@@ -32,18 +32,24 @@ public class Wash {
     @Column(name = "status", nullable = false)
     private WashStatus status;
 
+    @Column(name = "price", nullable = false)
+    private double price;
+    
     @Column(name = "start_time")
     private LocalDateTime startTime;
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    private String stripe_token;
+    
 	@Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    
     public Wash() {}
 
     public Wash(WashStatus status, LocalDateTime startTime) {
@@ -126,4 +132,20 @@ public class Wash {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+	public String getStripeToken() {
+		return stripe_token;
+	}
+
+	public void setStripeToken(String stripe_token) {
+		this.stripe_token = stripe_token;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 }
