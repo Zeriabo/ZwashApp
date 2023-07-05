@@ -150,28 +150,6 @@ public class WashController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	@PostMapping("/buy")
-	@ApiOperation(value = "Buy a wash", notes = "Buys a wash for the specified washId")
-	@ApiImplicitParams({
-	        @ApiImplicitParam(name = "washId", value = "ID of the wash", required = true, dataType = "Long", paramType = "query") })
-	public ResponseEntity<Wash> buyWash(
-	        @ApiParam(value = "Wash ID", required = true) @RequestParam Long washId) {
-	    try {
-	        Wash wash = washService.getWash(washId);
-	        boolean bought = washService.buyWash(wash);
-	        if (bought) {
-	            logger.info("Wash bought successfully for washId: {}", washId);
-	            return new ResponseEntity<>(wash, HttpStatus.OK);
-	        } else {
-	            logger.info("Wash could not be bought for washId: {}", washId);
-	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	        }
-	    } catch (NoSuchElementException e) {
-	        logger.error("Wash not found for washId: {}", washId);
-	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	    }
-	}
 
 	
 

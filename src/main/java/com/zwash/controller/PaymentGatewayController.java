@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/payment")
+@RequestMapping("/v1/payment")
 public class PaymentGatewayController {
     
 	@Autowired
