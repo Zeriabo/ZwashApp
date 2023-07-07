@@ -6,6 +6,12 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import com.zwash.pojos.BasicCarWashingProgram;
+import com.zwash.pojos.CarWashingProgram;
+import com.zwash.pojos.Wash;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,9 +45,15 @@ public class PaymentController {
 		return ResponseEntity.status(303).header("Location", sessionUrl).body("");
 	}
 	@PostMapping("/create-payment-intent")
-	public ResponseEntity<String> createPaymentIntent()
+	public ResponseEntity<String> createPaymentIntent(@RequestBody BasicCarWashingProgram item)
 			throws StripeException {
 		Stripe.apiKey = "sk_test_51NInIUC7hkCZnQICPVg265tvEEClxVcWdBmavlo8LBBtnCjc4VVCtPaegEyry1YJ7pAUCoBuPfmJ8yoQ068uERae001BvwzOiW";
+      System.out.print(item);
+
+      
+      System.out.print(item);
+      System.out.print(item.getPrice());
+      Long amountInCents = (long) (item.getPrice() * 100); // Convert to cents
 
 		  // Disable FAIL_ON_EMPTY_BEANS feature
 	    ObjectMapper objectMapper = new ObjectMapper();
@@ -49,7 +61,7 @@ public class PaymentController {
 
 		PaymentIntentCreateParams params =
 				  PaymentIntentCreateParams.builder()
-				    .setAmount(1099L)
+				    .setAmount(amountInCents)
 				    .setCurrency("eur")
 				    .addPaymentMethodType("card")
 				    .build();
