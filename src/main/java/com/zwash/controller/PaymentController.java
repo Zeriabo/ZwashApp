@@ -1,5 +1,7 @@
 package com.zwash.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -37,9 +39,13 @@ public class PaymentController {
 		return ResponseEntity.status(303).header("Location", sessionUrl).body("");
 	}
 	@PostMapping("/create-payment-intent")
-	public ResponseEntity<PaymentIntent> createPaymentIntent()
+	public ResponseEntity<String> createPaymentIntent()
 			throws StripeException {
 		Stripe.apiKey = "sk_test_51NInIUC7hkCZnQICPVg265tvEEClxVcWdBmavlo8LBBtnCjc4VVCtPaegEyry1YJ7pAUCoBuPfmJ8yoQ068uERae001BvwzOiW";
+
+		  // Disable FAIL_ON_EMPTY_BEANS feature
+	    ObjectMapper objectMapper = new ObjectMapper();
+	    objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
 		PaymentIntentCreateParams params =
 				  PaymentIntentCreateParams.builder()
@@ -49,8 +55,11 @@ public class PaymentController {
 				    .build();
 
 				PaymentIntent paymentIntent = PaymentIntent.create(params);
+				  // Manually serialize the PaymentIntent object to JSON
+		        String paymentIntentJson = paymentIntent.getClientSecret();
+
 		// Create the ResponseEntity with the redirect URL and HTTP status code
-		return ResponseEntity.status(200).body(paymentIntent);
+		return ResponseEntity.status(200).body(paymentIntentJson);
 	}
 	@GetMapping("/checkout/{sessionId}")
 	public ResponseEntity<String> handleCheckout(@PathVariable String sessionId) {
