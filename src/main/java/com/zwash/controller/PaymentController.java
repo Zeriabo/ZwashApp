@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.stripe.param.PaymentIntentCreateParams;
+import com.stripe.model.PaymentIntent;
 @RestController
 @RequestMapping("/v1/payment")
 public class PaymentController {
@@ -35,7 +36,22 @@ public class PaymentController {
 		// Create the ResponseEntity with the redirect URL and HTTP status code
 		return ResponseEntity.status(303).header("Location", sessionUrl).body("");
 	}
+	@PostMapping("/create-payment-intent")
+	public ResponseEntity<PaymentIntent> createPaymentIntent()
+			throws StripeException {
+		Stripe.apiKey = "sk_test_51NInIUC7hkCZnQICPVg265tvEEClxVcWdBmavlo8LBBtnCjc4VVCtPaegEyry1YJ7pAUCoBuPfmJ8yoQ068uERae001BvwzOiW";
 
+		PaymentIntentCreateParams params =
+				  PaymentIntentCreateParams.builder()
+				    .setAmount(1099L)
+				    .setCurrency("eur")
+				    .addPaymentMethodType("card")
+				    .build();
+
+				PaymentIntent paymentIntent = PaymentIntent.create(params);
+		// Create the ResponseEntity with the redirect URL and HTTP status code
+		return ResponseEntity.status(200).body(paymentIntent);
+	}
 	@GetMapping("/checkout/{sessionId}")
 	public ResponseEntity<String> handleCheckout(@PathVariable String sessionId) {
 		// Here you can perform any necessary logic for handling the checkout
