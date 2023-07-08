@@ -4,7 +4,6 @@ import java.util.ServiceLoader;
 
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.zwash.exceptions.IncorrectTokenException;
 import com.zwash.exceptions.UserIsNotActiveException;
 import com.zwash.pojos.LoggedUser;
@@ -26,7 +24,6 @@ import com.zwash.pojos.SignInfo;
 import com.zwash.pojos.User;
 import com.zwash.security.JwtUtils;
 import com.zwash.service.UserService;
-
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
