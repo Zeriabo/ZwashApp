@@ -5,6 +5,7 @@ import com.stripe.model.Charge;
 import com.zwash.service.StripeClientService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 @RestController
@@ -18,8 +19,8 @@ public class PaymentGatewayController {
     PaymentGatewayController() {
       
     }
- 
-    @PostMapping("/charge")
+
+    @PostMapping(value = "/charge", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String>  chargeCard(@RequestHeader(value="token") String token, @RequestHeader(value="amount") Double amount) throws Exception {
        Charge succeed = this.stripeClient.chargeNewCard(token, amount);
        
