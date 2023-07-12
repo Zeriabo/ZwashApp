@@ -73,7 +73,7 @@ public class PaymentController {
 	
 	
 	
-	@PostMapping(value ="/create-payment-intent",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)  
+	@GetMapping(value ="/create-payment-intent",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)  
 	public ResponseEntity<String> createPaymentIntent(@RequestBody ConcreteCarWashingProgram item)
 			throws StripeException, JsonMappingException, JsonProcessingException,Exception{
 		
@@ -81,8 +81,6 @@ public class PaymentController {
 		Stripe.apiKey = "sk_test_51NInIUC7hkCZnQICPVg265tvEEClxVcWdBmavlo8LBBtnCjc4VVCtPaegEyry1YJ7pAUCoBuPfmJ8yoQ068uERae001BvwzOiW";
 		 try {
 		    
-
-      System.out.print(item.getPrice());
       long amountInCents = (long) (item.getPrice() * 100); // Convert euros to cents
 
 		PaymentIntentCreateParams params =
