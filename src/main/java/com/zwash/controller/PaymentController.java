@@ -73,7 +73,7 @@ public class PaymentController {
 	
 	
 	
-	@GetMapping(value ="/create-payment-intent",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)  
+	@PostMapping(value ="/create-payment-intent",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)  
 	public ResponseEntity<String> createPaymentIntent(@RequestBody ConcreteCarWashingProgram item)
 			throws StripeException, JsonMappingException, JsonProcessingException,Exception{
 		
