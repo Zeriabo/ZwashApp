@@ -17,6 +17,8 @@ public class ConcreteCarWashingProgram {
 	   @JsonProperty(value = "program")
 	    private String program;
 
+	   @JsonProperty("paymentMethodId")
+	    private String paymentMethodId;
 
 	@JsonProperty(value = "updatedAt")
 	   private List<Integer> updatedAt;
@@ -62,6 +64,12 @@ public class ConcreteCarWashingProgram {
         this.program = program;
     }
 
+    public String getPaymentMethodId() {
+        return paymentMethodId;
+    }
 
+    public void setPaymentMethodId(String paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
+    }
 }
 
