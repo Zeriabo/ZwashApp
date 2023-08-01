@@ -1,12 +1,12 @@
 package com.zwash.serviceImpl;
 
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.zwash.dto.BookingDTO;
 import com.zwash.mapper.BookingMapper;
 import com.zwash.pojos.Booking;
@@ -27,8 +27,8 @@ public class BookingServiceImpl implements BookingService {
 
 	@Autowired
 	 WashService washService;
-	
-	
+
+
 	@Override
 	public Booking saveBooking(Booking booking) {
 		return bookingRepository.save(booking);
@@ -59,7 +59,7 @@ public class BookingServiceImpl implements BookingService {
 	public BookingServiceImpl(BookingRepository bookingRepository, CarRepository carRepository) {
 		this.bookingRepository = bookingRepository;
 		this.carRepository = carRepository;
-	
+
 
 	}
 
@@ -105,18 +105,18 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public Booking moveToWash(String registrationPlate) {
-		
+
 		Car car = carRepository.findByRegisterationPlate(registrationPlate);
-		
-		
+
+
         Booking booking = bookingRepository.findByCarAndExecuted(car.getCarId(), false);
 
         if (booking != null) {
-        	
+
             booking.setExecuted(true);
             bookingRepository.save(booking);
             washService.startWash(booking.getWash());
-         
+
 
             return booking;
         } else {

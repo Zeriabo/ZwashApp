@@ -6,12 +6,12 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stripe.model.Charge;
 import com.zwash.pojos.Wash;
 import com.zwash.pojos.WashStatus;
 import com.zwash.repository.WashRepository;
 import com.zwash.service.StripeClientService;
 import com.zwash.service.WashService;
-import com.stripe.model.Charge;
 
 @Service
 public class WashServiceImpl implements WashService {
@@ -19,7 +19,7 @@ public class WashServiceImpl implements WashService {
     private static final long serialVersionUID = 1L;
 	@Autowired
     private WashRepository washRepository;
-	
+
 	 @Autowired
 	    private StripeClientService stripeClientService;
 
@@ -28,7 +28,7 @@ public class WashServiceImpl implements WashService {
         if (wash.getStatus().equals(WashStatus.QUEUING)){
             wash.setStatus(WashStatus.WASHING);
             wash.setStartTime(LocalDateTime.now());
-        	
+
             washRepository.save(wash);
             return true;
         } else {
@@ -54,7 +54,7 @@ public class WashServiceImpl implements WashService {
             wash.setStatus(WashStatus.CANCELED);
             washRepository.save(wash);
             return true;
- 
+
         } else {
             return false;
         }
@@ -106,6 +106,6 @@ public class WashServiceImpl implements WashService {
             return false;
         }
 }
-    
+
 }
-    
+

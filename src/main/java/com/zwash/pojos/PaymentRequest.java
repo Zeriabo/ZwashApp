@@ -6,7 +6,7 @@ public class PaymentRequest {
 
     // Default constructor required for JSON deserialization
     public PaymentRequest() {
-       
+
     }
 
     public PaymentRequest(ConcreteCarWashingProgram program, PaymentMethod paymentMethod) {

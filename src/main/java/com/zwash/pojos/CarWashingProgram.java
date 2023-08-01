@@ -42,7 +42,7 @@ public abstract class CarWashingProgram {
 
 	@Column(name = "description")
 	private String description;
-	
+
 	@Column(name = "price")
 	private double price;
 
@@ -107,12 +107,12 @@ public abstract class CarWashingProgram {
 	{
 		return description;
 	}
-	
+
 	public void setDescription(String description)
 	{
 		 this.description=description;
 	}
-	
+
 	public double getPrice() {
 		return price;
 	}

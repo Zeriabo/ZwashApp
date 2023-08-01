@@ -8,7 +8,7 @@ import com.stripe.param.checkout.SessionCreateParams;
 public class PaymentService {
     static {
     	Stripe.apiKey = "sk_test_rfaBmNUu1lWB7VZ0MMSIsYjH";
-    	
+
     }
 
     public String createCheckoutSession() throws StripeException {

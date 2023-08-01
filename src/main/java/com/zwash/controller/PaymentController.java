@@ -1,37 +1,5 @@
 package com.zwash.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.gson.JsonObject;
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
-import com.zwash.exceptions.UserIsNotActiveException;
-import com.zwash.pojos.ApplePayPaymentMethod;
-import com.zwash.pojos.BasicCarWashingProgram;
-import com.zwash.pojos.CarWashingProgram;
-import com.zwash.pojos.ConcreteCarWashingProgram;
-import com.zwash.pojos.ConfirmPaymentRequest;
-import com.zwash.pojos.CreditCardPaymentMethod;
-import com.zwash.pojos.GooglePayPaymentMethod;
-import com.zwash.pojos.LoggedUser;
-import com.zwash.pojos.Payment;
-import com.zwash.pojos.PaymentMethod;
-import com.zwash.pojos.PaymentRequest;
-import com.zwash.pojos.SignInfo;
-import com.zwash.pojos.Wash;
-import com.zwash.service.UserService;
-
-import io.jsonwebtoken.io.IOException;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +14,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import com.stripe.model.checkout.Session;
 import com.stripe.param.PaymentIntentConfirmParams;
 import com.stripe.param.PaymentIntentCreateParams;
-import com.stripe.model.PaymentIntent;
+import com.stripe.param.checkout.SessionCreateParams;
+import com.zwash.pojos.ApplePayPaymentMethod;
+import com.zwash.pojos.ConcreteCarWashingProgram;
+import com.zwash.pojos.ConfirmPaymentRequest;
+import com.zwash.pojos.CreditCardPaymentMethod;
+import com.zwash.pojos.GooglePayPaymentMethod;
+import com.zwash.pojos.PaymentRequest;
+import com.zwash.service.UserService;
 
 @RestController
 @RequestMapping("/v1/payment")
@@ -84,8 +66,8 @@ public class PaymentController {
 		Stripe.apiKey = "sk_test_51NInIUC7hkCZnQICPVg265tvEEClxVcWdBmavlo8LBBtnCjc4VVCtPaegEyry1YJ7pAUCoBuPfmJ8yoQ068uERae001BvwzOiW";
 		String paymentMethodType ="";
 		  try {
-	            long amountInCents = (long) (request.getProgram().getPrice() * 100); // Convert euros to cents
-	          
+	            long amountInCents = request.getProgram().getPrice() * 100; // Convert euros to cents
+
 	            if (request.getPaymentMethod() instanceof ApplePayPaymentMethod) {
 	                 paymentMethodType = "apple_pay";
 	            }
@@ -102,7 +84,7 @@ public class PaymentController {
 	                    .setAutomaticPaymentMethods(
 	                    	      PaymentIntentCreateParams.AutomaticPaymentMethods.builder().setEnabled(true).build()
 	                    	    )
-	                         
+
 	                    .build();
 
 	            PaymentIntent paymentIntent = PaymentIntent.create(params);
@@ -114,7 +96,7 @@ public class PaymentController {
 	            return ResponseEntity.status(500).body(null);
 	        }
 	    }
-	
+
 
 	@PostMapping(value = "/confirm-payment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> confirmPayment(@RequestBody ConfirmPaymentRequest request) {
@@ -153,7 +135,7 @@ public class PaymentController {
 
 			System.out.println(programJson);
 
-			PaymentIntentCreateParams params = PaymentIntentCreateParams.builder().setAmount((long) program.getPrice())
+			PaymentIntentCreateParams params = PaymentIntentCreateParams.builder().setAmount(program.getPrice())
 					.setCurrency("eur").addPaymentMethodType("card").build();
 
 			PaymentIntent paymentIntent = PaymentIntent.create(params);

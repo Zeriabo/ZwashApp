@@ -32,7 +32,7 @@ public class CarWashingProgramServiceImpl implements CarWashingProgramService {
 			station = stationService.getStation(station.getId());
 			program.setStation(station);
 			program.setProgramType(program.getClass().getSimpleName());
-			
+
 			listprograms = station.getPrograms();
 		} catch (StationNotExistsException stationNotExistsException) {
 			throw new StationNotExistsException(program.getStation().getId());

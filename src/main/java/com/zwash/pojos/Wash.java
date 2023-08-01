@@ -1,5 +1,7 @@
 package com.zwash.pojos;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +15,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "wash")
@@ -22,8 +23,8 @@ public class Wash {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    
+
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "booking_id")
     private Booking booking;
@@ -34,7 +35,7 @@ public class Wash {
 
     @Column(name = "price", nullable = false)
     private double price;
-    
+
     @Column(name = "start_time")
     private LocalDateTime startTime;
 
@@ -42,14 +43,14 @@ public class Wash {
     private LocalDateTime endTime;
 
     private String stripe_token;
-    
+
 	@Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    
+
     public Wash() {}
 
     public Wash(WashStatus status, LocalDateTime startTime) {
@@ -90,7 +91,7 @@ public class Wash {
     public void setStatus(WashStatus status) {
         this.status = status;
     }
-    
+
     public LocalDateTime getStartTime() {
 		return startTime;
 	}

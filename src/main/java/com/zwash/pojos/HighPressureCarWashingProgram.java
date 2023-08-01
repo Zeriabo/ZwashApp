@@ -10,15 +10,15 @@ import jakarta.persistence.Id;
 @DiscriminatorValue("high_pressure")
 public class HighPressureCarWashingProgram extends CarWashingProgram {
 
-	
-	
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private int waterPressure;
 
-    
+
     public HighPressureCarWashingProgram() {
         // Empty constructor required for JPA
     }
@@ -50,5 +50,5 @@ public class HighPressureCarWashingProgram extends CarWashingProgram {
         System.out.println("Starting high-pressure car washing program with " + waterPressure + " water pressure.");
     }
 
-	
+
 }

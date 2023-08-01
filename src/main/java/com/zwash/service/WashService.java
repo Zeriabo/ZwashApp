@@ -10,11 +10,11 @@ import com.zwash.pojos.Wash;
 
 @Service
 public interface WashService extends Serializable{
-	
+
 	Wash  getWash(Long id) throws NoSuchElementException;
-	
+
 	Wash getWashByBooking(Long bookingId) throws NoSuchElementException;
-	
+
 	boolean startWash(Wash wash);
 
 	boolean finishWash(Wash wash);
@@ -24,5 +24,5 @@ public interface WashService extends Serializable{
 	boolean rescheduleWash(Wash wash, LocalDateTime startTime);
 
 	boolean buyWash(Wash wash);
-	
+
 }

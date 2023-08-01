@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zwash.pojos.Booking;
-import com.zwash.service.CarService;
 import com.zwash.service.CarWashService;
 import com.zwash.service.RegistrationPlateMonitorService;
 
@@ -47,7 +46,7 @@ public class CarWashController {
 	        logger.info("Monitoring started! ....");
 	        return "Monitoring started!";
 	    }
-	 
+
 	@PostMapping
 	@ApiOperation(value = "Execute a car wash")
 	@ApiResponses(value = {

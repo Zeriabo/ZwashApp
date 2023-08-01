@@ -43,7 +43,7 @@ public class WashingContract {
 
     @Column(name = "price")
     private double price;
-    
+
 	@Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 

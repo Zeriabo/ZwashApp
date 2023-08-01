@@ -15,16 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.zwash.pojos.Wash;
+import com.zwash.service.RegistrationPlateMonitorService;
+import com.zwash.service.WashService;
+
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-import com.zwash.pojos.Wash;
-import com.zwash.service.RegistrationPlateMonitorService;
-import com.zwash.service.WashService;
 
 @RestController
 @RequestMapping(value = "/v1/wash")
@@ -35,7 +33,7 @@ public class WashController {
 
 	@Autowired
 	private RegistrationPlateMonitorService registrationPlateMonitorService;
-	
+
 	Logger logger = LoggerFactory.getLogger(WashController.class);
 
 	   @GetMapping("/")
@@ -151,6 +149,6 @@ public class WashController {
 		}
 	}
 
-	
+
 
 }

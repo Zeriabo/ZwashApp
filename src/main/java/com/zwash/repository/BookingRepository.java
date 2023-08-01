@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.zwash.pojos.Booking;
-import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
 
 @Repository

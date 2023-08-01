@@ -11,5 +11,5 @@ public interface StripeClientService {
 	public Customer createCustomer(String token, String email) throws Exception;
 	 public Charge chargeNewCard(String token, double amount) throws Exception;
 	 public Charge chargeCustomerCard(String customerId, int amount) throws Exception;
-		 
+
 }

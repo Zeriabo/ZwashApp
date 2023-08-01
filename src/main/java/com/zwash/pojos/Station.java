@@ -56,8 +56,8 @@ public class Station {
 	@UpdateTimestamp
 	@Column(name = "updatedAt")
 	private LocalDateTime updatedAt;
-	
-	
+
+
 	public Media getMedia() {
 		return media;
 	}

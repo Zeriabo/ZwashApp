@@ -26,7 +26,7 @@ public abstract class PaymentMethod {
 
     // Default constructor required for JSON deserialization
     public PaymentMethod() {
-       
+
     }
 
     public PaymentMethod(String paymentMethodId) {
@@ -50,5 +50,5 @@ public abstract class PaymentMethod {
     public void setPaymentMethodId(String paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
     }
-    
+
 }

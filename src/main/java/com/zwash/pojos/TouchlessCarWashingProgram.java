@@ -16,7 +16,7 @@ public class TouchlessCarWashingProgram extends CarWashingProgram {
 	private Long id;
     private int waterPressure;
     private int soapAmount;
-  
+
     public TouchlessCarWashingProgram(){
 
     }
