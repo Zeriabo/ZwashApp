@@ -1,0 +1,36 @@
+type User {
+    id: ID!
+    username: String
+    password: String
+    firstName: String
+    lastName: String!
+    secretAnswer: string!
+    secretQuestion: string!
+    dateOfBirth: String
+    admin: Boolean!
+}
+input SignInfoInput {
+    username: String!
+    password: String!
+}
+type LoggedUser {
+    id: ID!
+    username: String!
+    active: Boolean!
+    dateOfBirth: String
+    firstName: String!
+    lastName: String!
+    admin: Boolean!
+    token: String!
+}
+type Query {
+    getUser(id: ID!): User!
+    findAllUserss: [User]!
+}
+
+type Mutation {
+    signIn(userInfo: SignInfoInput!): LoggedUser!
+    register(user: UserInput!): User!
+    registerAdmin(user: UserInput!): User!
+    changePassword(username: String!, password: String!): Boolean!
+}
