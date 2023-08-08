@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.WashingContract;
 
-@Repository
+
 public interface WashingContractRepository extends JpaRepository<WashingContract, Long> {
 
     List<WashingContract> findByCar(Car car);
