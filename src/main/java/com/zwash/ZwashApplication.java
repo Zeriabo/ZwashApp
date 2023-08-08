@@ -8,7 +8,6 @@ import com.zwash.utility.FirebaseInitializer;
 
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.zwash.repository")
 public class ZwashApplication {
 
 	public static void main(String[] args) {
