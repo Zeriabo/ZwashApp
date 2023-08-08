@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.zwash.pojos.Wash;
 
-@Repository
+
 public interface WashRepository extends JpaRepository<Wash, Long> {
 
 	@Query("SELECT w FROM Wash w WHERE w.booking.id = :bookingId")
