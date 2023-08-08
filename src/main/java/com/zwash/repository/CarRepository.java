@@ -2,6 +2,7 @@ package com.zwash.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import com.zwash.pojos.Car;
 import com.zwash.pojos.User;
 
-@Repository
-public interface CarRepository extends CrudRepository<Car, Long> {
+
+public interface CarRepository extends JpaRepository<Car, Long> {
 
 	 @Query("select c from Car c where c.registerationPlate = ?1")
 	  Car findByRegisterationPlate(String registerationPlate);
