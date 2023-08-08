@@ -13,7 +13,7 @@ import com.zwash.pojos.CarWashingProgram;
 import com.zwash.pojos.Media;
 import com.zwash.pojos.Station;
 
-@Repository
+
 public interface StationRepository extends JpaRepository<Station, Long> {
 
 	@Override
