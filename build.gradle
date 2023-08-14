@@ -20,11 +20,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux:2.4.5'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0'
     implementation 'org.hibernate.validator:hibernate-validator:7.0.1.Final'
-    implementation 'com.graphql-java:graphql-spring-boot-starter:3.1.1'
-    implementation 'com.graphql-java:graphql-java:16.2'
-    implementation 'com.graphql-java:graphql-java-tools:5.2.4'
-    
-    
+
     //payment library stripe
     implementation 'com.stripe:stripe-java:22.26.0'
     
@@ -47,10 +43,8 @@ dependencies {
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
 	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-	compileOnly group: 'io.github.graphql-java', name: 'graphql-java-annotations', version: '8.0'
-    implementation group: 'com.graphql-java-kickstart', name: 'graphql-java-servlet', version: '15.0.0'
-    implementation group: 'com.graphql-java-kickstart', name: 'graphql-spring-boot-starter', version: '15.0.0'
-    implementation group: 'io.leangen.graphql', name: 'spqr', version: '0.12.3'
+
+
 	 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
