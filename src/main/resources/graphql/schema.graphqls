@@ -45,7 +45,9 @@ type Query {
     allBookings: [Booking]
     getAllBookings: [Booking!]!
     userBookings(userId: ID!): [Booking]
+ 
 }
+
 
 type Mutation {
     createBooking(bookingInput: BookingInput!): Booking

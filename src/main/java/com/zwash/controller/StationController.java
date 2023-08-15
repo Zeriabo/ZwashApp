@@ -24,13 +24,15 @@ import com.zwash.service.StationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 @RequestMapping("/v1/stations")
 public class StationController {
 
 	@Autowired
 	private StationService stationService;
+	
+     private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@ApiOperation("Get all stations")
 	@GetMapping("/")
@@ -47,12 +49,13 @@ public class StationController {
 		return ResponseEntity.ok(list);
 	}
 
-	@ApiOperation("Create a new station")
-	@PostMapping("/")
-	public ResponseEntity<Station> createStation(@RequestBody StationDTO stationDTO) throws Exception {
-		Station station = stationService.createStation(stationDTO);
-		return ResponseEntity.ok(station);
-	}
+	  @ApiOperation("Create a new station")
+	    @PostMapping("/")
+	    public ResponseEntity<Station> createStation(@RequestBody String stationDTOJson) throws Exception {
+	        StationDTO stationDTO = objectMapper.readValue(stationDTOJson, StationDTO.class);
+	        Station station = stationService.createStation(stationDTO);
+	        return ResponseEntity.ok(station);
+	    }
 
 	@ApiOperation("Get a station by ID")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success", response = Station.class),

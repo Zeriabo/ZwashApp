@@ -1,5 +1,6 @@
 package com.zwash.dto;
 
+
 public class CarWashingProgramDTO {
 
     private String name;

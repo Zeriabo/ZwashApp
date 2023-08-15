@@ -31,9 +31,12 @@ public class GraphQLController {
        }
     @PostMapping("/graphql")
     public ExecutionResult executeGraphQL(@RequestBody Map<String, Object> request) {
+        String query =  (String) request.get("query");
+        Map<String, Object> variables = (Map<String, Object>) request.get("variables");
+
         ExecutionInput executionInput = ExecutionInput.newExecutionInput()
-                .query((String) request.get("query"))
-                .variables((Map<String, Object>) request.get("variables"))
+                .query(query)
+                .variables(variables)
                 .build();
 
         return graphQL.execute(executionInput);

@@ -14,6 +14,7 @@ import com.zwash.pojos.TouchlessCarWashingProgram;
 @Configuration
 public class JacksonConfig {
 
+	
     @SuppressWarnings("deprecation")
     @Bean
     ObjectMapper objectMapper() {
