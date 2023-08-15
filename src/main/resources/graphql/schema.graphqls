@@ -1,0 +1,62 @@
+type Station {
+  id: ID!
+  name: String!
+  address: String!
+  media: Media
+  latitude: Float!
+  longitude: Float!
+  programs: [CarWashingProgram]
+  createdAt: String!
+  updatedAt: String!
+}
+
+type CarWashingProgram {
+  id: ID!
+  station: Station
+  programType: String!
+  description: String!
+  price: Float!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Media {
+  id: ID!
+}
+
+
+type Booking {
+    id: ID!
+    car: Car!
+    washingProgram: String!
+    scheduledTime: String!
+    # Add other fields as needed
+}
+
+type Car {
+    id: ID!
+    registerationPlate: String!
+    manufacture : String!
+    # Add other fields as needed
+}
+
+type Query {
+    booking(id: ID!): Booking
+    allBookings: [Booking]
+    getAllBookings: [Booking!]!
+    userBookings(userId: ID!): [Booking]
+}
+
+type Mutation {
+    createBooking(bookingInput: BookingInput!): Booking
+    updateBooking(id: ID!, bookingInput: BookingInput!): Booking
+    deleteBooking(id: ID!): Boolean
+    # Add other mutation operations as needed
+}
+
+input BookingInput {
+    carId: ID!
+    washingProgram: String!
+    scheduledTime: String!
+    # Add other fields as needed
+}

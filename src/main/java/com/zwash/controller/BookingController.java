@@ -1,0 +1,311 @@
+package com.zwash.controller;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
+import com.zwash.dto.BookingDTO;
+import com.zwash.exceptions.UserIsNotFoundException;
+import com.zwash.pojos.Booking;
+import com.zwash.pojos.Car;
+import com.zwash.pojos.User;
+import com.zwash.service.BookingService;
+import com.zwash.service.CarService;
+import com.zwash.service.CarWashService;
+import com.zwash.service.UserService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import jakarta.transaction.Transactional;
+
+//graphQl
+
+//import org.springframework.graphql.data.method.annotation.Argument;
+//import org.springframework.graphql.data.method.annotation.QueryMapping;
+//import org.springframework.graphql.data.method.annotation.SchemaMapping;
+
+@RestController
+@RequestMapping("v1/bookings")
+@Api(tags = "Booking API")
+public class BookingController {
+	@Autowired
+	private CarService carService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private BookingService bookingService;
+
+	@Autowired
+	private CarWashService carWashService;
+
+	Logger logger = LoggerFactory.getLogger(BookingController.class);
+
+	@GetMapping(value = "/{id}")
+
+	@ApiOperation(value = "Get a booking by ID", response = Booking.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved booking"),
+			@ApiResponse(code = 404, message = "Booking not found") })
+	public ResponseEntity<Booking> getBooking(@PathVariable  Long id) {
+		Optional<Booking> booking = Optional.of(bookingService.getBookingById(id));
+		if (booking.isPresent()) {
+			return new ResponseEntity<>(booking.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping
+	@ApiOperation(value = "Get all bookings", response = BookingDTO.class, responseContainer = "List")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved bookings"),
+			@ApiResponse(code = 404, message = "Bookings not found") })
+	public ResponseEntity<List<BookingDTO>> getAllBookings() throws Exception {
+		try {
+			List<BookingDTO> list = bookingService.getAllBookings();
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping("/user/{id}")
+	@ApiOperation(value = "Get bookings belong to a User", response = BookingDTO.class, responseContainer = "List")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved bookings"),
+			@ApiResponse(code = 404, message = "Bookings not found") })
+	public ResponseEntity<List<BookingDTO>> getUsersBookings(@PathVariable("id") Long userId) throws Exception {
+		try {
+			User user = userService.getUser(userId);
+			List<BookingDTO> list = bookingService.getBookingsByUser(user);
+			return new ResponseEntity<>(list, HttpStatus.OK);
+
+		} catch (UserIsNotFoundException ex) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping
+	@Transactional
+	@ApiOperation(value = "Create a booking", response = Booking.class)
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created booking"),
+			@ApiResponse(code = 400, message = "Invalid request") })
+	public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws UserIsNotFoundException {
+		if (booking == null) {
+			throw new IllegalArgumentException("Booking  cannot be null");
+		}
+		User user = userService.getUserFromToken(booking.getToken());
+
+		booking.setUser(user);
+
+		if (booking.getStation() == null) {
+			throw new IllegalArgumentException("Station object cannot be null");
+		}
+		if (booking.getCar() == null) {
+			throw new IllegalArgumentException("Car object cannot be null");
+		}
+		if (booking.getWashingProgram() == null) {
+			throw new IllegalArgumentException("Washing program object cannot be null");
+		}
+		if (booking.getScheduledTime() == null) {
+			throw new IllegalArgumentException("Scheduled time cannot be null");
+		}
+		if (booking.getScheduledTime().isBefore(LocalDateTime.now())) {
+			throw new IllegalArgumentException("Scheduled time cannot be in the past");
+		}
+		Car car = carService.getCar(booking.getCar().getRegisterationPlate());
+		booking.setCar(car);
+		// Save the car entity if it is not already persisted
+		Long carId = booking.getCar() != null ? booking.getCar().getCarId() : null;
+		if (carId == null) {
+			logger.error("The car " + booking.getCar().getRegisterationPlate() + "  is not registered in the system!");
+			throw new IllegalArgumentException("There is no car in the system with registeration number "
+					+ booking.getCar().getRegisterationPlate());
+		}
+		logger.info("The booking for " + booking.getCar().getRegisterationPlate() + " is saved successfully!");
+		Booking newBooking = bookingService.saveBooking(booking);
+		if (newBooking instanceof Booking) {
+			// Construct the message
+//			Message message = Message.builder()
+//					.setNotification(Notification.builder().setTitle("Booking made!")
+//							.setBody("You have made a booking for car: " + booking.getCar().getRegisterationPlate())
+//							.build())
+//					.setToken(booking.getUser().getToken())// to get from the react native app later device token
+//					.build();
+
+			// Send the message
+//			try {
+//				String response = FirebaseMessaging.getInstance().send(message);
+//				System.out.println("Successfully sent message: " + response);
+//			} catch (FirebaseMessagingException e) {
+//				System.out.println("Failed to send message: " + e.getMessage());
+//			}
+			return new ResponseEntity<>(booking, HttpStatus.CREATED);
+		} else {
+			return new ResponseEntity<>(booking, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
+	@PutMapping("/{id}")
+	@Transactional
+	@ApiOperation(value = "Update an existing booking", response = Booking.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Booking updated successfully"),
+			@ApiResponse(code = 400, message = "Invalid request. Check input parameters"),
+			@ApiResponse(code = 404, message = "Booking with provided id not found") })
+	public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking newBooking) {
+		if (newBooking == null) {
+			throw new IllegalArgumentException("Booking object cannot be null");
+		}
+		if (newBooking.getStation() == null) {
+			throw new IllegalArgumentException("Station object cannot be null");
+		}
+		if (newBooking.getCar() == null) {
+			throw new IllegalArgumentException("Car object cannot be null");
+		}
+		if (newBooking.getWashingProgram() == null) {
+			throw new IllegalArgumentException("Washing program object cannot be null");
+		}
+		if (newBooking.getScheduledTime() == null) {
+			throw new IllegalArgumentException("Scheduled time cannot be null");
+		}
+		if (newBooking.getScheduledTime().isBefore(LocalDateTime.now())) {
+			throw new IllegalArgumentException("Scheduled time cannot be in the past");
+		}
+
+		Optional<Booking> booking = Optional.of(bookingService.getBookingById(id));
+		if (booking.isPresent()) {
+			 Booking newbooking= booking.get();
+			 newbooking.setCar(newBooking.getCar());
+			 newbooking.setWashingProgram(newBooking.getWashingProgram());
+			 newbooking.setScheduledTime(newBooking.getScheduledTime());
+			bookingService.saveBooking(newbooking);
+			logger.info(
+					"the  booking for " + newbooking.getCar().getRegisterationPlate() + " has been updated successfully");
+			// Construct the message
+			Message message = Message.builder()
+					.setNotification(Notification.builder().setTitle("Booking made!")
+							.setBody("You have updated a booking for car: " + newbooking.getCar().getRegisterationPlate())
+							.build())
+					.setToken("DEVICE_REGISTRATION_TOKEN")// to get from the react native app
+					.build();
+
+			// Send the message
+			try {
+				String response = FirebaseMessaging.getInstance().send(message);
+				System.out.println("Successfully sent message: " + response);
+			} catch (FirebaseMessagingException e) {
+				System.out.println("Failed to send message: " + e.getMessage());
+			}
+			return new ResponseEntity<>(newbooking, HttpStatus.OK);
+		} else {
+			logger.error("Booking with id " + id + " not found");
+			throw new IllegalArgumentException("Booking with id " + id + " not found");
+		}
+	}
+
+	@SuppressWarnings("null")
+	@PostMapping("/{id}")
+	@Transactional
+	@ApiOperation(value = "Execute a Wash")
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Wash executed successfully"),
+			@ApiResponse(code = 404, message = "Booking with provided id not found") })
+	public ResponseEntity<Void> executeBookingWash(@PathVariable Long id) {
+		Optional<Booking> booking = Optional.of(bookingService.getBookingById(id));
+		if (booking.isPresent()) {
+
+			Booking updateBooking= booking.get();
+			carWashService.executeCarWash(updateBooking);
+
+			logger.info(
+					"the  booking for " + updateBooking.getCar().getRegisterationPlate() + " has been executed successfully");
+
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		} else {
+			logger.error("Booking with car " + booking.get().getCar().getRegisterationPlate() + " not executed!");
+
+			throw new IllegalArgumentException("Booking with id " + id + " not found");
+		}
+	}
+
+	@SuppressWarnings("null")
+	@DeleteMapping("/{id}")
+	@Transactional
+	@ApiOperation(value = "Delete a booking by id")
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Booking deleted successfully"),
+			@ApiResponse(code = 404, message = "Booking with provided id not found") })
+	public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+		Optional<Booking> booking = Optional.of(bookingService.getBookingById(id));
+		if (booking.isPresent()) {
+
+
+			bookingService.deleteBooking(booking.get());
+			logger.info(
+					"the  booking for " + booking.get().getCar().getRegisterationPlate() + " has been deleted successfully");
+
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else if (!booking.isPresent()){
+			logger.error("Booking with id " + id + " not found!");
+
+			throw new IllegalArgumentException("Booking with id " + id + " not found");
+		}else {
+			logger.error("Booking with id " + id + " not deleted!");
+
+			throw new IllegalArgumentException("Booking with id " + id + " not deleted");
+		}
+	}
+
+	@GetMapping("validate/{registrationPlate}")
+	@ApiOperation(value = "Check if a booking exists for a given car registration plate", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Request processed successfully"),
+			@ApiResponse(code = 404, message = "Car with provided registration plate not found") })
+	public ResponseEntity<Boolean> isBookingExistsForCar(@PathVariable String registrationPlate) {
+		Car car = carService.getCar(registrationPlate);
+		if (car == null) {
+			// Car not found
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+		}
+		if (bookingService.isBookingExistsForCar(registrationPlate)) {
+			logger.info("the  booking for " + registrationPlate + " has been deleted successfully");
+
+			return ResponseEntity.ok(bookingService.isBookingExistsForCar(registrationPlate));
+		} else {
+			logger.error("the  booking for " + registrationPlate + " has not been deleted successfully");
+
+			return ResponseEntity.status(400).body(false);
+		}
+
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> handleException(Exception ex) {
+		return new ResponseEntity<>("An unexpected error occurred: " + ex.getMessage(),
+				HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+}

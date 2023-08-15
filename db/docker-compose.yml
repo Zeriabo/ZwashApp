@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    container_name: fastwash_DB
+    restart: always
+    environment:
+      - POSTGES_DATABASE=${DATABASE}
+      - POSTGES_ROOT_PASSWORD=${ROOT_PASSWORD}
+      - POSTGES_USER=${USER}
+      - POSTGES_PASSWORD=${PASSWORD}
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    expose:
+      - 5433
+networks:
+  default:
+    name: postgre-service_default
