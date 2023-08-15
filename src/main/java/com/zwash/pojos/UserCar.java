@@ -1,6 +1,6 @@
 package com.zwash.pojos;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class UserCar {
 
@@ -41,14 +41,14 @@ public class UserCar {
 	/**
 	 * @return the datetime
 	 */
-	public LocalDate getDateOfManufacture() {
+	public Date getDateOfManufacture() {
 		return dateOfManufacture;
 	}
 
 	/**
 	 * @param datetime the datetime to set
 	 */
-	public void setDateOfManufacture(LocalDate dateOfManufacture) {
+	public void setDateOfManufacture(Date dateOfManufacture) {
 		this.dateOfManufacture = dateOfManufacture;
 	}
 
@@ -74,7 +74,7 @@ public class UserCar {
 
 	private String manufacture;
 
-	private LocalDate dateOfManufacture;
+	private Date dateOfManufacture;
 
 	private String deviceRegistrationToken;
 

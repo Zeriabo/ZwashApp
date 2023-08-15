@@ -1,7 +1,7 @@
 package com.zwash.pojos;
 
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -89,14 +89,14 @@ public class Car {
 	/**
 	 * @return the datetime
 	 */
-	public LocalDate getDateOfManufacture() {
+	public Date getDateOfManufacture() {
 		return dateOfManufacture;
 	}
 
 	/**
 	 * @param datetime the datetime to set
 	 */
-	public void setDateOfManufacture(LocalDate dateOfManufacture) {
+	public void setDateOfManufacture(Date dateOfManufacture) {
 		this.dateOfManufacture = dateOfManufacture;
 	}
 	public LocalDateTime getCreateDateTime() {
@@ -142,7 +142,7 @@ public class Car {
 	private String manufacture;
 
 	 @Column(name = "dateOfManufacture")
-	private LocalDate dateOfManufacture;
+	private Date dateOfManufacture;
 
 	 @CreationTimestamp
      @Column(name = "createdAt")

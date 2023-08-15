@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zwash.exceptions.IncorrectTokenException;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Car;
@@ -36,6 +37,8 @@ public class CarController {
 	@Autowired
 	UserService userService;
 
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
     Logger logger = LoggerFactory.getLogger(CarController.class);
 
 	@ApiOperation(value = "Register a new car")
@@ -44,8 +47,10 @@ public class CarController {
 			@ApiResponse(code = 202, message = "Car registered successfully"),
 			@ApiResponse(code = 500, message = "Internal server error")
 	})
-	public ResponseEntity<Car> registerCar(@RequestBody UserCar userCar) throws Exception {
-		Car car = carService.register(userCar);
+	public ResponseEntity<Car> registerCar(@RequestBody String userCar) throws Exception {
+
+		UserCar usercar = objectMapper.readValue(userCar, UserCar.class);
+		Car car = carService.register(usercar);
 		return car instanceof Car ? ResponseEntity.accepted().build() : ResponseEntity.status(500).build();
 	}
 

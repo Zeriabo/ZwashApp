@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zwash.dto.StationDTO;
 import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.pojos.CarWashingProgram;
@@ -24,14 +25,13 @@ import com.zwash.service.StationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 @RequestMapping("/v1/stations")
 public class StationController {
 
 	@Autowired
 	private StationService stationService;
-	
+
      private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@ApiOperation("Get all stations")
