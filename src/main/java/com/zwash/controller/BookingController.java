@@ -39,11 +39,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import jakarta.transaction.Transactional;
 
-//graphQl
-
-//import org.springframework.graphql.data.method.annotation.Argument;
-//import org.springframework.graphql.data.method.annotation.QueryMapping;
-//import org.springframework.graphql.data.method.annotation.SchemaMapping;
 
 @RestController
 @RequestMapping("v1/bookings")
