@@ -1,36 +1,35 @@
 type Station {
-  id: ID!
-  name: String!
-  address: String!
+  id: ID
+  name: String
+  address: String
   media: Media
-  latitude: Float!
-  longitude: Float!
+  latitude: Float
+  longitude: Float
   programs: [CarWashingProgram]
-  createdAt: String!
-  updatedAt: String!
+  createdAt: String
+  updatedAt: String
 }
 
 type CarWashingProgram {
-  id: ID!
+  id: ID
   station: Station
-  programType: String!
-  description: String!
-  price: Float!
-  createdAt: String!
-  updatedAt: String!
+  programType: String
+  description: String
+  price: Float
+  createdAt: String
+  updatedAt: String
 }
 
 type Media {
-  id: ID!
+  id: ID
 }
 
-
 type Booking {
-    id: ID!
-    car: Car!
-    washingProgram: CarWashingProgram!
-    scheduledTime: String!
-    # Add other fields as needed
+    id: ID
+    car: Car
+    washingProgram: CarWashingProgram
+    scheduledTime: String
+ 
 }
 
 type Car {
@@ -38,21 +37,33 @@ type Car {
     registerationPlate: String!
     manufacture : String!
 }
-
+type UserCar {
+  token: String
+  registerationPlate: String
+  manufacture: String
+  dateOfManufacture: String
+  deviceRegistrationToken: String
+}
 type Query {
+   # Booking queries
     booking(id: ID!): Booking
     allBookings: [Booking]
     getAllBookings: [Booking!]!
     userBookings(userId: ID!): [Booking]
+     getCar(id: ID!): Car
+     getAllCars : [Car!]!
+ 
  
 }
+
 
 
 type Mutation {
     createBooking(bookingInput: BookingInput!): Booking
     updateBooking(id: ID!, bookingInput: BookingInput!): Booking
     deleteBooking(id: ID!): Boolean
-    # Add other mutation operations as needed
+      registerCar( userCar:UserCarInput!): Boolean
+    setCar( userCar:UserCarInput!) : Boolean
 }
 
 input BookingInput {
@@ -61,3 +72,12 @@ input BookingInput {
     scheduledTime: String!
     # Add other fields as needed
 }
+input UserCarInput {
+  token: String
+  registerationPlate: String
+  manufacture: String
+  dateOfManufacture: String
+  deviceRegistrationToken: String
+}
+
+

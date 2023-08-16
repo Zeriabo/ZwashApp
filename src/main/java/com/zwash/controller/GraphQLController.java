@@ -32,7 +32,7 @@ public class GraphQLController {
 	                  .resolvers(bookingQueryResolver, bookingMutationResolver)
 	                  .build()
 	                  .makeExecutableSchema();
-	    	  
+
 	    	  this.graphQL = GraphQL.newGraphQL(schema).build();
 	    }
     @GetMapping("/graphiql")

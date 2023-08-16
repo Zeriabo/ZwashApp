@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 import com.zwash.resolver.BookingMutationResolver;
 import com.zwash.resolver.BookingResolver;
+import com.zwash.resolver.CarMutationResolver;
+import com.zwash.resolver.CarResolver;
 
 import graphql.GraphQL;
 import graphql.kickstart.tools.SchemaParserBuilder;
@@ -18,13 +20,20 @@ public class GraphQLConfig {
    BookingResolver bookingQueryResolver;
 	@Autowired
    BookingMutationResolver bookingMutationResolver;
+	@Autowired
+	CarResolver carResolver;
+
+	@Autowired
+	CarMutationResolver carMutationResolver;
 
     @Autowired
     public GraphQLConfig(
+    		
     		BookingResolver bookingQueryResolver,
             BookingMutationResolver bookingMutationResolver) {
         this.bookingQueryResolver = bookingQueryResolver;
         this.bookingMutationResolver = bookingMutationResolver;
+   
     }
 
     @Bean

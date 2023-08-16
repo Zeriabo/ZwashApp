@@ -38,6 +38,12 @@ public class CarServiceImpl implements CarService {
 	}
 
 	@Override
+	public List<Car> getAllCars() {
+
+		 return (List<Car>) carRepository.findAll();
+	}
+
+	@Override
 	public Car register(UserCar car) throws Exception {
 
 		try {
@@ -118,6 +124,7 @@ public class CarServiceImpl implements CarService {
 		    return false;
 
 	}
+
 
 
 }

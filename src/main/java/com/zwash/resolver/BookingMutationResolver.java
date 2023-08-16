@@ -11,7 +11,8 @@ import graphql.kickstart.tools.GraphQLMutationResolver;
 @Component
 public class BookingMutationResolver implements GraphQLMutationResolver {
 
-    private final BookingService bookingService;
+	@Autowired
+    BookingService bookingService;
 
     @Autowired
     public BookingMutationResolver(BookingService bookingService) {

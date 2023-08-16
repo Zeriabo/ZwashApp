@@ -28,9 +28,11 @@ public class BookingResolver implements GraphQLQueryResolver {
     public List<Booking> getAllBookings() throws DataAccessException, SQLException, Exception {
         return bookingService.getAllBooking();
     }
+    public List<Booking> allBookings() throws DataAccessException, SQLException, Exception {
+        return bookingService.getAllBooking();
+    }
     public List<Booking> userBookings(Long userId) throws Exception {
         // Implement logic to fetch and return bookings for the specified userId
         return bookingService.getBookingsByUserId(userId);
     }
-    // You can add other resolver methods for querying bookings here
 }
