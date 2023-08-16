@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zwash.resolver.BookingMutationResolver;
+import com.zwash.resolver.BookingResolver;
+
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import graphql.kickstart.tools.SchemaParserBuilder;
+import graphql.schema.GraphQLSchema;
 
 
 @RestController
@@ -21,8 +26,14 @@ public class GraphQLController {
 	 private final GraphQL graphQL;
 
 	    @Autowired
-	    public GraphQLController(GraphQL graphQL) {
-	        this.graphQL = graphQL;
+	    public GraphQLController(BookingResolver bookingQueryResolver, BookingMutationResolver bookingMutationResolver) {
+	    	  GraphQLSchema schema = new SchemaParserBuilder()
+	                  .file("graphql/schema.graphqls")
+	                  .resolvers(bookingQueryResolver, bookingMutationResolver)
+	                  .build()
+	                  .makeExecutableSchema();
+	    	  
+	    	  this.graphQL = GraphQL.newGraphQL(schema).build();
 	    }
     @GetMapping("/graphiql")
     @ResponseBody

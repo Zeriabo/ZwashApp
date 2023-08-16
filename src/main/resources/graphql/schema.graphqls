@@ -28,7 +28,7 @@ type Media {
 type Booking {
     id: ID!
     car: Car!
-    washingProgram: String!
+    washingProgram: CarWashingProgram!
     scheduledTime: String!
     # Add other fields as needed
 }
@@ -37,7 +37,6 @@ type Car {
     id: ID!
     registerationPlate: String!
     manufacture : String!
-    # Add other fields as needed
 }
 
 type Query {

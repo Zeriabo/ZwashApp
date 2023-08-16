@@ -14,8 +14,10 @@ import graphql.schema.GraphQLSchema;
 @Configuration
 public class GraphQLConfig {
 
-    private final BookingResolver bookingQueryResolver;
-    private final BookingMutationResolver bookingMutationResolver;
+	@Autowired
+   BookingResolver bookingQueryResolver;
+	@Autowired
+   BookingMutationResolver bookingMutationResolver;
 
     @Autowired
     public GraphQLConfig(

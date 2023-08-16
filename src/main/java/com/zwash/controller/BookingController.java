@@ -146,20 +146,20 @@ public class BookingController {
 		Booking newBooking = bookingService.saveBooking(booking);
 		if (newBooking instanceof Booking) {
 			// Construct the message
-//			Message message = Message.builder()
-//					.setNotification(Notification.builder().setTitle("Booking made!")
-//							.setBody("You have made a booking for car: " + booking.getCar().getRegisterationPlate())
-//							.build())
-//					.setToken(booking.getUser().getToken())// to get from the react native app later device token
-//					.build();
+			Message message = Message.builder()
+					.setNotification(Notification.builder().setTitle("Booking made!")
+							.setBody("You have made a booking for car: " + booking.getCar().getRegisterationPlate())
+							.build())
+					.setToken(booking.getUser().getToken())// to get from the react native app later device token
+					.build();
 
 			// Send the message
-//			try {
-//				String response = FirebaseMessaging.getInstance().send(message);
-//				System.out.println("Successfully sent message: " + response);
-//			} catch (FirebaseMessagingException e) {
-//				System.out.println("Failed to send message: " + e.getMessage());
-//			}
+			try {
+				String response = FirebaseMessaging.getInstance().send(message);
+				System.out.println("Successfully sent message: " + response);
+			} catch (FirebaseMessagingException e) {
+				System.out.println("Failed to send message: " + e.getMessage());
+			}
 			return new ResponseEntity<>(booking, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<>(booking, HttpStatus.INTERNAL_SERVER_ERROR);
