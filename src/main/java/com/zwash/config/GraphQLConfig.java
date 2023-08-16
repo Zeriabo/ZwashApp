@@ -21,7 +21,7 @@ public class GraphQLConfig {
 	@Autowired
    BookingMutationResolver bookingMutationResolver;
 	@Autowired
-	CarResolver carResolver;
+	CarResolver carQueryResolver;
 
 	@Autowired
 	CarMutationResolver carMutationResolver;
@@ -30,9 +30,10 @@ public class GraphQLConfig {
     public GraphQLConfig(
     		
     		BookingResolver bookingQueryResolver,
-            BookingMutationResolver bookingMutationResolver) {
+            BookingMutationResolver bookingMutationResolver,CarResolver carResolver) {
         this.bookingQueryResolver = bookingQueryResolver;
         this.bookingMutationResolver = bookingMutationResolver;
+        this.carQueryResolver=carResolver;
    
     }
 
@@ -42,7 +43,7 @@ public class GraphQLConfig {
 
         GraphQLSchema schema = new SchemaParserBuilder()
                 .file("graphql/schema.graphqls")
-                .resolvers(bookingQueryResolver, bookingMutationResolver)
+                .resolvers(bookingQueryResolver, bookingMutationResolver,carQueryResolver)
                 .build()
                 .makeExecutableSchema();
 

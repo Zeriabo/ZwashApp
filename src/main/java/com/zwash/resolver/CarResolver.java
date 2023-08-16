@@ -25,12 +25,13 @@ public class CarResolver implements GraphQLQueryResolver {
     	return carService.getCar(id);
     }
 
-    public List<Car> getAllCars() {
-        return carService.getAllCars();
-    }
-    //Mutation
-//    public Car registerCar(UserCar car) throws Exception
-//    {
-//    	return carService.register(car);
-//    }
+    public List<Car> getAllCars() throws Exception {
+    	 List<Car> cars = carService.getAllCars();
+         if (cars == null) {
+             
+          throw new Exception("No cars");
+         }
+         return cars;
+     }
+
 }
