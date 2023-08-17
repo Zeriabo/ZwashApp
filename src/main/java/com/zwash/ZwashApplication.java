@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 import com.zwash.utility.FirebaseInitializer;
 
-@ComponentScan("com.zwash.repository")
+
 @SpringBootApplication
 public class ZwashApplication {
 
