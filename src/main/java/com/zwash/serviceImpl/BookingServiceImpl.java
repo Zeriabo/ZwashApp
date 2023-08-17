@@ -1,10 +1,12 @@
 package com.zwash.serviceImpl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.zwash.dto.BookingDTO;
@@ -22,7 +24,9 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class BookingServiceImpl implements BookingService {
 
+	@Autowired
 	private final BookingRepository bookingRepository;
+	@Autowired
 	private final CarRepository carRepository;
 
 	@Autowired
@@ -69,7 +73,7 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<BookingDTO> getBookingsByUserId(User user) throws Exception {
+	public List<BookingDTO> getBookingsByUser(User user) throws Exception {
 	    try {
 	         List<Booking> bookings =bookingRepository.findByUser(user);
 	        return bookings.stream()
@@ -124,4 +128,24 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("No non-executed booking found for registration plate: " + registrationPlate);
         }
     }
+
+	@Override
+	public List<Booking> getAllBooking() throws DataAccessException, SQLException, Exception {
+	return 	bookingRepository.findAll();
+	}
+
+	@Override
+	public List<Booking> getBookingsByUserId(Long userId) throws Exception {
+	    try {
+	         List<Booking> bookings =bookingRepository.findByUserId(userId);
+	        return bookings;
+	    } catch (Exception ex) {
+	        if (ex instanceof InvocationTargetException) {
+	            Throwable targetException = ((InvocationTargetException) ex).getCause();
+	            System.out.println(targetException);
+	        }
+	        throw new Exception("Error occurred while getting all bookings", ex);
+	    }
+
+	}
 }

@@ -15,10 +15,12 @@ import com.zwash.pojos.User;
 public interface BookingService {
     Booking saveBooking(Booking booking);
     Booking getBookingById(Long id);
-    List<BookingDTO> getBookingsByUserId(User userId) throws Exception;
+    List<Booking> getBookingsByUserId(Long userId) throws Exception;
+    List<BookingDTO> getBookingsByUser(User user) throws Exception;
     List<Booking> getBookingsByCarId(Long carId);
 	boolean isBookingExistsForCar(String registrationPlate);
 	List<BookingDTO> getAllBookings() throws DataAccessException, SQLException, Exception;
+	List<Booking> getAllBooking() throws DataAccessException, SQLException, Exception;
 	boolean deleteBooking(Booking booking);
 	Booking moveToWash(String carRegisterationPlate);
 
