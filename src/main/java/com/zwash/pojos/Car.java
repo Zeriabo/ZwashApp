@@ -1,8 +1,8 @@
 package com.zwash.pojos;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
@@ -28,11 +28,11 @@ import jakarta.persistence.Table;
 public class Car {
 
 	public long getCarId() {
-		return carId;
+		return id;
 	}
 
 	public void setCarId(long id) {
-		this.carId = id;
+		this.id = id;
 	}
 
 
@@ -89,14 +89,14 @@ public class Car {
 	/**
 	 * @return the datetime
 	 */
-	public LocalDate getDateOfManufacture() {
+	public Date getDateOfManufacture() {
 		return dateOfManufacture;
 	}
 
 	/**
 	 * @param datetime the datetime to set
 	 */
-	public void setDateOfManufacture(LocalDate dateOfManufacture) {
+	public void setDateOfManufacture(Date dateOfManufacture) {
 		this.dateOfManufacture = dateOfManufacture;
 	}
 	public LocalDateTime getCreateDateTime() {
@@ -127,7 +127,7 @@ public class Car {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_seq_gen")
      @Column(name = "id", unique = true, nullable = false)
-	private long carId;
+	private long id;
 
 	 @ManyToOne(fetch = FetchType.LAZY, optional = false)
 	  @JoinColumn(name = "user_id", nullable = false)
@@ -142,7 +142,7 @@ public class Car {
 	private String manufacture;
 
 	 @Column(name = "dateOfManufacture")
-	private LocalDate dateOfManufacture;
+	private Date dateOfManufacture;
 
 	 @CreationTimestamp
      @Column(name = "createdAt")
