@@ -36,6 +36,7 @@ type Car {
     id: ID!
     registerationPlate: String!
     manufacture : String!
+    dateOfManufacture:String
 }
 type UserCar {
   token: String
@@ -50,10 +51,14 @@ type Query {
     allBookings: [Booking]
     getAllBookings: [Booking!]!
     userBookings(userId: ID!): [Booking]
+    
+     # car queries
      getCar(id: ID!): Car
      getAllCars : [Car]
  
- 
+  # carWashProgram queries
+  getAllPrograms(id: ID!): [CarWashingProgram!]!
+
 }
 
 type Mutation {

@@ -13,6 +13,8 @@ import com.zwash.resolver.BookingMutationResolver;
 import com.zwash.resolver.BookingResolver;
 import com.zwash.resolver.CarMutationResolver;
 import com.zwash.resolver.CarResolver;
+import com.zwash.resolver.CarWashProgramMutationResolver;
+import com.zwash.resolver.CarWashProgramResolver;
 
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
@@ -28,10 +30,10 @@ public class GraphQLController {
 	 private final GraphQL graphQL;
 
 	    @Autowired
-	    public GraphQLController(CarMutationResolver  carMutationResolver,CarResolver carQueryResolver,BookingResolver bookingQueryResolver, BookingMutationResolver bookingMutationResolver) {
+	    public GraphQLController(CarMutationResolver  carMutationResolver,CarResolver carQueryResolver,BookingResolver bookingQueryResolver, BookingMutationResolver bookingMutationResolver,CarWashProgramResolver carWashProgramResolver,CarWashProgramMutationResolver carWashProgramMutationResolver) {
 	    	  GraphQLSchema schema = new SchemaParserBuilder()
 	                  .file("graphql/schema.graphqls")
-	                  .resolvers(carQueryResolver,carMutationResolver,bookingQueryResolver, bookingMutationResolver)
+	                  .resolvers(carQueryResolver,carMutationResolver,bookingQueryResolver, bookingMutationResolver,carWashProgramResolver,carWashProgramMutationResolver)
 	                  .build()
 	                  .makeExecutableSchema();
 
@@ -45,7 +47,7 @@ public class GraphQLController {
     @PostMapping("/graphql")
     public ExecutionResult executeGraphQL(@RequestBody Map<String, Object> request) {
         String query =  (String) request.get("query");
-      
+
         @SuppressWarnings("unchecked")
 		Map<String, Object> variables = (Map<String, Object>) request.get("variables");
 
