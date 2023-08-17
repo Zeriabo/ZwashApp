@@ -87,7 +87,7 @@ public class BookingController {
 	public ResponseEntity<List<BookingDTO>> getUsersBookings(@PathVariable("id") Long userId) throws Exception {
 		try {
 			User user = userService.getUser(userId);
-			List<BookingDTO> list = bookingService.getBookingsByUserId(user);
+			List<BookingDTO> list = bookingService.getBookingsByUser(user);
 			return new ResponseEntity<>(list, HttpStatus.OK);
 
 		} catch (UserIsNotFoundException ex) {

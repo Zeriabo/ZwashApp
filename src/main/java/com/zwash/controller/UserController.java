@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.zwash.exceptions.IncorrectTokenException;
 import com.zwash.exceptions.UserIsNotActiveException;
-import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.LoggedUser;
 import com.zwash.pojos.SignInfo;
 import com.zwash.pojos.User;
@@ -48,10 +47,6 @@ public class UserController {
 	@GetMapping("/")
 	public ModelAndView home() {
 		return new ModelAndView("users");
-	}
-	@GetMapping("/")
-	public  ResponseEntity<User> getUser(Long id) throws UserIsNotFoundException {
-		return  new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/signin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
