@@ -28,7 +28,7 @@ public class CarResolver implements GraphQLQueryResolver {
     public List<Car> getAllCars() throws Exception {
     	 List<Car> cars = carService.getAllCars();
          if (cars == null) {
-             
+
           throw new Exception("No cars");
          }
          return cars;

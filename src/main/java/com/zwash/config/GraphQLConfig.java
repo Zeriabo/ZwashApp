@@ -28,13 +28,13 @@ public class GraphQLConfig {
 
     @Autowired
     public GraphQLConfig(
-    		
+
     		BookingResolver bookingQueryResolver,
             BookingMutationResolver bookingMutationResolver,CarResolver carResolver) {
         this.bookingQueryResolver = bookingQueryResolver;
         this.bookingMutationResolver = bookingMutationResolver;
         this.carQueryResolver=carResolver;
-   
+
     }
 
     @Bean

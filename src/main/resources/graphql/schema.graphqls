@@ -51,19 +51,17 @@ type Query {
     getAllBookings: [Booking!]!
     userBookings(userId: ID!): [Booking]
      getCar(id: ID!): Car
-     getAllCars : [Car!]!
+     getAllCars : [Car]
  
  
 }
-
-
 
 type Mutation {
     createBooking(bookingInput: BookingInput!): Booking
     updateBooking(id: ID!, bookingInput: BookingInput!): Booking
     deleteBooking(id: ID!): Boolean
-      registerCar( userCar:UserCarInput!): Boolean
-    setCar( userCar:UserCarInput!) : Boolean
+
+
 }
 
 input BookingInput {

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zwash.resolver.BookingMutationResolver;
 import com.zwash.resolver.BookingResolver;
+import com.zwash.resolver.CarMutationResolver;
+import com.zwash.resolver.CarResolver;
 
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
@@ -26,10 +28,10 @@ public class GraphQLController {
 	 private final GraphQL graphQL;
 
 	    @Autowired
-	    public GraphQLController(BookingResolver bookingQueryResolver, BookingMutationResolver bookingMutationResolver) {
+	    public GraphQLController(CarMutationResolver  carMutationResolver,CarResolver carQueryResolver,BookingResolver bookingQueryResolver, BookingMutationResolver bookingMutationResolver) {
 	    	  GraphQLSchema schema = new SchemaParserBuilder()
 	                  .file("graphql/schema.graphqls")
-	                  .resolvers(bookingQueryResolver, bookingMutationResolver)
+	                  .resolvers(carQueryResolver,carMutationResolver,bookingQueryResolver, bookingMutationResolver)
 	                  .build()
 	                  .makeExecutableSchema();
 
@@ -43,7 +45,9 @@ public class GraphQLController {
     @PostMapping("/graphql")
     public ExecutionResult executeGraphQL(@RequestBody Map<String, Object> request) {
         String query =  (String) request.get("query");
-        Map<String, Object> variables = (Map<String, Object>) request.get("variables");
+      
+        @SuppressWarnings("unchecked")
+		Map<String, Object> variables = (Map<String, Object>) request.get("variables");
 
         ExecutionInput executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
@@ -53,3 +57,5 @@ public class GraphQLController {
         return graphQL.execute(executionInput);
     }
 }
+
+
