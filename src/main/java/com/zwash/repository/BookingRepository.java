@@ -7,15 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.User;
 
-
+@Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-
-
-
 
 	 @Query("SELECT b FROM Booking b WHERE b.car.id = :carId")
 	 List<Booking> findByCarId(@Param("carId") Long carId);
@@ -32,6 +30,9 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 	 @Modifying
 	 @Query("Update  Booking b SET b.executed=true WHERE b.id = :id")
 	 void executeWash(@Param("id") Long id);
+
+	 @Query("SELECT b FROM Booking b WHERE b.user.id = :userId")
+	List<Booking> findByUserId(Long userId);
 
 
 }

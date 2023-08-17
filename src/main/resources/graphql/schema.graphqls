@@ -1,0 +1,88 @@
+type Station {
+  id: ID
+  name: String
+  address: String
+  media: Media
+  latitude: Float
+  longitude: Float
+  programs: [CarWashingProgram]
+  createdAt: String
+  updatedAt: String
+}
+
+type CarWashingProgram {
+  id: ID
+  station: Station
+  programType: String
+  description: String
+  price: Float
+  createdAt: String
+  updatedAt: String
+}
+
+type Media {
+  id: ID
+  logo: String!
+  picture: String!
+}
+
+type Booking {
+    id: ID
+    car: Car
+    washingProgram: CarWashingProgram
+    scheduledTime: String
+ 
+}
+
+type Car {
+    id: ID!
+    registerationPlate: String!
+    manufacture : String!
+    dateOfManufacture:String
+}
+type UserCar {
+  token: String
+  registerationPlate: String
+  manufacture: String
+  dateOfManufacture: String
+  deviceRegistrationToken: String
+}
+type Query {
+   # Booking queries
+    booking(id: ID!): Booking
+    allBookings: [Booking]
+    getAllBookings: [Booking!]!
+    userBookings(userId: ID!): [Booking]
+    
+     # car queries
+     getCar(id: ID!): Car
+     getAllCars : [Car]
+ 
+  # carWashProgram queries
+  getAllPrograms(id: ID!): [CarWashingProgram!]!
+
+}
+
+type Mutation {
+    createBooking(bookingInput: BookingInput!): Booking
+    updateBooking(id: ID!, bookingInput: BookingInput!): Booking
+    deleteBooking(id: ID!): Boolean
+
+
+}
+
+input BookingInput {
+    carId: ID!
+    washingProgram: String!
+    scheduledTime: String!
+    # Add other fields as needed
+}
+input UserCarInput {
+  token: String
+  registerationPlate: String
+  manufacture: String
+  dateOfManufacture: String
+  deviceRegistrationToken: String
+}
+
+
