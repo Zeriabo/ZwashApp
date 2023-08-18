@@ -49,7 +49,7 @@ public class StationController {
 
 	@ApiOperation("Create a new station")
 	@PostMapping("/")
-	public ResponseEntity<Station> createStation(@RequestBody StationDTO stationDTO) throws Exception {
+	public ResponseEntity<Station> createStation(@RequestBody Station stationDTO) throws Exception {
 		Station station = stationService.createStation(stationDTO);
 		return ResponseEntity.ok(station);
 	}
