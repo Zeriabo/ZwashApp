@@ -81,7 +81,7 @@ input BookingInput {
     carId: ID!
     washingProgram: String!
     scheduledTime: String!
-    # Add other fields as needed
+  
 }
 input UserCarInput {
   token: String
