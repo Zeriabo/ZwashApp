@@ -68,7 +68,7 @@ public class StationServiceImpl implements StationService {
 	}
 
 	@Override
-	public Station createStation(StationDTO stationRequestDTO) throws Exception {
+	public Station createStation(Station stationRequestDTO) throws Exception {
 		Station station = new Station();
 		station.setName(stationRequestDTO.getName());
 		station.setLatitude(stationRequestDTO.getLatitude());
@@ -77,7 +77,7 @@ public class StationServiceImpl implements StationService {
 		// Set the programs (CarWashingPrograms) for the station
 		List<CarWashingProgram> programs = new ArrayList<>();
 		if (stationRequestDTO.getPrograms() != null) {
-			for (CarWashingProgramDTO programRequestDTO : stationRequestDTO.getPrograms()) {
+			for (CarWashingProgram programRequestDTO : stationRequestDTO.getPrograms()) {
 				CarWashingProgram program;
 				if (programRequestDTO.getProgramType().equals("high_pressure")) {
 					program = new HighPressureCarWashingProgram();

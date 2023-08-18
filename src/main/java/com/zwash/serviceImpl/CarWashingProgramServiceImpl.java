@@ -3,6 +3,7 @@ package com.zwash.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.zwash.exceptions.ProgramAlreadyExistsException;
@@ -76,7 +77,7 @@ public class CarWashingProgramServiceImpl implements CarWashingProgramService {
 	}
 
 	@Override
-	public List<CarWashingProgram> getPrograms(Long stationId) {
+	public List<CarWashingProgram> getPrograms(@Param("stationId")Long stationId) {
 
 		return programRepository.findByStationId(stationId);
 
