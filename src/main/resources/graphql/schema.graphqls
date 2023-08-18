@@ -9,7 +9,7 @@ type Station {
   createdAt: String
   updatedAt: String
 }
-
+ 
 type CarWashingProgram {
   id: ID
   station: Station
@@ -60,6 +60,12 @@ type Query {
  
   # carWashProgram queries
   getAllPrograms(id: ID!): [CarWashingProgram!]!
+  
+  # Station queries
+  getStation(id: ID!): Station!
+  getAllStations:[Station!]!
+
+ 
 
 }
 
