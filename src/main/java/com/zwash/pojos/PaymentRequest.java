@@ -1,7 +1,7 @@
 package com.zwash.pojos;
 
 public class PaymentRequest {
-    private ConcreteCarWashingProgram program;
+    private ConcreteCarWashingProgram programType;
     private PaymentMethod paymentMethod;
 
     // Default constructor required for JSON deserialization
@@ -9,19 +9,19 @@ public class PaymentRequest {
 
     }
 
-    public PaymentRequest(ConcreteCarWashingProgram program, PaymentMethod paymentMethod) {
-        this.program = program;
+    public PaymentRequest(ConcreteCarWashingProgram programType, PaymentMethod paymentMethod) {
+        this.programType = programType;
         this.paymentMethod = paymentMethod;
     }
 
     // Getters and setters for program and paymentMethod
 
     public ConcreteCarWashingProgram getProgram() {
-        return program;
+        return programType;
     }
 
-    public void setProgram(ConcreteCarWashingProgram program) {
-        this.program = program;
+    public void setProgram(ConcreteCarWashingProgram programType) {
+        this.programType = programType;
     }
 
     public PaymentMethod getPaymentMethod() {
