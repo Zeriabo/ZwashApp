@@ -38,7 +38,7 @@ public abstract class CarWashingProgram {
 
 	@JsonProperty("program")
 	@Column(name = "program_type")
-	private String programType;
+	private String program;
 
 	@Column(name = "description")
 	private String description;
@@ -72,11 +72,11 @@ public abstract class CarWashingProgram {
 	}
 
 	public String getProgramType() {
-		return programType;
+		return program;
 	}
 
-	public void setProgramType(String programType) {
-		this.programType = programType;
+	public void setProgramType(String program) {
+		this.program = program;
 	}
 
 	public Station getStation() {
