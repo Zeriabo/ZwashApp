@@ -116,9 +116,9 @@ public class PaymentController {
 
 			// Confirm the PaymentIntent
 			PaymentIntent updatedPaymentIntent = paymentIntent.confirm(confirmParams);
-
+			
 			// Return the client secret of the updated PaymentIntent
-			return ResponseEntity.status(HttpStatus.OK).body(updatedPaymentIntent.getClientSecret());
+			return ResponseEntity.status(HttpStatus.OK).body(updatedPaymentIntent.getStatus());
 		} catch (StripeException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error confirming payment");
