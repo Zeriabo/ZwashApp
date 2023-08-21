@@ -34,7 +34,7 @@ public class Wash {
     private WashStatus status;
 
     @Column(name = "price", nullable = false)
-    private double price;
+    private long price;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -142,11 +142,11 @@ public class Wash {
 		this.stripe_token = stripe_token;
 	}
 
-	public double getPrice() {
+	public long getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(long price) {
 		this.price = price;
 	}
 }
