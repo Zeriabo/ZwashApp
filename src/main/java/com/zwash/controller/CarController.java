@@ -42,12 +42,32 @@ public class CarController {
 	@PostMapping("/register")
 	@ApiResponses(value = {
 			@ApiResponse(code = 202, message = "Car registered successfully"),
-			@ApiResponse(code = 500, message = "Internal server error")
+			@ApiResponse(code = 500, message = "Internal server error"),
+			@ApiResponse(code = 404, message = "User was not found!")
 	})
-	public ResponseEntity<Car> registerCar(@RequestBody UserCar userCar) throws Exception {
-		Car car = carService.register(userCar);
-		return car instanceof Car ? ResponseEntity.accepted().build() : ResponseEntity.status(500).build();
+	public ResponseEntity<Car> registerCar(@RequestBody UserCar userCar) {
+	    try {
+	        Car car = carService.register(userCar);
+
+	        if (car.getRegisterationPlate() == null || car.getUser() == null) {
+	            return ResponseEntity.status(500).build();
+	        }
+
+	        // Check if the user exists by attempting to fetch the user
+	        User user = userService.getUser(car.getUser().getId());
+
+	        if (user == null) {
+	            return ResponseEntity.status(404).build(); // User not found
+	        }
+
+	        return ResponseEntity.accepted().build();
+	    } catch (UserIsNotFoundException e) {
+	        return ResponseEntity.status(404).build(); // User not found
+	    } catch (Exception e) {
+	        return ResponseEntity.status(500).build(); // Internal server error
+	    }
 	}
+
 
 	@ApiOperation(value = "Get car details by registration plate")
 	@GetMapping("/{registrationPlate}")
