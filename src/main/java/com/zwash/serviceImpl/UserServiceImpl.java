@@ -14,6 +14,7 @@ import com.zwash.pojos.LoggedUser;
 import com.zwash.pojos.User;
 import com.zwash.repository.UserRepository;
 import com.zwash.security.JwtUtils;
+import com.zwash.service.CarService;
 import com.zwash.service.TokenService;
 import com.zwash.service.UserService;
 
@@ -29,6 +30,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	TokenService tokenService;
+	
+	@Autowired
+	CarService carService;
 
 	@Autowired
 	JwtUtils jwtUtils;
@@ -48,7 +52,7 @@ public class UserServiceImpl implements UserService {
 		loggedUser.setFirstName(user.getFirstName());
 		loggedUser.setLastName(user.getLastName());
 		loggedUser.setAdmin(user.isAdmin());
-
+        loggedUser.setCars(carService.getCarsOfUser(user));
 		// Create a JWTToken
 		Long id = loggedUser.getId();
 		String jwt = tokenService.createJWT(id.toString(), "Java", loggedUser.getUsername(), 1232134356);
