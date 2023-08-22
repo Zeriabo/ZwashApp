@@ -1,6 +1,8 @@
 package com.zwash.pojos;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 public class LoggedUser {
 
@@ -9,11 +11,12 @@ public class LoggedUser {
 	}
 
 	public LoggedUser(String firstName, String lastName, String username, String dateOfBirth,
-			String deviceRegistrationToken) {
+			String deviceRegistrationToken,List<Car>  cars) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.dateOfBirth = dateOfBirth;
+		this.cars=cars;
 	}
 
 	public long getId() {
@@ -101,6 +104,14 @@ public class LoggedUser {
 		this.admin = admin;
 	}
 
+	public List<Car> getCars() {
+		return cars;
+	}
+
+	public void setCars(List<Car> list) {
+		this.cars = list;
+	}
+
 	private long id;
 	private String firstName;
 	private String lastName;
@@ -108,8 +119,10 @@ public class LoggedUser {
 	private String dateOfBirth;
 	private Boolean active;
 	private String token;
+	private List<Car>  cars;
 	private LocalDateTime createDateTime;
 	private LocalDateTime updateDateTime;
+	
 
 	private boolean admin;
 }
