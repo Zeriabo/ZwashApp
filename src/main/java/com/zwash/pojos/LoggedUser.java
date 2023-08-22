@@ -14,7 +14,6 @@ public class LoggedUser {
 		this.lastName = lastName;
 		this.username = username;
 		this.dateOfBirth = dateOfBirth;
-		this.deviceRegistrationToken = deviceRegistrationToken;
 	}
 
 	public long getId() {
@@ -93,13 +92,6 @@ public class LoggedUser {
 		this.updateDateTime = updateDateTime;
 	}
 
-	public String getDeviceRegistrationToken() {
-		return deviceRegistrationToken;
-	}
-
-	public void setDeviceRegistrationToken(String deviceRegistrationToken) {
-		this.deviceRegistrationToken = deviceRegistrationToken;
-	}
 
 	public boolean isAdmin() {
 		return admin;
@@ -118,6 +110,6 @@ public class LoggedUser {
 	private String token;
 	private LocalDateTime createDateTime;
 	private LocalDateTime updateDateTime;
-	private String deviceRegistrationToken;
+
 	private boolean admin;
 }

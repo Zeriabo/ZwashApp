@@ -63,7 +63,6 @@ public class UserController {
 		try {
 
 			signedUser = userService.signIn(userInfo.getUsername(), userInfo.getPassword());
-			signedUser.setDeviceRegistrationToken(userInfo.getDeviceRegistrationToken());
 			userService.setDeviceRegistrationToken(signedUser.getId(), userInfo.getDeviceRegistrationToken());
 			if (signedUser instanceof LoggedUser) {
 				if (signedUser.isActive()) {
