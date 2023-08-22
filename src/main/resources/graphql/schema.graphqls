@@ -64,6 +64,8 @@ type Query {
   # Station queries
   getStation(id: ID!): Station!
   getAllStations:[Station!]!
+  
+   # User queries
 
  
 
