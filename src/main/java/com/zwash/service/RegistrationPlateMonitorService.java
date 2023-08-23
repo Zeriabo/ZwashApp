@@ -14,7 +14,7 @@ public interface RegistrationPlateMonitorService {
 
     void startMonitoring();
 
-    void addRegistrationPlate(String plateNumber);
+    void addRegistrationPlate(String plateNumber) throws CarDoesNotExistException;
 
     void  performCarWash(Car car)  throws CarDoesNotExistException;
 
@@ -29,7 +29,12 @@ public interface RegistrationPlateMonitorService {
 
         @Override
         public void run() {
-            monitorService.addRegistrationPlate(plateNumber);
+            try {
+				monitorService.addRegistrationPlate(plateNumber);
+			} catch (CarDoesNotExistException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 }

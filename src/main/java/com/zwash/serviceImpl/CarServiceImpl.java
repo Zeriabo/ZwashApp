@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zwash.exceptions.CarDoesNotExistException;
 import com.zwash.exceptions.CarExistsException;
 import com.zwash.exceptions.IncorrectTokenException;
 import com.zwash.exceptions.UserIsNotFoundException;
@@ -48,7 +49,7 @@ public class CarServiceImpl implements CarService {
 
 		try {
 			Car newCar = new Car();
-			Car foundcar = carRepository.findByRegisterationPlate(car.getRegisterationPlate());
+			Car foundcar = carRepository.findByRegisterationPlate(car.getRegistrationPlate());
 
 			if (foundcar != null) {
 				throw new CarExistsException(foundcar.getRegisterationPlate());
@@ -70,7 +71,7 @@ public class CarServiceImpl implements CarService {
 
 				newCar.setDateOfManufacture(car.getDateOfManufacture());
 				newCar.setManufacture(car.getManufacture());
-				newCar.setRegisterationPlate(car.getRegisterationPlate());
+				newCar.setRegisterationPlate(car.getRegistrationPlate());
 
 				 return carRepository.save(newCar);
 
@@ -84,8 +85,16 @@ public class CarServiceImpl implements CarService {
 
 
 	@Override
-	public Car getCar(String registerationPlate) {
-	    return carRepository.findByRegisterationPlate(registerationPlate);
+	public Car getCar(String registerationPlate) throws CarDoesNotExistException {
+	 
+       Car car = carRepository.findByRegisterationPlate(registerationPlate);
+       
+       if(car ==null)
+       {
+         throw new CarDoesNotExistException();
+       }else {
+    	   return car;
+       }
 	}
 
 	@Override

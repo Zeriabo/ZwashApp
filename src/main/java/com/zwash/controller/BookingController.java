@@ -23,6 +23,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.zwash.dto.BookingDTO;
+import com.zwash.exceptions.CarDoesNotExistException;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
@@ -102,7 +103,7 @@ public class BookingController {
 	@ApiOperation(value = "Create a booking", response = Booking.class)
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created booking"),
 			@ApiResponse(code = 400, message = "Invalid request") })
-	public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws UserIsNotFoundException {
+	public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws UserIsNotFoundException, CarDoesNotExistException {
 		if (booking == null) {
 			throw new IllegalArgumentException("Booking  cannot be null");
 		}
@@ -262,7 +263,7 @@ public class BookingController {
 	@ApiOperation(value = "Check if a booking exists for a given car registration plate", response = Boolean.class)
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Request processed successfully"),
 			@ApiResponse(code = 404, message = "Car with provided registration plate not found") })
-	public ResponseEntity<Boolean> isBookingExistsForCar(@PathVariable String registrationPlate) {
+	public ResponseEntity<Boolean> isBookingExistsForCar(@PathVariable String registrationPlate) throws CarDoesNotExistException {
 		Car car = carService.getCar(registrationPlate);
 		if (car == null) {
 			// Car not found

@@ -9,18 +9,19 @@ public class UserCar {
 	}
 
 	/**
-	 * @return the registerationPlate
+	 * @return the registrationPlate
 	 */
-	public String getRegisterationPlate() {
-		return registerationPlate;
+	public String getRegistrationPlate() {
+		return registrationPlate;
 	}
 
 	/**
-	 * @param registerationPlate the registerationPlate to set
+	 * @param registrationPlate the registrationPlate to set
 	 * @throws Exception
 	 */
-	public void setRegisterationPlate(String registerationPlate) throws Exception {
-		this.registerationPlate = registerationPlate;
+	public void setRegistrationPlatePlate(String registrationPlate) throws Exception {
+		this.registrationPlate = registrationPlate;
+		
 
 	}
 
@@ -79,7 +80,7 @@ public class UserCar {
 	
 	private String token;
 
-	private String registerationPlate;
+	private String registrationPlate;
 
 	private String manufacture;
 

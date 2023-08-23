@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zwash.exceptions.CarDoesNotExistException;
 import com.zwash.exceptions.NoNonExecutedBookingsFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
@@ -57,7 +58,7 @@ public class RegistrationPlateMonitorServiceImpl implements RegistrationPlateMon
 
 
     @Override
-    public void addRegistrationPlate(String plateNumber) {
+    public void addRegistrationPlate(String plateNumber) throws CarDoesNotExistException  {
 
     	Car car =  carService.getCar(plateNumber);
     	if(car!=null)

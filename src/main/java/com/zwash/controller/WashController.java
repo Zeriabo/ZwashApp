@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.zwash.exceptions.CarDoesNotExistException;
 import com.zwash.pojos.Wash;
 import com.zwash.service.RegistrationPlateMonitorService;
 import com.zwash.service.WashService;
@@ -55,7 +56,7 @@ public class WashController {
 	@ApiOperation(value = "Perform a wash for a  car registration plate number", notes = "Performs a wash")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "registrationPlate", value = "registration plate opf the car", required = true, dataType = "String", paramType = "query") })
-	public ResponseEntity<String> washCar(@ApiParam(value = "Registerationplate", required = true) @RequestParam String registerationPlate) {
+	public ResponseEntity<String> washCar(@ApiParam(value = "Registerationplate", required = true) @RequestParam String registerationPlate) throws CarDoesNotExistException {
 		registrationPlateMonitorService.addRegistrationPlate(registerationPlate);
 		return new ResponseEntity<>(registerationPlate, HttpStatus.OK);
 	}

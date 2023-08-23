@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zwash.exceptions.CarDoesNotExistException;
 import com.zwash.exceptions.IncorrectTokenException;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Car;
@@ -75,7 +76,7 @@ public class CarController {
 			@ApiResponse(code = 200, message = "Car details retrieved successfully"),
 			@ApiResponse(code = 404, message = "Car not found")
 	})
-	public ResponseEntity<Car> getCar(@PathVariable String registrationPlate) {
+	public ResponseEntity<Car> getCar(@PathVariable String registrationPlate) throws CarDoesNotExistException {
 		Car car = carService.getCar(registrationPlate);
 		return car != null ? ResponseEntity.ok(car) : ResponseEntity.notFound().build();
 	}
@@ -101,7 +102,7 @@ public class CarController {
 	})
 	public ResponseEntity<Void> setCar(@RequestBody UserCar userCar) throws IncorrectTokenException {
 		try {
-			String registrationPlate = userCar.getRegisterationPlate();
+			String registrationPlate = userCar.getRegistrationPlate();
 			Claims claims = new JwtUtils().verifyJWT(userCar.getToken());
 			Car car = carService.getCar(registrationPlate);
 			User user = userService.getUser(Long.parseLong(claims.getId()));
@@ -121,9 +122,9 @@ public class CarController {
 			@ApiResponse(code = 202, message = "Car deleted successfully"),
 			@ApiResponse(code = 500, message = "Internal server error")
 	})
-	public ResponseEntity<Void> deleteCar(@RequestBody UserCar userCar) throws IncorrectTokenException {
+	public ResponseEntity<Void> deleteCar(@RequestBody UserCar userCar) throws IncorrectTokenException, CarDoesNotExistException {
 		try {
-			String registrationPlate = userCar.getRegisterationPlate();
+			String registrationPlate = userCar.getRegistrationPlate();
 			Claims claims = new JwtUtils().verifyJWT(userCar.getToken());
 			Car car = carService.getCar(registrationPlate);
 			User user = userService.getUser(Long.parseLong(claims.getId()));
@@ -133,7 +134,11 @@ public class CarController {
 			} else {
 				return ResponseEntity.status(500).build();
 			}
-		} catch (Exception ex) {
+		} catch(CarDoesNotExistException carDoesNotExistException)
+		{
+			throw new CarDoesNotExistException("The car "+ userCar.getRegistrationPlate()+" was not found!");
+		}
+		catch (Exception ex) {
 			throw new IncorrectTokenException("The token is not valid!");
 		}
 	}

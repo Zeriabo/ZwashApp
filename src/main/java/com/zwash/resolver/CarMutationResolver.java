@@ -33,7 +33,7 @@ public class CarMutationResolver implements GraphQLMutationResolver {
 
     public Boolean setCar(UserCar userCar) throws IncorrectTokenException {
         try {
-            String registrationPlate = userCar.getRegisterationPlate();
+            String registrationPlate = userCar.getRegistrationPlate();
             String token = userCar.getToken();
             Claims claims = new JwtUtils().verifyJWT(token);
 
