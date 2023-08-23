@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
 		loggedUser.setFirstName(user.getFirstName());
 		loggedUser.setLastName(user.getLastName());
 		loggedUser.setAdmin(user.isAdmin());
-        loggedUser.setCars(carService.getCarsOfUser(user));
 		// Create a JWTToken
 		Long id = loggedUser.getId();
 		String jwt = tokenService.createJWT(id.toString(), "Java", loggedUser.getUsername(), 1232134356);

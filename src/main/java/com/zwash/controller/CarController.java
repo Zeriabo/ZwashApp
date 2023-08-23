@@ -81,14 +81,14 @@ public class CarController {
 	}
 
 	@ApiOperation(value = "Get all cars owned by a user")
-	@GetMapping("/user/{username}")
+	@GetMapping("/user/{token}")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Cars retrieved successfully"),
 			@ApiResponse(code = 404, message = "User not found")
 	})
-	public ResponseEntity<List<Car>> getCarsForUser(@PathVariable String username) throws UserIsNotFoundException {
-		User user = new User();
-		user.setUsername(username);
+	public ResponseEntity<List<Car>> getCarsForUser(@PathVariable String token) throws UserIsNotFoundException {
+		User user = userService.getUserFromToken(token);
+		
 		List<Car> cars = carService.getCarsOfUser(user);
 		return ResponseEntity.ok(cars);
 	}

@@ -11,12 +11,11 @@ public class LoggedUser {
 	}
 
 	public LoggedUser(String firstName, String lastName, String username, String dateOfBirth,
-			String deviceRegistrationToken,List<Car>  cars) {
+			String deviceRegistrationToken) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.dateOfBirth = dateOfBirth;
-		this.cars=cars;
 	}
 
 	public long getId() {
@@ -104,13 +103,6 @@ public class LoggedUser {
 		this.admin = admin;
 	}
 
-	public List<Car> getCars() {
-		return cars;
-	}
-
-	public void setCars(List<Car> list) {
-		this.cars = list;
-	}
 
 	private long id;
 	private String firstName;
@@ -119,7 +111,6 @@ public class LoggedUser {
 	private String dateOfBirth;
 	private Boolean active;
 	private String token;
-	private List<Car>  cars;
 	private LocalDateTime createDateTime;
 	private LocalDateTime updateDateTime;
 	
