@@ -124,7 +124,17 @@ public class CarServiceImpl implements CarService {
 		    return false;
 
 	}
+	@Override
+	public boolean deleteCar(Car car) throws Exception {
+		 Optional<Car> carOptional = carRepository.findById((car.getCarId()));
+		  if (carOptional.isPresent()) {
+		        Car existingCar = carOptional.get();
+		     
+		        carRepository.delete(existingCar);
+		        return true;
+		    }
+		    return false;
 
-
+	}
 
 }

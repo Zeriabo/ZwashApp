@@ -115,4 +115,26 @@ public class CarController {
 			throw new IncorrectTokenException("The token is not valid!");
 		}
 	}
+	@ApiOperation(value = "delete car")
+	@PostMapping("/delete")
+	@ApiResponses(value = {
+			@ApiResponse(code = 202, message = "Car deleted successfully"),
+			@ApiResponse(code = 500, message = "Internal server error")
+	})
+	public ResponseEntity<Void> deleteCar(@RequestBody UserCar userCar) throws IncorrectTokenException {
+		try {
+			String registrationPlate = userCar.getRegisterationPlate();
+			Claims claims = new JwtUtils().verifyJWT(userCar.getToken());
+			Car car = carService.getCar(registrationPlate);
+			User user = userService.getUser(Long.parseLong(claims.getId()));
+			car.setUser(user);
+			if (carService.deleteCar(car)) {
+				return ResponseEntity.accepted().build();
+			} else {
+				return ResponseEntity.status(500).build();
+			}
+		} catch (Exception ex) {
+			throw new IncorrectTokenException("The token is not valid!");
+		}
+	}
 }

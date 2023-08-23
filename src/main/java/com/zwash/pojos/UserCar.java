@@ -67,7 +67,16 @@ public class UserCar {
 	public void setDeviceRegistrationToken(String deviceRegistrationToken) {
 		this.deviceRegistrationToken = deviceRegistrationToken;
 	}
+    public int getCarId() {
+		return carId;
+	}
 
+	public void setCarId(int carId) {
+		this.carId = carId;
+	}
+	
+	private int carId;
+	
 	private String token;
 
 	private String registerationPlate;
