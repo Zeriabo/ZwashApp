@@ -32,54 +32,59 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("v1/cars")
 public class CarController {
 
-	@Autowired
-	CarService carService;
-	@Autowired
-	UserService userService;
+    @Autowired
+    CarService carService;
+    
+    @Autowired
+    UserService userService;
 
     Logger logger = LoggerFactory.getLogger(CarController.class);
 
-	@ApiOperation(value = "Register a new car")
-	@PostMapping("/register")
-	@ApiResponses(value = {
-			@ApiResponse(code = 202, message = "Car registered successfully"),
-			@ApiResponse(code = 500, message = "Internal server error"),
-			@ApiResponse(code = 404, message = "User was not found!")
-	})
-	public ResponseEntity<Car> registerCar(@RequestBody UserCar userCar) {
-	    try {
-	        Car car = carService.register(userCar);
+    @ApiOperation(value = "Register a new car")
+    @PostMapping("/register")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Car registered successfully"),
+            @ApiResponse(code = 500, message = "Internal server error"),
+            @ApiResponse(code = 404, message = "User not found")
+    })
+    public ResponseEntity<Void> registerCar(@RequestBody UserCar userCar) {
+        try {
+            Car car = carService.register(userCar);
 
-	        if (car.getRegisterationPlate() == null || car.getUser() == null) {
-	            return ResponseEntity.status(500).build();
-	        }
+            if (car.getRegisterationPlate() == null || car.getUser() == null) {
+                return ResponseEntity.status(500).build();
+            }
 
-	        // Check if the user exists by attempting to fetch the user
-	        User user = userService.getUser(car.getUser().getId());
+            // Check if the user exists by attempting to fetch the user
+            User user = userService.getUser(car.getUser().getId());
 
-	        if (user == null) {
-	            return ResponseEntity.status(404).build(); // User not found
-	        }
+            if (user == null) {
+                return ResponseEntity.status(404).build(); // User not found
+            }
 
-	        return ResponseEntity.accepted().build();
-	    } catch (UserIsNotFoundException e) {
-	        return ResponseEntity.status(404).build(); // User not found
-	    } catch (Exception e) {
-	        return ResponseEntity.status(500).build(); // Internal server error
-	    }
-	}
+            return ResponseEntity.status(201).build();
+        } catch (UserIsNotFoundException e) {
+            return ResponseEntity.status(404).build(); // User not found
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build(); // Internal server error
+        }
+    }
 
+    @ApiOperation(value = "Get car details by registration plate")
+    @GetMapping("/{registrationPlate}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Car details retrieved successfully"),
+            @ApiResponse(code = 404, message = "Car not found")
+    })
+    public ResponseEntity<Car> getCar(@PathVariable String registrationPlate) throws CarDoesNotExistException {
+        try {
+            Car car = carService.getCar(registrationPlate);
+            return ResponseEntity.ok(car);
+        } catch (CarDoesNotExistException e) {
+            return ResponseEntity.status(404).build();
+        }
+    }
 
-	@ApiOperation(value = "Get car details by registration plate")
-	@GetMapping("/{registrationPlate}")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Car details retrieved successfully"),
-			@ApiResponse(code = 404, message = "Car not found")
-	})
-	public ResponseEntity<Car> getCar(@PathVariable String registrationPlate) throws CarDoesNotExistException {
-		Car car = carService.getCar(registrationPlate);
-		return car != null ? ResponseEntity.ok(car) : ResponseEntity.notFound().build();
-	}
 
 	@ApiOperation(value = "Get all cars owned by a user")
 	@GetMapping("/user/{token}")
