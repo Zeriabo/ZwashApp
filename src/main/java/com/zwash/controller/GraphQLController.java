@@ -17,6 +17,7 @@ import com.zwash.resolver.CarWashProgramMutationResolver;
 import com.zwash.resolver.CarWashProgramResolver;
 import com.zwash.resolver.StationMutationResolver;
 import com.zwash.resolver.StationResolver;
+import com.zwash.resolver.UserCarWashResolver;
 
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
@@ -32,10 +33,10 @@ public class GraphQLController {
 	 private final GraphQL graphQL;
 
 	    @Autowired
-	    public GraphQLController(CarMutationResolver  carMutationResolver,CarResolver carQueryResolver,BookingResolver bookingQueryResolver, BookingMutationResolver bookingMutationResolver,CarWashProgramResolver carWashProgramResolver,CarWashProgramMutationResolver carWashProgramMutationResolver, StationMutationResolver stationMutationResolver,StationResolver stationQueryResolver) {
+	    public GraphQLController(CarMutationResolver  carMutationResolver,CarResolver carQueryResolver,BookingResolver bookingQueryResolver, BookingMutationResolver bookingMutationResolver,CarWashProgramResolver carWashProgramResolver,CarWashProgramMutationResolver carWashProgramMutationResolver, StationMutationResolver stationMutationResolver,StationResolver stationQueryResolver, UserCarWashResolver userCarWashResolver) {
 	    	  GraphQLSchema schema = new SchemaParserBuilder()
 	                  .file("graphql/schema.graphqls")
-	                  .resolvers(carQueryResolver,carMutationResolver,bookingQueryResolver, bookingMutationResolver,carWashProgramResolver,carWashProgramMutationResolver,  stationMutationResolver, stationQueryResolver)
+	                  .resolvers(carQueryResolver,carMutationResolver,bookingQueryResolver, bookingMutationResolver,carWashProgramResolver,carWashProgramMutationResolver,  stationMutationResolver, stationQueryResolver,userCarWashResolver)
 	                  .build()
 	                  .makeExecutableSchema();
 

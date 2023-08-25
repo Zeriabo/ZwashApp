@@ -18,4 +18,6 @@ public interface CarWashingProgramService {
 
 	List<CarWashingProgram> getPrograms();
 
+	public CarWashingProgram getCarWashProgramById(Long carWashProgramId);
+
 }
