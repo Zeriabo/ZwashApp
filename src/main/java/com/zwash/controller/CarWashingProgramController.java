@@ -58,7 +58,7 @@ public class CarWashingProgramController {
 		}
 	}
 
-	@ApiOperation(value = "Get all car washing programs")
+	@ApiOperation(value = "Get  car washing programs of a station")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Washing programs retrieved successfully"),
 			@ApiResponse(code = 404, message = "Washing programs not found") })
 	@GetMapping("/")
