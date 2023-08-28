@@ -59,6 +59,7 @@ type Query {
     allBookings: [Booking]
     getAllBookings: [Booking!]!
     userBookings(userId: ID!): [Booking]
+    getCarBookings(carId: ID!): [Booking]
     
      # car queries
      getCar(id: ID!): Car

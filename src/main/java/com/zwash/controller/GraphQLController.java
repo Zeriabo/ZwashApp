@@ -49,7 +49,7 @@ public class GraphQLController {
        }
     @PostMapping("/graphql")
     public ExecutionResult executeGraphQL(@RequestBody Map<String, Object> request) {
-        String query =  (String) request.get("query");
+    	String query =  (String) request.get("query");
 
         @SuppressWarnings("unchecked")
 		Map<String, Object> variables = (Map<String, Object>) request.get("variables");

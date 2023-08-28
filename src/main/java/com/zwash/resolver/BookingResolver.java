@@ -35,4 +35,8 @@ public class BookingResolver implements GraphQLQueryResolver {
         // Implement logic to fetch and return bookings for the specified userId
         return bookingService.getBookingsByUserId(userId);
     }
+    public List<Booking> getCarBookings(Long carId) throws Exception {
+        // Implement logic to fetch and return bookings for the specified userId
+        return bookingService.getBookingsByCarId(carId);
+    }
 }
