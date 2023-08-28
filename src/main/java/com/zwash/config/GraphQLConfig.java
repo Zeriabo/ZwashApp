@@ -12,6 +12,8 @@ import com.zwash.resolver.CarWashProgramMutationResolver;
 import com.zwash.resolver.CarWashProgramResolver;
 import com.zwash.resolver.StationMutationResolver;
 import com.zwash.resolver.StationResolver;
+import com.zwash.resolver.UserCarWashMutationResolver;
+import com.zwash.resolver.UserCarWashResolver;
 
 import graphql.GraphQL;
 import graphql.kickstart.tools.SchemaParserBuilder;
@@ -40,13 +42,19 @@ public class GraphQLConfig {
 	StationMutationResolver stationMutationResolver;
 	@Autowired
 	StationResolver stationQueryResolver;
+	
+	@Autowired
+	UserCarWashResolver userCarWashResolver;
+	
+	@Autowired UserCarWashMutationResolver userCarWashMutationResolver;
+	
 
     @Autowired
     public GraphQLConfig(
 
     		BookingResolver bookingQueryResolver,
             BookingMutationResolver bookingMutationResolver,CarMutationResolver carMutationResolver,CarResolver carResolver,CarWashProgramResolver carWashProgramQueryResolver,CarWashProgramMutationResolver carWashProgramMutationResolver,
-            StationMutationResolver stationMutationResolver,StationResolver stationQueryResolver) {
+            StationMutationResolver stationMutationResolver,StationResolver stationQueryResolver,UserCarWashResolver userCarWashResolver, UserCarWashMutationResolver userCarWashMutationResolver) {
         this.bookingQueryResolver = bookingQueryResolver;
         this.bookingMutationResolver = bookingMutationResolver;
         this.carQueryResolver=carResolver;
@@ -55,6 +63,8 @@ public class GraphQLConfig {
         this.carWashProgramQueryResolver=carWashProgramQueryResolver;
         this.stationMutationResolver=stationMutationResolver;
         this.stationQueryResolver=stationQueryResolver;
+        this.userCarWashResolver=userCarWashResolver;
+        this.userCarWashMutationResolver=userCarWashMutationResolver;
 
 
     }
@@ -65,7 +75,7 @@ public class GraphQLConfig {
 
         GraphQLSchema schema = new SchemaParserBuilder()
                 .file("graphql/schema.graphqls")
-                .resolvers(bookingQueryResolver, bookingMutationResolver,carQueryResolver,carMutationResolver,carWashProgramQueryResolver,carWashProgramMutationResolver,stationMutationResolver,stationQueryResolver)
+                .resolvers(bookingQueryResolver, bookingMutationResolver,carQueryResolver,carMutationResolver,carWashProgramQueryResolver,carWashProgramMutationResolver,stationMutationResolver,stationQueryResolver,userCarWashResolver,userCarWashMutationResolver)
                 .build()
                 .makeExecutableSchema();
 
