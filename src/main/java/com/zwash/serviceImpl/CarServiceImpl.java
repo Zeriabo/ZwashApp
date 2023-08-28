@@ -31,7 +31,7 @@ public class CarServiceImpl implements CarService {
 
 	@Override
 	public Car getCar(long id) {
-		return carRepository.findById(id).get();
+		return carRepository.findById(id).get(); //need exception
 	}
 	@Override
 	public List<Car> getCarsOfUser(User user) throws UserIsNotFoundException {
