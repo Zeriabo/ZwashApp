@@ -118,6 +118,8 @@ Usage:
 
 TODO:
 
+execute a wash
+
 Rating system: Allow users to rate their experience with the car wash and the service they received.
 
 Discounts and promotions: Implement discounts and promotional codes to attract more customers and retain existing ones.
