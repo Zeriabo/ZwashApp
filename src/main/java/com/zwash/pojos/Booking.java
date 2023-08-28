@@ -44,12 +44,12 @@ public class Booking {
 			@JsonSubTypes.Type(value = TouchlessCarWashingProgram.class, name = "touch_less") })
 	private CarWashingProgram washingProgram;
 
+	//i dont need the sceduled time 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
-	@Column(name = "scheduled_time", nullable = false)
-	private LocalDateTime scheduledTime;
+
 
 	@ManyToOne
 	@JoinColumn(name = "station_id", nullable = false)
@@ -70,11 +70,13 @@ public class Booking {
 	public Booking() {
 	}
 
-	public Booking(Car car, CarWashingProgram washingProgram, LocalDateTime scheduledTime) {
+	public Booking(Car car, Station station,CarWashingProgram washingProgram,User user) {
 		this.car = car;
 		this.washingProgram = washingProgram;
-		this.scheduledTime = scheduledTime;
-	}
+		this.user=user;
+		this.station=station;
+
+	}   
 
 	public Long getId() {
 		return id;
@@ -100,13 +102,6 @@ public class Booking {
 		this.washingProgram = washingProgram;
 	}
 
-	public LocalDateTime getScheduledTime() {
-		return scheduledTime;
-	}
-
-	public void setScheduledTime(LocalDateTime scheduledTime) {
-		this.scheduledTime = scheduledTime;
-	}
 
 	public User getUser() {
 		return user;
