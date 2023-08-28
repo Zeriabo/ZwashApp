@@ -35,11 +35,9 @@ public class BookingMapperImpl implements BookingMapper {
         BookingDTO bookingDTO = new BookingDTO();
         bookingDTO.setId(booking.getId());
         bookingDTO.setUserId(booking.getUser().getId());
-        bookingDTO.setScheduledTime(booking.getScheduledTime());
         bookingDTO.setCarId(booking.getCar().getCarId());
         bookingDTO.setWashingProgramId(booking.getWashingProgram().getId());
-        bookingDTO.setToken(booking.getToken());
-
+        
         return bookingDTO;
     }
 
@@ -50,13 +48,11 @@ public class BookingMapperImpl implements BookingMapper {
         }
         Booking booking = new Booking();
         booking.setId(bookingDTO.getId());
-        booking.setScheduledTime(bookingDTO.getScheduledTime());
         Car car =carService.getCar(bookingDTO.getCarId());
         booking.setCar(car);
         CarWashingProgram carWashingProgram  = carWashingProgramService.getProgramById(bookingDTO.getWashingProgramId());
         booking.setWashingProgram(carWashingProgram);
         booking.getWashingProgram().setId(bookingDTO.getWashingProgramId());
-        booking.setToken(bookingDTO.getToken());
         return booking;
     }
 
