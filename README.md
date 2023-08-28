@@ -113,11 +113,10 @@ Updates:
 2. Notifications: Implement a notification system to inform users about their booking status, such as confirmation of the booking, changes in the schedule, or cancellation. Notification system on the backend side is ready waiting the frontend after the frontend the backend need adjusting and to place more notifications.
 Usage:
 3. Mobile app: Consider developing a mobile app to provide a more convenient and user-friendly experience for your customers.
+4. Graphql Implemented.
 
 
 TODO:
-
-Implementing Graphql.
 
 Rating system: Allow users to rate their experience with the car wash and the service they received.
 
