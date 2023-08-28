@@ -90,4 +90,10 @@ public class CarWashingProgramServiceImpl implements CarWashingProgramService {
 
 	}
 
+	@Override
+	public CarWashingProgram getCarWashProgramById(Long carWashProgramId) {
+		
+		return programRepository.getReferenceById(carWashProgramId);
+	}
+
 }
