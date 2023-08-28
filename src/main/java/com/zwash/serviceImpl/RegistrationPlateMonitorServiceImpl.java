@@ -83,7 +83,7 @@ public class RegistrationPlateMonitorServiceImpl implements RegistrationPlateMon
 
     	       for (Booking booking : bookings) {
     	           if (!booking.isExecuted()) {
-    	               if (latestBooking == null || booking.getScheduledTime().isAfter(latestBooking.getScheduledTime())) {
+    	               if (latestBooking == null ) {
     	                   latestBooking = booking;
     	               }
     	           }
