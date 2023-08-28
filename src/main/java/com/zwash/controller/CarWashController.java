@@ -56,9 +56,7 @@ public class CarWashController {
 	})
 	public ResponseEntity<String> executeCarWash(@RequestBody Booking booking) {
 	    try {
-	    	if(booking.getScheduledTime().equals(LocalDateTime.now())||booking.getScheduledTime().isAfter(LocalDateTime.now()))
-	    	{
-	    		if(!booking.isExecuted())
+	    if(!booking.isExecuted())
 		    	{
 		    		 carWashService.executeCarWash(booking);
 
@@ -72,12 +70,7 @@ public class CarWashController {
 		    		return new ResponseEntity<>("Car wash is already executed", HttpStatus.NOT_ACCEPTABLE);
 		    	}
 
-	    	}else {
-
-	    		 logger.info("car "+booking.getCar().getRegisterationPlate()+" came too early to wash!");
-	    		return new ResponseEntity<>("Come back on "+booking.getScheduledTime()+" or after!", HttpStatus.NOT_ACCEPTABLE);
-	    	}
-
+	    
 
 
 	    } catch (Exception ex) {
