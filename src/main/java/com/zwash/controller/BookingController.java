@@ -24,13 +24,18 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.zwash.dto.BookingDTO;
 import com.zwash.exceptions.CarDoesNotExistException;
+import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.exceptions.UserIsNotFoundException;
 import com.zwash.pojos.Booking;
 import com.zwash.pojos.Car;
+import com.zwash.pojos.CarWashingProgram;
+import com.zwash.pojos.Station;
 import com.zwash.pojos.User;
 import com.zwash.service.BookingService;
 import com.zwash.service.CarService;
 import com.zwash.service.CarWashService;
+import com.zwash.service.CarWashingProgramService;
+import com.zwash.service.StationService;
 import com.zwash.service.UserService;
 
 import io.swagger.annotations.Api;
@@ -45,6 +50,13 @@ import jakarta.transaction.Transactional;
 public class BookingController {
 	@Autowired
 	private CarService carService;
+	
+	@Autowired
+	private StationService stationService;
+	
+	@Autowired
+	private CarWashingProgramService  washingProgramService;
+	
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -103,40 +115,51 @@ public class BookingController {
 	@ApiOperation(value = "Create a booking", response = Booking.class)
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Successfully created booking"),
 			@ApiResponse(code = 400, message = "Invalid request") })
-	public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) throws UserIsNotFoundException, CarDoesNotExistException {
-		if (booking == null) {
+	public ResponseEntity<Booking> createBooking(@RequestBody BookingDTO bookingDto) throws UserIsNotFoundException, CarDoesNotExistException, StationNotExistsException {
+		
+		Booking booking = new Booking();
+		
+		if (bookingDto == null) {
 			throw new IllegalArgumentException("Booking  cannot be null");
 		}
-		User user = userService.getUserFromToken(booking.getToken());
+		
+		if(bookingDto.getToken()!=null)
+		{
+			booking.setToken(bookingDto.getToken());
+		}
+		User user = userService.getUserFromToken(bookingDto.getToken());
 
 		booking.setUser(user);
 
-		if (booking.getStation() == null) {
+		if (bookingDto.getStationId() == null) {
 			throw new IllegalArgumentException("Station object cannot be null");
 		}
-		if (booking.getCar() == null) {
+		
+		Station station= stationService.getStation(bookingDto.getStationId());
+		booking.setStation(station);
+		
+		if (bookingDto.getCarId() == null) {
 			throw new IllegalArgumentException("Car object cannot be null");
 		}
-		if (booking.getWashingProgram() == null) {
-			throw new IllegalArgumentException("Washing program object cannot be null");
-		}
-		if (booking.getScheduledTime() == null) {
-			throw new IllegalArgumentException("Scheduled time cannot be null");
-		}
-		if (booking.getScheduledTime().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("Scheduled time cannot be in the past");
-		}
-		Car car = carService.getCar(booking.getCar().getRegisterationPlate());
-		booking.setCar(car);
-		// Save the car entity if it is not already persisted
-		Long carId = booking.getCar() != null ? booking.getCar().getCarId() : null;
-		if (carId == null) {
+		Car car = carService.getCar(bookingDto.getCarId());
+		
+		if (car == null) {
 			logger.error("The car " + booking.getCar().getRegisterationPlate() + "  is not registered in the system!");
 			throw new IllegalArgumentException("There is no car in the system with registeration number "
 					+ booking.getCar().getRegisterationPlate());
 		}
-		logger.info("The booking for " + booking.getCar().getRegisterationPlate() + " is saved successfully!");
-		Booking newBooking = bookingService.saveBooking(booking);
+	
+		booking.setCar(car);
+		
+		
+		if (bookingDto.getWashingProgramId() == null) {
+			throw new IllegalArgumentException("Washing program object cannot be null");
+		}
+		CarWashingProgram washingProgram = washingProgramService.getProgramById(bookingDto.getWashingProgramId());
+		
+       booking.setWashingProgram(washingProgram);
+       
+    	Booking newBooking = bookingService.saveBooking(booking);
 		if (newBooking instanceof Booking) {
 			// Construct the message
 //			Message message = Message.builder()
@@ -153,6 +176,7 @@ public class BookingController {
 //			} catch (FirebaseMessagingException e) {
 //				System.out.println("Failed to send message: " + e.getMessage());
 //			}
+			logger.info("The booking for " + booking.getCar().getRegisterationPlate() + " is saved successfully!");
 			return new ResponseEntity<>(booking, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<>(booking, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -179,18 +203,12 @@ public class BookingController {
 		if (newBooking.getWashingProgram() == null) {
 			throw new IllegalArgumentException("Washing program object cannot be null");
 		}
-		if (newBooking.getScheduledTime() == null) {
-			throw new IllegalArgumentException("Scheduled time cannot be null");
-		}
-		if (newBooking.getScheduledTime().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("Scheduled time cannot be in the past");
-		}
+
 
 		Booking booking = bookingService.getBookingById(id);
 		if (booking != null) {
 			booking.setCar(newBooking.getCar());
 			booking.setWashingProgram(newBooking.getWashingProgram());
-			booking.setScheduledTime(newBooking.getScheduledTime());
 			bookingService.saveBooking(booking);
 			logger.info(
 					"the  booking for " + booking.getCar().getRegisterationPlate() + " has been updated successfully");

@@ -32,7 +32,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 	 void executeWash(@Param("id") Long id);
 
 	 @Query("SELECT b FROM Booking b WHERE b.user.id = :userId")
-	List<Booking> findByUserId(Long userId);
+	List<Booking> findByUserId(@Param("userId") Long userId);
 
 
 }

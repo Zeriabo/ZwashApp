@@ -24,7 +24,7 @@ public class CarWashProgramResolver implements GraphQLQueryResolver {
     {
     	return carWashingProgramService.getProgramById(id);
     }
-
+     
     public List<CarWashingProgram> getAllPrograms(Long id) throws Exception {
     	 List<CarWashingProgram> programs = carWashingProgramService.getPrograms(id);
          if (programs == null) {
@@ -33,5 +33,6 @@ public class CarWashProgramResolver implements GraphQLQueryResolver {
          }
          return programs;
      }
+    
 
 }
