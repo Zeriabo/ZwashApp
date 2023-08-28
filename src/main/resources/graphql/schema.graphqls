@@ -30,7 +30,7 @@ type Booking {
     id: ID
     car: Car
     washingProgram: CarWashingProgram
-    scheduledTime: String
+    station: Station
  
 }
 
@@ -47,6 +47,12 @@ type UserCar {
   dateOfManufacture: String
   deviceRegistrationToken: String
 }
+
+type UserCarWash {
+  booking: Booking
+  station: Station
+}
+
 type Query {
    # Booking queries
     booking(id: ID!): Booking
@@ -67,7 +73,7 @@ type Query {
   
    # User queries
    
-   #User car wash quries
+   #User car wash queries
  getUserCarWashes(userId: ID!): [UserCarWash!]!
  
 
@@ -82,9 +88,11 @@ type Mutation {
 }
 
 input BookingInput {
-    carId: ID!
+    car: ID!
     washingProgram: String!
-    scheduledTime: String!
+    userId: ID!
+    stationId:ID!
+
   
 }
 input UserCarInput {
@@ -95,8 +103,4 @@ input UserCarInput {
   deviceRegistrationToken: String
 }
 
-type UserCarWash {
-  booking: Booking
-  station: Station
-}
 
