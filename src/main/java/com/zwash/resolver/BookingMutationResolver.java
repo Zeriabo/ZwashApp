@@ -2,6 +2,7 @@ package com.zwash.resolver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
 
 import com.zwash.pojos.Booking;
 import com.zwash.service.BookingService;
@@ -23,7 +24,13 @@ public class BookingMutationResolver implements GraphQLMutationResolver {
         // Implement your logic to create a booking using the bookingInput data
         Booking booking = new Booking();
         // Set other properties of the booking
-
+        booking.setCar(bookingInput.getCar());
+        booking.setCreatedAt(LocalDateTime.now());
+        booking.setExecuted(false);
+        booking.setStation(bookingInput.getStation());
+        booking.setUser(bookingInput.getUser());
+        booking.setWashingProgram(bookingInput.getWashingProgram());
+        
         // Save the booking using the service
         return bookingService.saveBooking(booking);
     }
