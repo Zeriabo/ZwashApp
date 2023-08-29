@@ -118,6 +118,8 @@ Usage:
 
 TODO:
 
+push notifications
+
 execute a wash
 
 Rating system: Allow users to rate their experience with the car wash and the service they received.
