@@ -13,7 +13,7 @@ type Station {
 type CarWashingProgram {
   id: ID
   station: Station
-  program: String
+  programType: String
   description: String
   price: Float
   createdAt: String
