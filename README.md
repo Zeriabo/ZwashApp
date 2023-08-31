@@ -71,23 +71,9 @@ User Controller: Manages user-related operations.
 Car Washing Program Controller: Deals with car washing program-related operations.
 Please refer to the Swagger UI for detailed documentation on each endpoint.
 
-Contributing
-Contributions to the Zwash app are welcome! If you would like to contribute, please follow these steps:
-
-Fork the repository.
-
-Create a new branch for your feature or bug fix.
-
-Implement your changes.
-
-Write tests to ensure the stability of the application.
-
-Submit a pull request with your changes.
-
 License
-The Zwash app is released under the MIT License. Please see the LICENSE file for more details.
+The Zwash app is released under the MIT License. 
 
-Feel free to customize this README file to fit your specific project requirements.
 Program:
 JavaSE-17,
 Gradle,
@@ -117,6 +103,8 @@ Usage:
 
 
 TODO:
+
+service provider page
 
 push notifications
 
