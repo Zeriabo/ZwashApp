@@ -1,12 +1,14 @@
 package com.zwash.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.zwash.pojos.ServiceProviderUser;
 import com.zwash.pojos.Station;
 import com.zwash.repository.ServiceProviderUserRepository;
 import com.zwash.service.ServiceProviderUserService;
 
+@Service
 public class ServiceProviderUserServiceImpl implements ServiceProviderUserService {
 
 	 @Autowired
@@ -31,16 +33,5 @@ public class ServiceProviderUserServiceImpl implements ServiceProviderUserServic
 	        }
 	}
 
-	@Override
-	public Station registerStation(Station station, ServiceProviderUser user) {
-		return station;
-		 
-	    
-	}
-
-	@Override
-	public void deleteStation(Station station, ServiceProviderUser user) {
-		
-	}
 
 }
