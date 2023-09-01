@@ -9,7 +9,7 @@ import com.zwash.pojos.Station;
 
 public interface ServiceProviderService {
 	
-	Station getServiceProvider(Long id) throws ServiceProviderNotExistsException;
+	ServiceProvider getServiceProvider(Long id) throws ServiceProviderNotExistsException;
 
 	List<ServiceProvider> getAllServiceProviders();
 

@@ -25,8 +25,8 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	    }
 	    
 	    @Override
-	    public Station getServiceProvider(Long id) throws ServiceProviderNotExistsException {
-	        return stationRepository.findById(id).orElseThrow(() -> new ServiceProviderNotExistsException("ServiceProvider not found."));
+	    public ServiceProvider getServiceProvider(Long id) throws ServiceProviderNotExistsException {
+	        return serviceProviderRepository.findById(id).orElseThrow(() -> new ServiceProviderNotExistsException("ServiceProvider not found."));
 	    }
 
 	@Override
