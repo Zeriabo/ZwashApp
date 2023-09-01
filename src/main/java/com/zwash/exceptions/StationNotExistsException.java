@@ -9,6 +9,11 @@ public class StationNotExistsException extends Exception {
     {
 
     }
+    public StationNotExistsException(String message)
+    {
+    	
+      super(message);
+    }
 	public StationNotExistsException(Long id)
 	{
 		super(" station id "+id +" does not exists in the System");
