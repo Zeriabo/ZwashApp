@@ -104,7 +104,7 @@ Usage:
 
 TODO:
 
-service provider page
+service provider User implementation and functions
 
 push notifications
 
