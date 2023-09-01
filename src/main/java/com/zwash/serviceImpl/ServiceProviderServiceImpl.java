@@ -3,6 +3,7 @@ package com.zwash.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.zwash.exceptions.ServiceProviderNotExistsException;
 import com.zwash.exceptions.StationNotExistsException;
@@ -12,6 +13,7 @@ import com.zwash.repository.ServiceProviderRepository;
 import com.zwash.repository.StationRepository;
 import com.zwash.service.ServiceProviderService;
 
+@Service
 public class ServiceProviderServiceImpl implements ServiceProviderService {
 
 	 private final ServiceProviderRepository serviceProviderRepository;

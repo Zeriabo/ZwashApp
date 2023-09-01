@@ -2,11 +2,14 @@ package com.zwash.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.zwash.exceptions.ServiceProviderNotExistsException;
 import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.pojos.ServiceProvider;
 import com.zwash.pojos.Station;
 
+@Service
 public interface ServiceProviderService {
 	
 	ServiceProvider getServiceProvider(Long id) throws ServiceProviderNotExistsException;
