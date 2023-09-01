@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "service_provider_user")
@@ -79,7 +81,9 @@ public class ServiceProviderUser {
 	    @Column(nullable = false)
 	    private String lastName;
 
-	    @Column(nullable = false, unique = true)
+	    @NotBlank
+	    @Size(max = 50)
+	    @Column(name = "username", nullable = false, unique = true)
 	    private String username;
 
 	    @Column(nullable = false)
