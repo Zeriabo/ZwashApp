@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
@@ -48,6 +49,11 @@ public class Station {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
 	private List<CarWashingProgram> programs;
+	
+	@ManyToOne
+    @JoinColumn(name = "service_provider_id")
+	private ServiceProvider serviceProvider;
+
 
 	@CreationTimestamp
 	@Column(name = "createdAt")
@@ -113,6 +119,15 @@ public class Station {
 	public void setPrograms(List<CarWashingProgram> programs) {
 		this.programs = programs;
 	}
+	
+	public ServiceProvider getServiceProvider() {
+		return serviceProvider;
+	}
+
+	public void setServiceProvider(ServiceProvider serviceProvider) {
+		this.serviceProvider = serviceProvider;
+	}
+	
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
