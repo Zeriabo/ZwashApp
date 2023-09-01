@@ -31,4 +31,8 @@ public interface StationRepository extends JpaRepository<Station, Long> {
 	@Modifying
 	@Query("UPDATE Station s SET s.latitude = :latitude, s.longitude = :longitude WHERE s.id = :id")
 	void setAddress(@Param("id") Long id, @Param("latitude") Long latitude, @Param("longitude") Long longitude);
+	
+	
+	@Query("SELECT s FROM Station s WHERE s.serviceProvider.id = :id")
+	List<Station> selectAllStationsByServiceProvider(@Param("id") Long id);
 }
