@@ -53,7 +53,7 @@ public class ServiceProviderController {
         return ResponseEntity.ok(serviceProviders);
     }
 
-    // Add more endpoints as needed
+  
 
 }
 
