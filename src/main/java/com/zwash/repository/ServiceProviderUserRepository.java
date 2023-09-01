@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import com.zwash.pojos.ServiceProviderUser;
+import com.zwash.pojos.Station;
 
 
 
@@ -16,7 +17,7 @@ public interface ServiceProviderUserRepository extends JpaRepository<ServiceProv
 	@Query("SELECT s FROM ServiceProviderUser s WHERE s.id = :id")
 	Optional<ServiceProviderUser> findById(@Param("id") Long id);
 	
-	@Query("SELECT s FROM ServiceProviderUser s WHERE s.id = :id  AND u.password = :password")
+	@Query("SELECT s FROM ServiceProviderUser s WHERE s.username = :username  AND s.password = :password")
 	Optional<ServiceProviderUser> signIn(@Param("username") String username, @Param("password") String password );
 	
 	 @Modifying
@@ -24,4 +25,6 @@ public interface ServiceProviderUserRepository extends JpaRepository<ServiceProv
 	 int updatePassword(@Param("username") String username, @Param("password") String password);
 
 
+	 @Query("SELECT s FROM ServiceProviderUser s WHERE s.username= :username")
+	 Optional<ServiceProviderUser> findByUsername(@Param("username")String username);
 }
