@@ -14,9 +14,7 @@ import java.util.List;
 @Table(name = "service_provider")
 public class ServiceProvider {
 
-  
-
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -48,17 +46,38 @@ public class ServiceProvider {
 		this.stations = stations;
 	}
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	public String getUsername() {
+		return username;
+	}
 
-   @Column(nullable = false)
-   private String name;
-   
-   @Column(nullable = false)
-   private String email;
-   
-   @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
-   private List<Station> stations;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Column(nullable = false)
+	private String username;
+
+	@Column(nullable = false)
+	private String password;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(nullable = false)
+	private String name;
+
+	@Column(nullable = false)
+	private String email;
+
+	@OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
+	private List<Station> stations;
 
 }
