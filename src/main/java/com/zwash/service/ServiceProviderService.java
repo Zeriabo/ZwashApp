@@ -13,13 +13,11 @@ public interface ServiceProviderService {
 
 	List<ServiceProvider> getAllServiceProviders();
 
-	void setEmail(Long id,String email);
+	void setEmail(Long id,String email) throws ServiceProviderNotExistsException;
 	
-	void setAddress(Long id,String address);
+	boolean addStation(Long id,Station stationDTO) throws StationNotExistsException, ServiceProviderNotExistsException;
 
-	boolean addStation(Long id,Station stationDTO) throws StationNotExistsException;
-
-	void removeStation(Long id,Station stationDTO)  throws StationNotExistsException;
+	void removeStation(Long id,Station stationDTO)  throws StationNotExistsException, ServiceProviderNotExistsException;
 
 
 }
