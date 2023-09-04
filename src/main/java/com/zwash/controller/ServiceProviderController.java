@@ -55,7 +55,7 @@ public class ServiceProviderController {
 
     
     @ApiOperation(value = "Get all service providers")
-    @GetMapping("/all")
+    @GetMapping("/")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Service providers retrieved successfully")
     })
@@ -70,7 +70,7 @@ public class ServiceProviderController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Service providers created successfully")
     })
-    public ResponseEntity <ServiceProvider> createServiceProvider(@PathVariable ServiceProvider serviceProvider) {
+    public ResponseEntity <ServiceProvider> createServiceProvider(@RequestBody ServiceProvider serviceProvider) {
     	ServiceProvider serviceProviders = serviceProviderService.createServiceProvicer(serviceProvider);
         return ResponseEntity.ok(serviceProviders);
     }
