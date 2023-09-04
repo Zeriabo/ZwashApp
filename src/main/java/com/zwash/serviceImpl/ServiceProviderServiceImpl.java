@@ -94,4 +94,10 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 		 return serviceProviderRepository.findByUser(id);
 	}
 
+	@Override
+	public ServiceProvider createServiceProvicer(ServiceProvider serviceProvider) {
+	
+		return serviceProviderRepository.save(serviceProvider);
+	}
+
 }

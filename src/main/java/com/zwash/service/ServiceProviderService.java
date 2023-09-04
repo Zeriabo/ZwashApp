@@ -24,5 +24,5 @@ public interface ServiceProviderService {
 
 	List<ServiceProvider> getAllServiceProviders(Long id);
 
- 
+	ServiceProvider createServiceProvicer(ServiceProvider serviceProvider);
 }
