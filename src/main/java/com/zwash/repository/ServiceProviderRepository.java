@@ -24,6 +24,9 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
 	@Query("Delete FROM ServiceProvider s WHERE s.id = :id")
 	void deleteById(Long id);
 	
+
+	@Query("Select s FROM ServiceProvider s WHERE s.serviceProviderUser = :id")
+	 List<ServiceProvider>  findByUser(@Param("id") Long id);
 //	@Query("SELECT s FROM Station s WHERE s.serviceProvider.id = :id")
 //	List<Station> selectAllStations(@Param("id") Long id);
 //	@Query("Select s FROM ServiceProvider s WHERE s.station = :id")

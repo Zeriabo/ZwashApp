@@ -17,6 +17,8 @@ public interface StationService extends Serializable {
 	Station getStation(Long id) throws StationNotExistsException;
 
 	List<Station> getAllStations();
+	
+	List<Station> getAllServiceProviderStations(Long id);
 
 	void setMedia(Long id, Media media);
 

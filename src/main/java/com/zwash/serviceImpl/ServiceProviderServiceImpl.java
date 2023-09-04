@@ -88,4 +88,10 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 		
 	}
 
+	@Override
+	public List<ServiceProvider> getAllServiceProviders(Long id) {
+		
+		 return serviceProviderRepository.findByUser(id);
+	}
+
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
@@ -45,28 +46,15 @@ public class ServiceProvider {
 	public void setStations(List<Station> stations) {
 		this.stations = stations;
 	}
-
-	public String getUsername() {
-		return username;
+	
+	public ServiceProviderUser getServiceProviderUser() {
+		return serviceProviderUser;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setServiceProviderUser(ServiceProviderUser serviceProviderUser) {
+		this.serviceProviderUser = serviceProviderUser;
 	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@Column(nullable = false)
-	private String username;
-
-	@Column(nullable = false)
-	private String password;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -76,6 +64,11 @@ public class ServiceProvider {
 
 	@Column(nullable = false)
 	private String email;
+	
+	@ManyToOne
+	private ServiceProviderUser serviceProviderUser;
+
+
 
 	@OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
 	private List<Station> stations;

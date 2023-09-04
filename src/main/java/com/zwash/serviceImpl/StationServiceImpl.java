@@ -45,6 +45,17 @@ public class StationServiceImpl implements StationService {
 		}
 
 	}
+	
+	@Override
+	public List<Station> getAllServiceProviderStations(Long id) {
+		try {
+			
+			List<Station> station = stationRepository.findByServiceProvider(id);
+			return station;
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
 
 	@Override
 	@Transactional
@@ -133,5 +144,7 @@ public class StationServiceImpl implements StationService {
 
 		return washesList;
 	}
+
+	
 
 }

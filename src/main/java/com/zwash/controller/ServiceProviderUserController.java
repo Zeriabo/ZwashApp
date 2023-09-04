@@ -12,7 +12,8 @@ import com.zwash.service.ServiceProviderUserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/service-provider-users")
+@RequestMapping("v1/service-provider-users")
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class ServiceProviderUserController {
 
     @Autowired

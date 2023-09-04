@@ -43,6 +43,17 @@ public class ServiceProviderController {
         }
     }
 
+    @ApiOperation(value = "Get all service providers that belongs to a user")
+    @GetMapping("/user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Service providers retrieved successfully")
+    })
+    public ResponseEntity<List<ServiceProvider>> getAllUserServiceProviders(@PathVariable Long id) {
+        List<ServiceProvider> serviceProviders = serviceProviderService.getAllServiceProviders(id);
+        return ResponseEntity.ok(serviceProviders);
+    }
+
+    
     @ApiOperation(value = "Get all service providers")
     @GetMapping("/all")
     @ApiResponses(value = {

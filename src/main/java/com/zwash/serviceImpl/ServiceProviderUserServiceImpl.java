@@ -26,7 +26,7 @@ public class ServiceProviderUserServiceImpl implements ServiceProviderUserServic
 		   ServiceProviderUser user = serviceProviderUserRepository.findByUsername(username)
 	                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-	        if ((password == user.getPassword())) {
+	        if ((password.equals(user.getPassword()))) {
 	            return user;
 	        } else {
 	            throw new IllegalArgumentException("Invalid password");
