@@ -46,14 +46,7 @@ public class StationController {
 		List<CarWashingProgram> list = stationService.getStationWashed(id);
 		return ResponseEntity.ok(list);
 	}
-
-	@ApiOperation("Create a new station")
-	@PostMapping("/")
-	public ResponseEntity<Station> createStation(@RequestBody Station stationDTO) throws Exception {
-		Station station = stationService.createStation(stationDTO);
-		return ResponseEntity.ok(station);
-	}
-
+	
 	@ApiOperation("Get a station by ID")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success", response = Station.class),
 			@ApiResponse(code = 404, message = "Station not found") })
@@ -62,6 +55,23 @@ public class StationController {
 		Station station = stationService.getStation(id);
 		return ResponseEntity.ok(station);
 	}
+	
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success", response = Station.class),
+		@ApiResponse(code = 404, message = "Station not found") })
+@GetMapping("/service_provider/{id}")
+public ResponseEntity<List<Station>> getStationByServiceProvider(@PathVariable Long id) throws StationNotExistsException {
+	List<Station> stations = stationService.getAllServiceProviderStations(id);
+	return ResponseEntity.ok(stations);
+}
+
+
+	@ApiOperation("Create a new station")
+	@PostMapping("/")
+	public ResponseEntity<Station> createStation(@RequestBody Station stationDTO) throws Exception {
+		Station station = stationService.createStation(stationDTO);
+		return ResponseEntity.ok(station);
+	}
+
 
 	@ApiOperation("Update a station by ID")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success", response = Station.class),
