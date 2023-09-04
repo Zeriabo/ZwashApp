@@ -68,7 +68,7 @@ public class ServiceProviderController {
     @ApiOperation(value = "Creates a service provider")
     @PostMapping("/")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Service providers retrieved successfully")
+            @ApiResponse(code = 200, message = "Service providers created successfully")
     })
     public ResponseEntity <ServiceProvider> createServiceProvider(@PathVariable ServiceProvider serviceProvider) {
     	ServiceProvider serviceProviders = serviceProviderService.createServiceProvicer(serviceProvider);
