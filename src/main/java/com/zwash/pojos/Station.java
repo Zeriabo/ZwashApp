@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -49,11 +50,10 @@ public class Station {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
 	private List<CarWashingProgram> programs;
-	
-	@ManyToOne
-    @JoinColumn(name = "service_provider_id")
-	private ServiceProvider serviceProvider;
 
+	@ManyToOne
+	@JoinColumn(name = "service_provider_id")
+	private ServiceProvider serviceProvider;
 
 	@CreationTimestamp
 	@Column(name = "createdAt")
@@ -63,6 +63,20 @@ public class Station {
 	@Column(name = "updatedAt")
 	private LocalDateTime updatedAt;
 
+	public Station(String name, String address, double latitude, double longitude, long serviceProvider,
+			MultipartFile logoFile, MultipartFile pictureFile) {
+
+		this.name = name;
+		this.address = address;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.serviceProvider = new ServiceProvider(serviceProvider);
+		this.media = new Media(logoFile, pictureFile);
+
+	}
+
+	public Station() {
+	}
 
 	public Media getMedia() {
 		return media;
@@ -119,7 +133,7 @@ public class Station {
 	public void setPrograms(List<CarWashingProgram> programs) {
 		this.programs = programs;
 	}
-	
+
 	public ServiceProvider getServiceProvider() {
 		return serviceProvider;
 	}
@@ -127,7 +141,7 @@ public class Station {
 	public void setServiceProvider(ServiceProvider serviceProvider) {
 		this.serviceProvider = serviceProvider;
 	}
-	
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -143,6 +157,7 @@ public class Station {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
 	@PrePersist
 	protected void onCreate() {
 		setCreatedAt(LocalDateTime.now());
