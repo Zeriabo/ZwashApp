@@ -15,6 +15,13 @@ import java.util.List;
 @Table(name = "service_provider")
 public class ServiceProvider {
 
+	public ServiceProvider()
+	{
+		
+	}
+	public ServiceProvider(Long id) {
+		this.id=id;
+	}
 	public Long getId() {
 		return id;
 	}
