@@ -20,6 +20,16 @@ import jakarta.persistence.Transient;
 @Table(name = "media")
 public class Media {
 
+	public Media() {
+		
+	}
+	public Media(MultipartFile logoFile,MultipartFile pictureFile) {
+		
+		this.pictureFile=pictureFile;
+		this.logoFile=logoFile;
+		this.logo=logoFile.getName();
+		this.picture=pictureFile.getName();
+	}
     public Long getId() {
 		return id;
 	}
