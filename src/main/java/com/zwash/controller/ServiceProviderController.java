@@ -1,29 +1,33 @@
 package com.zwash.controller;
 
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zwash.exceptions.ServiceProviderNotExistsException;
-import com.zwash.exceptions.StationNotExistsException;
+
 import com.zwash.pojos.ServiceProvider;
-import com.zwash.pojos.Station;
+
 import com.zwash.service.ServiceProviderService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.util.*;
+
+
 @RestController
-@RequestMapping("v1/serviceproviders")
+@RequestMapping("v1/service-providers")
 public class ServiceProviderController {
 
     @Autowired
@@ -45,13 +49,15 @@ public class ServiceProviderController {
     }
 
     @ApiOperation(value = "Get all service providers that belongs to a user")
-    @GetMapping("/user/{username}")
+    @GetMapping("/user")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Service providers retrieved successfully")
     })
-    public ResponseEntity<List<ServiceProvider>> getAllUserServiceProviders(@PathVariable  String  username) {
-        List<ServiceProvider> serviceProviders = serviceProviderService.getAllServiceProviders(username);
-        return ResponseEntity.ok(serviceProviders);
+    public ResponseEntity<List<ServiceProvider>> getAllUserServiceProviders(@RequestParam String  username) {
+    	List<ServiceProvider> list = new ArrayList<ServiceProvider>();
+    	
+    	list = serviceProviderService.getAllServiceProviders(username);
+        return ResponseEntity.ok(list);
     }
 
     
