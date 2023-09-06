@@ -21,6 +21,12 @@ public class StationDTO {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+    public StationDTO(String name,String address, double latitude, double longitude ) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+ 
+    }
     public StationDTO(String name, double latitude, double longitude, List<CarWashingProgramDTO> programs ) {
         this.name = name;
         this.latitude = latitude;

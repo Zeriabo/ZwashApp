@@ -62,20 +62,31 @@ public class Station {
 	@UpdateTimestamp
 	@Column(name = "updatedAt")
 	private LocalDateTime updatedAt;
-
-	public Station(String name, String address, double latitude, double longitude, long serviceProvider,
-			MultipartFile logoFile, MultipartFile pictureFile) {
+	
+	public Station() {
+	}
+	
+	public Station(String name, String address, double latitude, double longitude, ServiceProvider serviceProvider,
+			Media media) {
 
 		this.name = name;
 		this.address = address;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.serviceProvider = new ServiceProvider(serviceProvider);
-		this.media = new Media(logoFile, pictureFile);
+		this.serviceProvider = serviceProvider;
+		this.media = media;
 
 	}
 
-	public Station() {
+
+	public Station(String name, String address, double latitude, double longitude, ServiceProvider serviceProvider) {
+		
+		this.name = name;
+		this.address = address;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.serviceProvider = serviceProvider;
+
 	}
 
 	public Media getMedia() {
