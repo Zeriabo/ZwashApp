@@ -24,12 +24,14 @@ import com.zwash.service.CarService;
 import com.zwash.service.UserService;
 
 import io.jsonwebtoken.Claims;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("v1/cars")
+@RequestMapping("/v1/cars")
+@Api(tags = "Car API")
 public class CarController {
 
     @Autowired
