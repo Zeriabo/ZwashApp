@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("v1/service-provider-users")
 public class ServiceProviderUserController {
