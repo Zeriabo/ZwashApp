@@ -31,5 +31,7 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
 //	List<Station> selectAllStations(@Param("id") Long id);
 //	@Query("Select s FROM ServiceProvider s WHERE s.station = :id")
 //	Optional<ServiceProvider>  findByStation(@Param("id") Long id);
+	@Query("SELECT s FROM ServiceProvider s WHERE s.serviceProviderUser.username = :username")
+	List<ServiceProvider> findbyUserName(@Param("username") String username);
 
 }
