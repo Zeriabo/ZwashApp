@@ -11,6 +11,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "service_provider")
 public class ServiceProvider {
@@ -78,6 +80,7 @@ public class ServiceProvider {
 
 
 	@OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Station> stations;
 
 }
