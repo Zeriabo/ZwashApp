@@ -81,6 +81,7 @@ public class ServiceProviderUser {
 	    @Column(nullable = false)
 	    private String lastName;
 
+
 	    @NotBlank
 	    @Size(max = 50)
 	    @Column(name = "username", nullable = false, unique = true)
