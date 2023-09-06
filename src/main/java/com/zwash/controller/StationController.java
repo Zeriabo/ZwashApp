@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zwash.dto.CarWashingProgramDTO;
 import com.zwash.dto.StationDTO;
+import com.zwash.exceptions.StationNotCreatedException;
 import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.pojos.CarWashingProgram;
 import com.zwash.pojos.Media;
@@ -30,10 +31,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-
-@CrossOrigin(origins = "*", maxAge = 3600) 
 @RestController
-@RequestMapping("/v1/stations")
+@RequestMapping("v1/stations")
 public class StationController {
 
 	@Autowired
@@ -41,8 +40,9 @@ public class StationController {
 
 	@ApiOperation("Get all stations")
 	@GetMapping("/")
-	public List<Station> getAllStations() {
-		return stationService.getAllStations();
+	public ResponseEntity<List<Station> > getAllStations() {
+		  List<Station> list = stationService.getAllStations();
+	        return ResponseEntity.ok(list);
 	}
 
 
@@ -51,6 +51,7 @@ public class StationController {
 	public ResponseEntity<List<CarWashingProgram>> getStationWashes(@RequestParam Long id) throws StationNotExistsException {
 		//getStationWashed
 		List<CarWashingProgram> list = stationService.getStationWashed(id);
+	
 		return ResponseEntity.ok(list);
 	}
 	
@@ -65,7 +66,7 @@ public class StationController {
 	
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success", response = Station.class),
 		@ApiResponse(code = 404, message = "Station not found") })
-@GetMapping("/service_provider/{id}")
+@GetMapping("/service-provider/{id}")
 public ResponseEntity<List<Station>> getStationByServiceProvider(@PathVariable Long id) throws StationNotExistsException {
 	List<Station> stations = stationService.getAllServiceProviderStations(id);
 	return ResponseEntity.ok(stations);
@@ -81,15 +82,21 @@ public ResponseEntity<List<Station>> getStationByServiceProvider(@PathVariable L
             @RequestParam("serviceProvider") long serviceProvider
      
        ) 
-         throws Exception {
+         throws StationNotCreatedException, Exception {
 
 	
 		    StationDTO stationDTO= new StationDTO(name,address,latitude,longitude);
+		    try {
 		Station stationcreated = stationService.createStation( stationDTO, serviceProvider) ;
+		    
 		if(stationcreated instanceof Station)
 		{
 			return ResponseEntity.ok("Station created successfully");
 		}
+		    }catch(Exception ex)
+		    {
+		    	throw new StationNotCreatedException(ex.getMessage());
+		    }
 		return ResponseEntity.status(500).body("Station not created");
 	}
 
