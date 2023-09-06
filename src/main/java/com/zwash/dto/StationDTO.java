@@ -23,6 +23,7 @@ public class StationDTO {
     }
     public StationDTO(String name,String address, double latitude, double longitude ) {
         this.name = name;
+        this.address=address;
         this.latitude = latitude;
         this.longitude = longitude;
  
