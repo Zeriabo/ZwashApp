@@ -32,10 +32,10 @@ public abstract class CarWashingProgram {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonBackReference
 	@ManyToOne
 	private Station station;
 
+	@JsonIgnoreProperties("station")
 	@JsonProperty("program")
 	@Column(name = "program_type")
 	private String program;
