@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.zwash.dto.CarWashingProgramDTO;
 import com.zwash.dto.StationDTO;
 import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.pojos.CarWashingProgram;
+import com.zwash.pojos.Media;
+import com.zwash.pojos.ServiceProvider;
 import com.zwash.pojos.Station;
 import com.zwash.service.StationService;
 
@@ -25,6 +30,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+
+@CrossOrigin(origins = "*", maxAge = 3600) 
 @RestController
 @RequestMapping("/v1/stations")
 public class StationController {
@@ -67,9 +74,23 @@ public ResponseEntity<List<Station>> getStationByServiceProvider(@PathVariable L
 
 	@ApiOperation("Create a new station")
 	@PostMapping("/")
-	public ResponseEntity<Station> createStation(@RequestBody Station stationDTO) throws Exception {
-		Station station = stationService.createStation(stationDTO);
-		return ResponseEntity.ok(station);
+	public ResponseEntity<String> createStation(@RequestParam("name") String name,
+            @RequestParam("address") String address,
+            @RequestParam("latitude") double latitude,
+            @RequestParam("longitude") double longitude,
+            @RequestParam("serviceProvider") long serviceProvider
+     
+       ) 
+         throws Exception {
+
+	
+		    StationDTO stationDTO= new StationDTO(name,address,latitude,longitude);
+		Station stationcreated = stationService.createStation( stationDTO, serviceProvider) ;
+		if(stationcreated instanceof Station)
+		{
+			return ResponseEntity.ok("Station created successfully");
+		}
+		return ResponseEntity.status(500).body("Station not created");
 	}
 
 
