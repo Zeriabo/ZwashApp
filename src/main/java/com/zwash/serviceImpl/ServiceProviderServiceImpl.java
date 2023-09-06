@@ -89,9 +89,9 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	}
 
 	@Override
-	public List<ServiceProvider> getAllServiceProviders(Long id) {
+	public List<ServiceProvider> getAllServiceProviders(String username) {
 		
-		 return serviceProviderRepository.findByUser(id);
+		 return serviceProviderRepository.findbyUserName(username);
 	}
 
 	@Override
