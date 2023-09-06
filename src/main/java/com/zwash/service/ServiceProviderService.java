@@ -22,7 +22,7 @@ public interface ServiceProviderService {
 
 	void removeStation(Long id,Station stationDTO)  throws StationNotExistsException, ServiceProviderNotExistsException;
 
-	List<ServiceProvider> getAllServiceProviders(Long id);
+	List<ServiceProvider> getAllServiceProviders(String username);
 
 	ServiceProvider createServiceProvicer(ServiceProvider serviceProvider);
 }
