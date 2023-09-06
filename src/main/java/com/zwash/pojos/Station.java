@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -49,6 +50,7 @@ public class Station {
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "station", cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<CarWashingProgram> programs;
 
 	@ManyToOne
