@@ -24,12 +24,18 @@ public interface StationService extends Serializable {
 
 	void setAddress(Long id, Long latitude, Long longitude);
 
-	Station createStation(Station stationDTO) throws Exception;
+	Station createStation(StationDTO stationDTO) throws Exception;
 
+	Station createStation(StationDTO stationDTO,Long serviceProviderId) throws Exception;
+	
+	Station createStation(Station stationInput) throws Exception;
+	
 	Station updateStation(Station station) throws StationNotExistsException;
 
 	void removeStation(Long id)  throws StationNotExistsException;
 
 	List<CarWashingProgram> getStationWashed(Long id ) throws StationNotExistsException;
+
+
 
 }

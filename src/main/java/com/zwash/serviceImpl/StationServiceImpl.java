@@ -9,15 +9,18 @@ import org.springframework.stereotype.Service;
 
 import com.zwash.dto.CarWashingProgramDTO;
 import com.zwash.dto.StationDTO;
+import com.zwash.exceptions.ServiceProviderNotExistsException;
 import com.zwash.exceptions.StationNotExistsException;
 import com.zwash.pojos.CarWashingProgram;
 import com.zwash.pojos.FoamCarWashingProgram;
 import com.zwash.pojos.HighPressureCarWashingProgram;
 import com.zwash.pojos.Media;
+import com.zwash.pojos.ServiceProvider;
 import com.zwash.pojos.Station;
 import com.zwash.pojos.TouchlessCarWashingProgram;
 import com.zwash.repository.CarWashingProgramRepository;
 import com.zwash.repository.StationRepository;
+import com.zwash.service.ServiceProviderService;
 import com.zwash.service.StationService;
 
 import jakarta.transaction.Transactional;
@@ -32,6 +35,9 @@ public class StationServiceImpl implements StationService {
 	@Autowired
 	private CarWashingProgramRepository carWashingProgramRepository;
 
+	@Autowired
+	private ServiceProviderService serviceProviderService;
+	
 	@Override
 	public Station getStation(Long id) throws StationNotExistsException {
 
@@ -77,18 +83,17 @@ public class StationServiceImpl implements StationService {
 
 		return stationRepository.findAll();
 	}
-
 	@Override
-	public Station createStation(Station stationRequestDTO) throws Exception {
+	public Station createStation(Station stationRequest) throws Exception {
 		Station station = new Station();
-		station.setName(stationRequestDTO.getName());
-		station.setLatitude(stationRequestDTO.getLatitude());
-		station.setLongitude(stationRequestDTO.getLongitude());
-		station.setAddress(stationRequestDTO.getAddress());
+		station.setName(stationRequest.getName());
+		station.setLatitude(stationRequest.getLatitude());
+		station.setLongitude(stationRequest.getLongitude());
+		station.setAddress(stationRequest.getAddress());
 		// Set the programs (CarWashingPrograms) for the station
 		List<CarWashingProgram> programs = new ArrayList<>();
-		if (stationRequestDTO.getPrograms() != null) {
-			for (CarWashingProgram programRequestDTO : stationRequestDTO.getPrograms()) {
+		if (stationRequest.getPrograms() != null) {
+			for (CarWashingProgram programRequestDTO : stationRequest.getPrograms()) {
 				CarWashingProgram program;
 				if (programRequestDTO.getProgramType().equals("high_pressure")) {
 					program = new HighPressureCarWashingProgram();
@@ -111,6 +116,78 @@ public class StationServiceImpl implements StationService {
 		return stationRepository.save(station);
 	}
 
+	@Override
+	public Station createStation(StationDTO stationRequestDTO) throws Exception {
+		Station station = new Station();
+		station.setName(stationRequestDTO.getName());
+		station.setLatitude(stationRequestDTO.getLatitude());
+		station.setLongitude(stationRequestDTO.getLongitude());
+		station.setAddress(stationRequestDTO.getAddress());
+		// Set the programs (CarWashingPrograms) for the station
+		List<CarWashingProgram> programs = new ArrayList<>();
+		if (stationRequestDTO.getPrograms() != null) {
+			for (CarWashingProgramDTO programRequestDTO : stationRequestDTO.getPrograms()) {
+				CarWashingProgram program;
+				if (programRequestDTO.getProgramType().equals("high_pressure")) {
+					program = new HighPressureCarWashingProgram();
+					// additional properties needs to set
+				} else if (programRequestDTO.getProgramType().equals("foam")) {
+					program = new FoamCarWashingProgram();
+					// additional properties needs to set
+				} else if (programRequestDTO.getProgramType().equals("touch_less")) {
+					program = new TouchlessCarWashingProgram();
+					// additional properties needs to set
+				} else {
+					throw new Exception(programRequestDTO.getProgramType());
+				}
+				carWashingProgramRepository.save(program);
+				programs.add(program);
+			}
+		}
+		station.setPrograms(programs);
+
+		return stationRepository.save(station);
+	}
+	 public Station createStation(StationDTO stationDTO,Long serviceProviderId) throws  ServiceProviderNotExistsException ,Exception{
+		 
+		ServiceProvider serviceProvider = serviceProviderService.getServiceProvider(serviceProviderId);
+		
+		if(serviceProvider != null)
+		{
+			Station station = new Station();
+			station.setName(stationDTO.getName());
+			station.setLatitude(stationDTO.getLatitude());
+			station.setLongitude(stationDTO.getLongitude());
+			station.setAddress(stationDTO.getAddress());
+			station.setServiceProvider(serviceProvider);
+			// Set the programs (CarWashingPrograms) for the station
+			List<CarWashingProgram> programs = new ArrayList<>();
+			if (stationDTO.getPrograms() != null) {
+				for (CarWashingProgramDTO programRequestDTO : stationDTO.getPrograms()) {
+					CarWashingProgram program;
+					if (programRequestDTO.getProgramType().equals("high_pressure")) {
+						program = new HighPressureCarWashingProgram();
+						// additional properties needs to set
+					} else if (programRequestDTO.getProgramType().equals("foam")) {
+						program = new FoamCarWashingProgram();
+						// additional properties needs to set
+					} else if (programRequestDTO.getProgramType().equals("touch_less")) {
+						program = new TouchlessCarWashingProgram();
+						// additional properties needs to set
+					} else {
+						throw new Exception(programRequestDTO.getProgramType());
+					}
+					carWashingProgramRepository.save(program);
+					programs.add(program);
+				}
+			}
+			station.setPrograms(programs);
+
+			return stationRepository.save(station);
+		}else {
+			throw new ServiceProviderNotExistsException("Service Provider with id: "+serviceProviderId+" does not exists!");
+		}
+	 }
 	@Override
 	public Station updateStation(Station station) throws StationNotExistsException {
 		// TODO Auto-generated method stub
@@ -144,6 +221,9 @@ public class StationServiceImpl implements StationService {
 
 		return washesList;
 	}
+
+
+
 
 	
 
