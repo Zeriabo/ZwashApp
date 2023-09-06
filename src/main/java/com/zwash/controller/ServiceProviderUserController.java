@@ -7,19 +7,28 @@ import org.springframework.web.bind.annotation.*;
 
 import com.zwash.exceptions.ServiceProviderUserNotFoundException;
 import com.zwash.pojos.ServiceProviderUser;
+import com.zwash.pojos.SignInfo;
 import com.zwash.service.ServiceProviderUserService;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("v1/service-provider-users")
-@CrossOrigin(origins = {"http://localhost:3000"})
 public class ServiceProviderUserController {
 
     @Autowired
     private ServiceProviderUserService serviceProviderUserService;
 
+    @ApiOperation(value = "Register a service provider user")
     @PostMapping("/create")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Service provider user created successfully")
+    })
     public ResponseEntity<ServiceProviderUser> createServiceProviderUser(@RequestBody ServiceProviderUser serviceProviderUser) {
         ServiceProviderUser createdUser = serviceProviderUserService.registerUser(serviceProviderUser);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
@@ -27,10 +36,13 @@ public class ServiceProviderUserController {
     
 
 
-
+    @ApiOperation(value = "signin a service provider user")
     @PostMapping("/signin")
-    public ResponseEntity<ServiceProviderUser> signInServiceProviderUser(@RequestParam String username, @RequestParam String password) throws ServiceProviderUserNotFoundException {
-        ServiceProviderUser user = serviceProviderUserService.signIn(username, password);
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Service provider user signed successfully")
+    })
+    public ResponseEntity<ServiceProviderUser> signInServiceProviderUser(@RequestBody SignInfo userRequest) throws ServiceProviderUserNotFoundException {
+        ServiceProviderUser user = serviceProviderUserService.signIn(userRequest.getUsername(), userRequest.getPassword());
 		if (user != null) {
 		    return new ResponseEntity<>(user, HttpStatus.OK);
 		} else {
