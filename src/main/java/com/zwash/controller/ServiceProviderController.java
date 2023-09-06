@@ -3,6 +3,7 @@ package com.zwash.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,12 +45,12 @@ public class ServiceProviderController {
     }
 
     @ApiOperation(value = "Get all service providers that belongs to a user")
-    @GetMapping("/user")
+    @GetMapping("/user/{username}")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Service providers retrieved successfully")
     })
-    public ResponseEntity<List<ServiceProvider>> getAllUserServiceProviders(@PathVariable Long id) {
-        List<ServiceProvider> serviceProviders = serviceProviderService.getAllServiceProviders(id);
+    public ResponseEntity<List<ServiceProvider>> getAllUserServiceProviders(@PathVariable  String  username) {
+        List<ServiceProvider> serviceProviders = serviceProviderService.getAllServiceProviders(username);
         return ResponseEntity.ok(serviceProviders);
     }
 
