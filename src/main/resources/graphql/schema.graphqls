@@ -10,15 +10,7 @@ type Station {
   updatedAt: String
 }
  
-type CarWashingProgram {
-  id: ID
-  station: Station
-  programType: String
-  description: String
-  price: Float
-  createdAt: String
-  updatedAt: String
-}
+
 
 type Media {
   id: ID
@@ -53,6 +45,17 @@ type UserCarWash {
   station: Station
 }
 
+type CarWashingProgram{
+ 
+  id: ID!
+  station: Station!
+  programType: String!
+  description: String
+  price: Float!
+
+}
+
+
 type Query {
    # Booking queries
     booking(id: ID!): Booking
@@ -65,12 +68,13 @@ type Query {
      getCar(id: ID!): Car
      getAllCars : [Car]
  
-  # carWashProgram queries
+  # carWashProgram queries get programs that belongs to station  by station ID
   getAllPrograms(id: ID!): [CarWashingProgram!]!
   
   # Station queries
   getStation(id: ID!): Station!
   getAllStations:[Station!]!
+  getStationPrograms(stationId: ID!): [CarWashingProgram]
   
    # User queries
    
@@ -81,21 +85,55 @@ type Query {
 }
 
 type Mutation {
-    createBooking(bookingInput: BookingInput!): Booking
-    updateBooking(id: ID!, bookingInput: BookingInput!): Booking
-    deleteBooking(id: ID!): Boolean
+  createBooking(bookingInput: BookingInput!): Booking
+  updateBooking(id: ID!, bookingInput: BookingInput!): Booking
+  deleteBooking(id: ID!): Boolean
 
+  # Create a new station with car washing programs
+  createStationWithPrograms(stationInput: StationInput!): Station
+  # Create a new station without car washing programs
+  createStationWithoutPrograms(stationInput: StationWithoutProgramsInput!): Station
+  # Update CarWashingPrograms of a station
+  updateCarWashPrograms(stationId: ID!, programInput: [CarWashingProgramInput!]!): Station
+}
 
+input StationInput {
+  name: String!
+  address: String!
+  media: MediaInput!
+  latitude: Float!
+  longitude: Float!
+  programs: [CarWashingProgramInput!]!
+}
+
+input StationWithoutProgramsInput {
+  name: String!
+  address: String!
+  media: MediaInput!
+  latitude: Float!
+  longitude: Float!
+}
+
+input CarWashingProgramInput {
+  id: ID!
+  stationId: ID!
+  programType: String!
+  description: String
+  price: Float!
 }
 
 input BookingInput {
-    car: ID!
-    washingProgram: String!
-    userId: ID!
-    stationId:ID!
-
-  
+  car: ID!
+  washingProgram: String!
+  userId: ID!
+  stationId: ID!
 }
+
+input MediaInput {
+  logo: String!
+  picture: String!
+}
+
 input UserCarInput {
   token: String
   registerationPlate: String
