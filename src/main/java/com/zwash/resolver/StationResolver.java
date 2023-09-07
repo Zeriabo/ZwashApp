@@ -30,7 +30,7 @@ public class StationResolver implements GraphQLQueryResolver {
     public List<Station> getAllStations() throws DataAccessException, SQLException, Exception {
         return stationService.getAllStations();
     }
-    public List<CarWashingProgram> getStationWashes(Long stationId) throws Exception {
+    public List<CarWashingProgram> getStationPrograms(Long stationId) throws Exception {
         // Implement logic to fetch and return bookings for the specified userId
         return stationService.getStationWashed(stationId);
     }
