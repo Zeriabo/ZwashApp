@@ -114,6 +114,25 @@ public ResponseEntity<List<Station>> getStationByServiceProvider(@PathVariable L
 			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build(); // Station was not updated
 		}
 	}
+	@ApiOperation("Update the address of a station by ID")
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success", response = Station.class),
+	    @ApiResponse(code = 404, message = "Station not found") })
+	@PutMapping("/{id}/address")
+	public ResponseEntity<Station> updateStationAddress(@PathVariable Long id, @RequestParam("station") Station newStation) throws StationNotExistsException {
+	    Station station = stationService.getStation(id);
+
+	    if (station != null) {
+	        // Update the address using the newly created method
+	        station.setAddress(newStation.getAddress());
+
+	        // Save the updated station
+	        station = stationService.updateStation(station);
+
+	        return ResponseEntity.ok(station); // Station address was successfully updated
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Station not found
+	    }
+	}
 
 	@ApiOperation("Delete a station by ID")
 	@ApiResponses({
