@@ -35,7 +35,7 @@ public abstract class CarWashingProgram {
 	@ManyToOne
 	private Station station;
 
-	@JsonIgnoreProperties("station")
+
 	@JsonProperty("program")
 	@Column(name = "program_type")
 	private String program;
