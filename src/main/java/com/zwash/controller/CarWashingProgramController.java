@@ -110,15 +110,14 @@ public class CarWashingProgramController {
 	public ResponseEntity<Void> updateWashingProgram(@PathVariable Long id, @RequestBody CarWashingProgram updatedProgram) {
 	    try {
 	        // Retrieve the existing washing program by ID
-	        CarWashingProgram existingProgram = carWashingProgramService.getProgramById(id);
-	        
+	    	 CarWashingProgram existingProgram=   carWashingProgramService.getProgramById(id);
+	   
 	        if (existingProgram == null) {
 	            // If the program with the given ID doesn't exist, return a 404 response
 	            return ResponseEntity.notFound().build();
 	        }
 	        
-	        // Update the existing program with the data from the updatedProgram
-	        existingProgram.setProgramType(updatedProgram.getProgramType());
+
 	        existingProgram.setDescription(updatedProgram.getDescription());
 	        existingProgram.setPrice(updatedProgram.getPrice());
 	        
