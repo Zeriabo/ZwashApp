@@ -49,11 +49,11 @@ public class ServiceProviderController {
     }
 
     @ApiOperation(value = "Get all service providers that belongs to a user")
-    @GetMapping("/user")
+    @GetMapping("/user/{username}")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Service providers retrieved successfully")
     })
-    public ResponseEntity<List<ServiceProvider>> getAllUserServiceProviders(@RequestParam String  username) {
+    public ResponseEntity<List<ServiceProvider>> getAllUserServiceProviders(@PathVariable String  username) {
     	List<ServiceProvider> list = new ArrayList<ServiceProvider>();
     	
     	list = serviceProviderService.getAllServiceProviders(username);

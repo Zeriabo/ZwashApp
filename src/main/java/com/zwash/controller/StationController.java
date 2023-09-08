@@ -117,14 +117,14 @@ public ResponseEntity<List<Station>> getStationByServiceProvider(@PathVariable L
 	@ApiOperation("Update the address of a station by ID")
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success", response = Station.class),
 	    @ApiResponse(code = 404, message = "Station not found") })
-	@PutMapping("/{id}/address")
-	public ResponseEntity<Station> updateStationAddress(@PathVariable Long id, @RequestParam("station") Station newStation) throws StationNotExistsException {
+	@PutMapping("/address/{id}")
+	public ResponseEntity<Station> updateStationAddress(@PathVariable Long id, @RequestBody Station newStation) throws StationNotExistsException {
 	    Station station = stationService.getStation(id);
 
 	    if (station != null) {
-	        // Update the address using the newly created method
-	        station.setAddress(newStation.getAddress());
-
+	  
+           station.setLatitude(newStation.getLatitude());
+           station.setLongitude(newStation.getLongitude());
 	        // Save the updated station
 	        station = stationService.updateStation(station);
 
