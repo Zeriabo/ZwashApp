@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,6 +77,7 @@ public class CarWashingProgramController {
 	@GetMapping("/all")
 	public ResponseEntity<List<CarWashingProgram>> getAllWashingPrograms() {
 		try {
+			
 			List<CarWashingProgram> programs = carWashingProgramService.getPrograms();
 			return ResponseEntity.ok(programs);
 		} catch (Exception e) {
@@ -96,4 +99,37 @@ public class CarWashingProgramController {
 			return ResponseEntity.status(500).build();
 		}
 	}
+	
+	@ApiOperation(value = "Update a car washing program")
+	@ApiResponses(value = { 
+	    @ApiResponse(code = 200, message = "Washing program updated successfully"),
+	    @ApiResponse(code = 404, message = "Washing program not found") 
+	})
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> updateWashingProgram(@PathVariable Long id, @RequestBody CarWashingProgram updatedProgram) {
+	    try {
+	        // Retrieve the existing washing program by ID
+	        CarWashingProgram existingProgram = carWashingProgramService.getProgramById(id);
+	        
+	        if (existingProgram == null) {
+	            // If the program with the given ID doesn't exist, return a 404 response
+	            return ResponseEntity.notFound().build();
+	        }
+	        
+	        // Update the existing program with the data from the updatedProgram
+	        existingProgram.setProgramType(updatedProgram.getProgramType());
+	        existingProgram.setDescription(updatedProgram.getDescription());
+	        existingProgram.setPrice(updatedProgram.getPrice());
+	        
+	        // Save the updated program
+	        carWashingProgramService.updateProgram(existingProgram);
+	        
+	        return ResponseEntity.ok().build();
+	    } catch (Exception e) {
+	        logger.error("Failed to update washing program", e);
+	        return ResponseEntity.status(500).build();
+	    }
+	}
+
 }
