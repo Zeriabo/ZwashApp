@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,10 +50,11 @@ public class CarWashingProgramController {
 	@ApiOperation(value = "Remove a car washing program")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Washing program removed successfully"),
 			@ApiResponse(code = 404, message = "Washing program not found") })
-	@PostMapping("/{id}")
-	public ResponseEntity<Void> removeWashingProgram(@RequestBody CarWashingProgram washingProgram) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> removeWashingProgram(@PathVariable String id) {
 		try {
-			carWashingProgramService.deleteProgram(washingProgram.getId());
+			Long stationId= Long.parseLong(id);
+			carWashingProgramService.deleteProgram(stationId);
 			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			logger.error("Failed to remove washing program", e);
