@@ -36,14 +36,15 @@ public class TouchlessCarWashingProgram extends CarWashingProgram {
         this.soapAmount = amount;
     }
 
-    @Override
-    public void setBrushType(String brushType) {
-        throw new UnsupportedOperationException("Touchless car washing program does not use brushes");
-    }
 
     @Override
     public void startWashing() {
         System.out.println("Starting touchless car washing program with " + waterPressure + " water pressure and " + soapAmount + " soap amount.");
     }
+	@Override
+	public void setBrushType(String brushType) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
