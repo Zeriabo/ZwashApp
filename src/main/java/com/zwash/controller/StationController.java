@@ -140,17 +140,17 @@ public ResponseEntity<List<Station>> getStationByServiceProvider(@PathVariable L
 		@ApiResponse(code = 404, message = "Station not found")
 	})
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteStation(@PathVariable Long id) throws StationNotExistsException {
+	public ResponseEntity<String> deleteStation(@PathVariable Long id) throws StationNotExistsException {
 		// Check if the station exists
 
-		if (stationService.getStation(id) != null) {
+		if (stationService.getStation(id) == null) {
 			throw new StationNotExistsException(id );
 		}
 
 		// Delete the station
 		stationService.removeStation(id);
 
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.status(200).body("Station "+id+" was deleted!");
 	}
 
 
