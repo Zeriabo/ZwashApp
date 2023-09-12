@@ -107,7 +107,8 @@ Usage:
 TODO:
 
 
-Implement accouting for stations calculate the revenue
+Implement accouting microservice for stations calculate the revenue
+Implementing a Microservies architecture
 push notifications
 
 Rating system: Allow users to rate their experience with the car wash and the service they received.
