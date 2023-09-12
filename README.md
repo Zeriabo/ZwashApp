@@ -100,15 +100,15 @@ Updates:
 Usage:
 3. Mobile app: Consider developing a mobile app to provide a more convenient and user-friendly experience for your customers.
 4. Graphql Implemented.
+5. service provider User implementation and functions
+6. execute a wash
 
 
 TODO:
 
-service provider User implementation and functions
 
+Implement accouting for stations calculate the revenue
 push notifications
-
-execute a wash
 
 Rating system: Allow users to rate their experience with the car wash and the service they received.
 
