@@ -108,6 +108,8 @@ TODO:
 
 Adding a Diameter charging protocol
 
+use gRPC for communication between the microservices.
+
 send accouting transactions to the Zaccounting project
 Implement Invoicing 
 
