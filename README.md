@@ -3,14 +3,6 @@
 
 Welcome to Zwash, a car washing application that allows users to book car washing services conveniently. This repository contains the code and documentation for the Zwash app.
 
-Table of Contents
-Introduction
-Installation
-Usage
-Endpoints
-Contributing
-License
-Introduction
 Zwash is a car washing app designed to simplify the process of booking car washing services. It provides a set of RESTful APIs to manage car, booking, user, and car washing program-related operations.
 
 Installation
