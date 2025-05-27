@@ -1,0 +1,145 @@
+type Station {
+  id: ID
+  name: String
+  address: String
+  media: Media
+  latitude: Float
+  longitude: Float
+  programs: [CarWashingProgram]
+  createdAt: String
+  updatedAt: String
+}
+ 
+
+
+type Media {
+  id: ID
+  logo: String!
+  picture: String!
+}
+
+type Booking {
+    id: ID
+    car: Car
+    washingProgram: CarWashingProgram
+    station: Station
+ 
+}
+
+type Car {
+    id: ID!
+    registerationPlate: String!
+    manufacture : String!
+    dateOfManufacture:String
+}
+type UserCar {
+  token: String
+  registerationPlate: String
+  manufacture: String
+  dateOfManufacture: String
+  deviceRegistrationToken: String
+}
+
+type UserCarWash {
+  booking: Booking
+  station: Station
+}
+
+type CarWashingProgram{
+ 
+  id: ID!
+  station: Station!
+  programType: String!
+  description: String
+  price: Float!
+
+}
+
+
+type Query {
+   # Booking queries
+    booking(id: ID!): Booking
+    allBookings: [Booking]
+    getAllBookings: [Booking!]!
+    userBookings(userId: ID!): [Booking]
+    getCarBookings(carId: ID!): [Booking]
+    
+     # car queries
+     getCar(id: ID!): Car
+     getAllCars : [Car]
+ 
+  # carWashProgram queries get programs that belongs to station  by station ID
+  getAllPrograms(id: ID!): [CarWashingProgram!]!
+  
+  # Station queries
+  getStation(id: ID!): Station!
+  getAllStations:[Station!]!
+  getStationPrograms(stationId: ID!): [CarWashingProgram]
+  
+   # User queries
+   
+   #User car wash queries
+ getUserCarWashes(userId: ID!): [UserCarWash!]!
+ 
+
+}
+
+type Mutation {
+  createBooking(bookingInput: BookingInput!): Booking
+  updateBooking(id: ID!, bookingInput: BookingInput!): Booking
+  deleteBooking(id: ID!): Boolean
+
+  # Create a new station with car washing programs
+  createStationWithPrograms(stationInput: StationInput!): Station
+  # Create a new station without car washing programs
+  createStationWithoutPrograms(stationInput: StationWithoutProgramsInput!): Station
+  # Update CarWashingPrograms of a station
+  updateCarWashPrograms(stationId: ID!, programInput: [CarWashingProgramInput!]!): Station
+}
+
+input StationInput {
+  name: String!
+  address: String!
+  media: MediaInput!
+  latitude: Float!
+  longitude: Float!
+  programs: [CarWashingProgramInput!]!
+}
+
+input StationWithoutProgramsInput {
+  name: String!
+  address: String!
+  media: MediaInput!
+  latitude: Float!
+  longitude: Float!
+}
+
+input CarWashingProgramInput {
+  id: ID!
+  stationId: ID!
+  programType: String!
+  description: String
+  price: Float!
+}
+
+input BookingInput {
+  car: ID!
+  washingProgram: String!
+  userId: ID!
+  stationId: ID!
+}
+
+input MediaInput {
+  logo: String!
+  picture: String!
+}
+
+input UserCarInput {
+  token: String
+  registerationPlate: String
+  manufacture: String
+  dateOfManufacture: String
+  deviceRegistrationToken: String
+}
+
+
