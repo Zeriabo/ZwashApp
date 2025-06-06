@@ -76,7 +76,11 @@ Database design:
 car wash application spring boot backend
 Database design:
 
-## Database description:
+## 🧩 Microservices Architecture
+
+<p align="center">
+  <img src="zwash-microservices.png" alt="Microservices Architecture" width="700"/>
+</p>
 
 
 ### Program description:
